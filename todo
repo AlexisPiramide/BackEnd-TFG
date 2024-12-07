@@ -1,0 +1,42 @@
+#Codigo TODO BACKEND
+
+# General
+
+    # Base de datos
+    - [ ] Diseñar base de datos.
+    - [ ] Crear Docker compose.
+    # Conexion y seguridad
+    - [ ] Conector base de datos.
+    - [ ] Seguridad WebToken.
+    # API
+    - [ ] Instalar y preparar SWAGGER para la API.
+
+# Codigo
+    # Calculos Envios
+    - [ ] Crear tipos de envios.
+    - [ ] Crear taamos de envios.
+    - [ ] Crear calculo de distancias
+    - [ ] Crear calculo de precios en funcion de las tres anteriores.
+    # Usuarios
+    - [ ] Crear usuarios.
+    - [ ] Crear roles.
+        - [ ] Usuario Base.
+        - [ ] Usuario Admin.
+        - [ ] Usuario Trabajador.
+    # Envios
+    - [ ] Crear envios.
+    - [ ] Crear estados de envios.
+    - [ ] Crear historial de envios.
+    # Trazabilidad
+    - [ ] Generar QR para cada Envio
+    - [ ] Escanear QR, guardar lugar, hora y trabajador que realiza el escaneo.
+
+# Investigacion
+    - [ ] Buscar API para calculo de distancias.
+    - [ ] Buscar formula para calcular precios de envios.
+    - [ ] Buscar como generar y escanear QR.
+    - [ ] Buscar manera de acceder a la camara desde el movil desde una web.
+    
+
+
+
