@@ -6,15 +6,15 @@
     - [ ] Diseñar base de datos.
     - [ ] Crear Docker compose.
     # Conexion y seguridad
-    - [ ] Conector base de datos.
+    - [X] Conector base de datos.
     - [ ] Seguridad WebToken.
     # API
     - [ ] Instalar y preparar SWAGGER para la API.
 
 # Codigo
     # Calculos Envios
-    - [ ] Crear tipos de envios.
-    - [ ] Crear taamos de envios.
+    - [X] Crear tipos de envios.
+    - [X] Crear tamaños de envios.
     - [ ] Crear calculo de distancias
     - [ ] Crear calculo de precios en funcion de las tres anteriores.
     # Usuarios
