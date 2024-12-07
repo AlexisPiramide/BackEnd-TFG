@@ -14,7 +14,7 @@
 # Codigo
     # Calculos Envios
     - [ ] Crear tipos de envios.
-    - [ ] Crear taamos de envios.
+    - [ ] Crear tamaños de envios.
     - [ ] Crear calculo de distancias
     - [ ] Crear calculo de precios en funcion de las tres anteriores.
     # Usuarios
