@@ -1,7 +1,6 @@
 #Codigo TODO BACKEND
 
 # General
-
     # Base de datos
     - [ ] Diseñar base de datos.
     - [ ] Crear Docker compose.
@@ -36,7 +35,26 @@
     - [ ] Buscar formula para calcular precios de envios.
     - [ ] Buscar como generar y escanear QR.
     - [ ] Buscar manera de acceder a la camara desde el movil desde una web.
-    
+    - [ ] Investigar uso y generacion de codigos de barras en caso de que el QR envie demasiada informacion y sea posible usar el codigo de barras para mayor optimizacion
 
+#Codigo TODO FRONT END
 
+# General
+    # Diseño
+    - [ ] Seleccionar Paleta Colores.
+    - [ ] Diseñar boceto basico html.
+    - [ ] Estructuramiento de la aplicacion en funcion del back end (React Router).
+# Codigo
+    # Conexion Front/Back
+    - [ ] Crear conexiones para cada endpoint de la API.
+    - [ ] Creacion componentes
+        # Usuarios (Por definir)
+        # Envios (Por definir)
+        # Trazabilidad(Por definir)
+        # (Mas por definir)
+    # Generacion Impresion pegatina Paquete
+    - [ ] Pagina html diseñada para ser imprimida con los datos del Back (QR o Codigo de barras, informacion basica ...)
 
+# Investigacion
+    - [ ] Forma de acceder a la camara del Telefono para escanear QR
+    - [ ] Transoformar la pagina web en una APP (En vez de usar el app desde un navegador en el movil)
