@@ -4,57 +4,57 @@
     # Base de datos
     - [ ] Diseñar base de datos.
     - [ ] Crear Docker compose.
-    # Conexion y seguridad
+    # Conexión y seguridad
     - [ ] Conector base de datos.
-    - [ ] Seguridad WebToken.
+    - [ ] Seguridad Web Token.
     # API
     - [ ] Instalar y preparar SWAGGER para la API.
 
-# Codigo
-    # Calculos Envios
-    - [ ] Crear tipos de envios.
-    - [ ] Crear tamaños de envios.
+# Código
+    # Cálculos Envíos
+    - [ ] Crear tipos de envíos.
+    - [ ] Crear tamaños de envíos.
     - [ ] Crear calculo de distancias
-    - [ ] Crear calculo de precios en funcion de las tres anteriores.
+    - [ ] Crear cálculo de precios en función de las tres anteriores.
     # Usuarios
     - [ ] Crear usuarios.
     - [ ] Crear roles.
         - [ ] Usuario Base.
         - [ ] Usuario Admin.
         - [ ] Usuario Trabajador.
-    # Envios
-    - [ ] Crear envios.
-    - [ ] Crear estados de envios.
-    - [ ] Crear historial de envios.
+    # Envíos
+    - [ ] Crear envíos.
+    - [ ] Crear estados de envíos.
+    - [ ] Crear historial de envíos.
     # Trazabilidad
-    - [ ] Generar QR para cada Envio
+    - [ ] Generar QR para cada Envío
     - [ ] Escanear QR, guardar lugar, hora y trabajador que realiza el escaneo.
 
-# Investigacion
-    - [ ] Buscar API para calculo de distancias.
-    - [ ] Buscar formula para calcular precios de envios.
-    - [ ] Buscar como generar y escanear QR.
-    - [ ] Buscar manera de acceder a la camara desde el movil desde una web.
-    - [ ] Investigar uso y generacion de codigos de barras en caso de que el QR envie demasiada informacion y sea posible usar el codigo de barras para mayor optimizacion
+# Investigación
+    - [ ] Buscar API para cálculo de distancias.
+    - [ ] Buscar fórmula para calcular precios de envíos.
+    - [ ] Buscar cómo generar y escanear QR.
+    - [ ] Buscar manera de acceder a la cámara desde el móvil desde una web.
+    - [ ] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
 
 #Codigo TODO FRONT END
 
 # General
     # Diseño
     - [ ] Seleccionar Paleta Colores.
-    - [ ] Diseñar boceto basico html.
-    - [ ] Estructuramiento de la aplicacion en funcion del back end (React Router).
-# Codigo
+    - [ ] Diseñar boceto básico html.
+    - [ ] Estructuramiento de la aplicación en función del backend (React Router).
+# Código
     # Conexion Front/Back
     - [ ] Crear conexiones para cada endpoint de la API.
-    - [ ] Creacion componentes
+    - [ ] Creación componentes
         # Usuarios (Por definir)
         # Envios (Por definir)
         # Trazabilidad(Por definir)
-        # (Mas por definir)
-    # Generacion Impresion pegatina Paquete
-    - [ ] Pagina html diseñada para ser imprimida con los datos del Back (QR o Codigo de barras, informacion basica ...)
+        # (Más por definir)
+    # Generación Impresión pegatina Paquete
+    - [ ] Página html diseñada para ser imprimida con los datos del Back (QR o Código de barras, información básica ...)
 
-# Investigacion
-    - [ ] Forma de acceder a la camara del Telefono para escanear QR
-    - [ ] Transoformar la pagina web en una APP (En vez de usar el app desde un navegador en el movil)
+# Investigación
+    - [ ] Forma de acceder a la cámara del Teléfono para escanear QR
+    - [ ] Transformar la página web en una APP (En vez de usar el app desde un navegador en el móvil)
