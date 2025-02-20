@@ -33,7 +33,8 @@
 # Investigación
     - [ ] Buscar API para cálculo de distancias.
     - [ ] Buscar fórmula para calcular precios de envíos.
-    - [ ] Buscar cómo generar y escanear QR.
+    ~~Buscar cómo generar y escanear QR.~~
+    - [X] Generar Codigos de barras con el id del paquete
     - [ ] Buscar manera de acceder a la cámara desde el móvil desde una web.
     - [ ] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
 
