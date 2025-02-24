@@ -9,7 +9,10 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "bwip-js": "^4.5.1"
+        "bwip-js": "^4.5.1",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "mongodb": "^6.13.1"
     },
     "devDependencies": {
         "@types/bwip-js": "^3.2.3"

@@ -1,9 +1,10 @@
 CREATE TABLE Dimensiones (
     id INT PRIMARY KEY,
-    largo DECIMAL(10, 2),
-    ancho DECIMAL(10, 2),
-    alto DECIMAL(10, 2),
-    peso DECIMAL(10, 2)
+    nombre VARCHAR(100) NOT NULL,
+    largo DECIMAL(10, 2) NOT NULL,
+    ancho DECIMAL(10, 2) NOT NULL,
+    alto DECIMAL(10, 2) NOT NULL,
+    peso DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE Direccion (
