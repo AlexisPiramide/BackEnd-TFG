@@ -37,7 +37,6 @@
     - [X] Generar Ids Diferenciados
         - [X] Usuario | XXXX-XXXX-XXXX.
         - [X] Envio | xxxxxxxxxxxxxxxx.
-        - [ ] Usuario Trabajador.
     - [X] Generar Codigos de barras con el id del paquete
     - [ ] Buscar manera de acceder a la cámara desde el móvil desde una web.
     - [ ] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
