@@ -1,0 +1,47 @@
+CREATE TABLE Dimensiones (
+    id INT PRIMARY KEY,
+    largo DECIMAL(10, 2),
+    ancho DECIMAL(10, 2),
+    alto DECIMAL(10, 2),
+    peso DECIMAL(10, 2)
+);
+
+CREATE TABLE Direccion (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    direccion VARCHAR(255),
+    codigo_postal VARCHAR(10)
+);
+
+CREATE TABLE Usuario (
+    id INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+CREATE TABLE Remitente (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_direccion INT,
+    id_usuario INT,
+    FOREIGN KEY (id_direccion) REFERENCES Direccion(id),
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
+);
+
+
+CREATE TABLE Paquete (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_dimension INT,
+    id_remitente INT,
+    otros_datos VARCHAR(255),
+    FOREIGN KEY (id_dimension) REFERENCES Dimensiones(id),
+    FOREIGN KEY (id_remitente) REFERENCES Remitente(id)
+);
+
+
+CREATE TABLE Envio (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_paquete INT,
+    id_direccion INT,
+    FOREIGN KEY (id_paquete) REFERENCES Paquete(id),
+    FOREIGN KEY (id_direccion) REFERENCES Direccion(id)
+);
