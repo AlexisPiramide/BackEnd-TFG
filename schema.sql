@@ -13,7 +13,8 @@ CREATE TABLE Direccion (
 );
 
 CREATE TABLE Usuario (
-    id INT PRIMARY KEY,
+    id VARCHAR(15),
+    CONSTRAINT formato_id CHECK (id ~ '^\d{4}-\d{4}-\d{4}$')
     nombre VARCHAR(100),
     email VARCHAR(100),
     telefono VARCHAR(20)
