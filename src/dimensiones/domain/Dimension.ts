@@ -1,5 +1,5 @@
 export default interface Dimension {
-    id: Number;
+    id: string;
     nombre: string;
     ancho: number;
     alto: number;

@@ -12,7 +12,7 @@ export default class DimensionesRepositoryMongo implements DimensionesRepository
 
         result.forEach((dimension) => {
             dimensiones.push({
-                id: dimension.id,
+                id: dimension._id.toString(),
                 nombre: dimension.nombre,
                 ancho: dimension.ancho,
                 alto: dimension.alto,

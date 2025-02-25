@@ -7,5 +7,4 @@ export default class DimensionesUsecases {
     async getDimensiones() {
         return await this.dimensionesRepository.getDimensiones();
     }
-    
 }
