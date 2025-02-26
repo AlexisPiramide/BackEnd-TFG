@@ -5,23 +5,24 @@ import DimensionesRepository from "../../domain/dimensiones.repository";
 export default class DimensionesRepositoryMongo implements DimensionesRepository {
     
     async getDimensiones(): Promise<Dimension[]> {
-        
-        const dimensiones: Dimension[] = [];
-
-        const result = await collections.dimensiones.find().toArray();
-
-        result.forEach((dimension) => {
-            dimensiones.push({
+        try {
+            const result = await collections.dimensiones.find().toArray();
+            
+            if (!result) {throw new Error("Dimensiones not found");}
+            console.log(result);
+            
+            return result.map((dimension) => ({
                 id: dimension._id.toString(),
                 nombre: dimension.nombre,
                 ancho: dimension.ancho,
                 alto: dimension.alto,
                 largo: dimension.largo,
                 peso: dimension.peso
-            });
-        });
-
-        return dimensiones;
+            }));
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error al conectar a la base de datos");
+        }
     }
 	
 }

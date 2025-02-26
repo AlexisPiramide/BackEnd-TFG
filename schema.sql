@@ -29,7 +29,12 @@ CREATE TABLE Paquete (
     FOREIGN KEY (id_remitente) REFERENCES Remitente(id)
 );
 
-
+/*
+CREATE TABLE paquetes (
+    id VARCHAR(24) PRIMARY KEY,
+    id_dimension VARCHAR(24) NOT NULL,  -- Ahora almacena el ObjectId de MongoDB
+);
+*/
 
 CREATE TABLE Envio (
     id INT PRIMARY KEY AUTO_INCREMENT,

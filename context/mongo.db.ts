@@ -18,11 +18,7 @@ async function createMongoConnection() {
 }
 
 const addCollections = (db: Db) => {
-  collections.usuarios = db.collection("usuarios");
-  collections.cafes = db.collection("cafes");
-  collections.notas = db.collection("notas");
-  collections.pedidos = db.collection("pedidos");
-  collections.usuarios.createIndex({ correo: 1 }, { unique: true });
+  collections.dimensiones = db.collection("dimensiones");
 };
 
 export default createMongoConnection;

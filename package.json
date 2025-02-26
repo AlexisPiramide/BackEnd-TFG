@@ -4,17 +4,22 @@
     "description": "",
     "main": "index.ts",
     "scripts": {
-        "dev": "nodemon index.ts"
+        "dev": "nodemon ./src/index.ts"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "bwip-js": "^4.5.1",
+        "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "mongodb": "^6.13.1"
+        "mongodb": "^6.13.1",
+        "pg": "^8.13.3"
     },
     "devDependencies": {
-        "@types/bwip-js": "^3.2.3"
+        "@types/bwip-js": "^3.2.3",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^5.0.0",
+        "@types/pg": "^8.11.11"
     }
 }
