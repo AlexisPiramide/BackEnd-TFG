@@ -13,20 +13,15 @@ const paquetesusecases = new PaquetesUsecases(paquetesrepository);
 router.post('/', async (req: Request, res: Response) => {
     try {
         const dimensiones: Dimension = {
-            
             id: req.body._id.$oid.toString(),
-            nombre: req.body.nombre,
-            ancho: req.body.ancho,
-            alto: req.body.alto,
-            largo: req.body.largo,
-            peso: req.body.peso
+            nombre: req.body.nombre
         }
         const paquete = {dimensiones: dimensiones}
 
         const pedidos = await paquetesusecases.postPaquete(paquete);
-        res.status(200).json(pedidos);
+        res.status(201).json(pedidos);
     } catch (error) {
-        res.status(500).json("Ha ocurrido un error");
+        res.status(error.estatus).json(error.message);
     }
 });
 

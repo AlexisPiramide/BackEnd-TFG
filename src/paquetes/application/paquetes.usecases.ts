@@ -7,16 +7,11 @@ export default class PaquetesUsecases{
     constructor(private paqueteRepository: PaqueteRepository) {}
 
     async postPaquete(paquete: Paquete): Promise<Paquete> {
-
-        while(true){
+        let result = true;
+        while(result){
             const idGenerado = await generarID16AN(); 
-            try{
-                await this.paqueteRepository.getPaquete(idGenerado);
-            }catch(error){
-                paquete.id = idGenerado;
-                break;
-            }
-           
+            paquete.id = idGenerado;
+            result = await this.paqueteRepository.comporbarID(idGenerado);
         }
 
         return await this.paqueteRepository.postPaquete(paquete);

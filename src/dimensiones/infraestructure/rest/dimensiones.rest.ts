@@ -11,12 +11,10 @@ const dimensionesusecases = new dimensionesUsecases(dimensionesrepository);
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        console.log("GET /api/dimensiones");
         const dimensiones = await dimensionesusecases.getDimensiones();
         res.status(200).json(dimensiones);
     } catch (error) {
-        console.log(error);
-        res.status(500).json("Ha ocurrido un error");
+        res.status(error.estatus).json(error.message);
     }
 });
 

@@ -2,9 +2,10 @@
     "name": "red-social",
     "version": "1.0.0",
     "description": "",
-    "main": "index.ts",
+    "main": "./src/index.ts",
     "scripts": {
-        "dev": "nodemon ./src/index.ts"
+        "dev": "nodemon ./src/index.ts",
+        "test": "NODE_ENV=test jest --runInBand"
     },
     "author": "",
     "license": "ISC",
@@ -13,13 +14,17 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
+        "jest": "^29.7.0",
         "mongodb": "^6.13.1",
-        "pg": "^8.13.3"
+        "pg": "^8.13.3",
+        "supertest": "^7.0.0",
+        "ts-jest": "^29.2.6"
     },
     "devDependencies": {
         "@types/bwip-js": "^3.2.3",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
+        "@types/jest": "^29.5.14",
         "@types/pg": "^8.11.11"
     }
 }

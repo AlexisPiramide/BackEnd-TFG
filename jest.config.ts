@@ -1,0 +1,9 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
+    testEnvironment: "node",
+    transform: {
+      "^.+\\.tsx?$": ["ts-jest", {}],
+    },
+    setupFiles: ["./jest.setup.ts"], // Add the setup file here
+  };
+  
