@@ -2,18 +2,20 @@
 
 # General
     # Base de datos
-    - [ ] Diseñar base de datos.
-    - [ ] Crear Docker compose.
+    - [X] Diseñar base de datos.
+    - [X] Crear Docker compose.
     # Conexión y seguridad
-    - [ ] Conector base de datos.
-    - [ ] Seguridad Web Token.
+    - [X] Conector base de datos.
+    - [X] Seguridad Web Token.
     # API
     - [ ] Instalar y preparar SWAGGER para la API.
+    # TEST
+    - [X] Instalar y preparar test.
 
 # Código
     # Cálculos Envíos
     - [ ] Crear tipos de envíos.
-    - [ ] Crear tamaños de envíos.
+    - [X] Crear tamaños de envíos.
     - [ ] Crear calculo de distancias
     - [ ] Crear cálculo de precios en función de las tres anteriores.
     # Usuarios
@@ -29,7 +31,12 @@
     # Trazabilidad
     - [ ] Generar QR para cada Envío
     - [ ] Escanear QR, guardar lugar, hora y trabajador que realiza el escaneo.
-
+    # Tests
+    - [ ] Realizar Tests:
+        - [X] Dimensiones.
+        - [ ] Paquetes.
+        - [ ] Usuarios.
+        ....
 # Investigación
     - [ ] Buscar API para cálculo de distancias.
     - [ ] Buscar fórmula para calcular precios de envíos.

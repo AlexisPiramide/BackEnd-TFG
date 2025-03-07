@@ -50,7 +50,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
         const query = `SELECT id FROM paquetes WHERE id = '${id}'`
         try {
             const result : any[] = await executeQuery(query)
-            return (result.length === 0)? true: false        
+            return (result.length === 0)? false: true        
         } catch{
             throw new ErrorPersonalizado('La conexion a la base de datos no ha funcionado',500)
         }

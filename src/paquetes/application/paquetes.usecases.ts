@@ -13,7 +13,7 @@ export default class PaquetesUsecases{
             paquete.id = idGenerado;
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
-
+        console.log("Si")
         return await this.paqueteRepository.postPaquete(paquete);
     }
 }
