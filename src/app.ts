@@ -4,6 +4,7 @@ import cors from "cors";
 
 import PaquetesRest from "./paquetes/infraestructure/rest/paquetes.rest"
 import DimensionesRest from "./dimensiones/infraestructure/rest/dimensiones.rest"
+import UsuariosRest from "./usuarios/infraestructure/rest/usuarios.rest"
 
 import createMongoConnection from "../context/mongo.db";
 createMongoConnection()
@@ -23,6 +24,7 @@ app.use(cors(options));
 
 app.use(`/api/dimensiones`, DimensionesRest);
 app.use(`/paquetes`, PaquetesRest);
+app.use(`/usuarios`, UsuariosRest);
 
 
 export default app;
