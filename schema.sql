@@ -1,8 +1,13 @@
 CREATE TABLE Direccion (
     id SERIAL PRIMARY KEY,
-    direccion VARCHAR(255),
-    codigo_postal VARCHAR(10)
+    calle VARCHAR(255),
+    numero VARCHAR(15),   
+    codigo_postal VARCHAR(10),
+    localidad VARCHAR(100), 
+    provincia VARCHAR(100), 
+    pais VARCHAR(100),
 );
+
 
 CREATE TABLE Sucursal (
     id VARCHAR(15) PRIMARY KEY,
@@ -20,6 +25,15 @@ CREATE TABLE Usuario (
     telefono VARCHAR(15),
     CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$')
 );
+
+CREATE TABLE Usuario_Direccion (
+    usuario_id VARCHAR(15),
+    direccion_id INT,
+    PRIMARY KEY (usuario_id, direccion_id),
+    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES Usuario(id) ON DELETE CASCADE,
+    CONSTRAINT fk_direccion FOREIGN KEY (direccion_id) REFERENCES Direccion(id) ON DELETE CASCADE
+);
+
 
 CREATE TABLE Trabajador (
     id VARCHAR(15) PRIMARY KEY,
