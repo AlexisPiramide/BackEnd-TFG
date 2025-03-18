@@ -38,5 +38,12 @@ export default class usuariosUsecases{
         return await this.usuariosRepository.registro(usuario);
     }
     
+    async getUsuario(id: string): Promise<Usuario> {
+        if (!id) {
+            throw new ErrorPersonalizado("Faltan datos", 400);
+        }
+    
+        return await this.usuariosRepository.getUsuario(id);
+    }
 
 }

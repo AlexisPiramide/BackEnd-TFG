@@ -5,8 +5,8 @@ import Direccion from "../domain/Direccion"; // Assuming Direccion is defined in
 export default class DireccionesUseCases {
     constructor(private direccionesRepository: DireccionesRepository){}
 
-    async getDireccionesUsuario(usuario: Usuario) {
-        return await this.direccionesRepository.getDireccionesUsuario(usuario);
+    async getDireccionesUsuario(id: string) {
+        return await this.direccionesRepository.getDireccionesUsuario(id);
     }
         async getDireccionById(id: number): Promise<Direccion> {
             return await this.direccionesRepository.getDireccionById(id);

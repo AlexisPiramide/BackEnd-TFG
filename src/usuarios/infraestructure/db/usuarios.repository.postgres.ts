@@ -78,4 +78,25 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
         }
         return true;
     }
+
+    async getUsuario(id: string): Promise<Usuario> {
+        const queryGetUsuario = 'SELECT * FROM Usuario WHERE id = $1';
+        const values = [id];
+        const result: any = await executeQuery(queryGetUsuario, values);
+
+        if(result.length === 0){
+            throw new ErrorPersonalizado("Usuario no encontrado", 404);
+        }
+
+        const usuarioDB: Usuario = {
+            id: result[0].id,
+            nombre: result[0].nombre,
+            apellidos: result[0].apellidos,
+            correo: result[0].correo,
+            contraseña: result[0].password,
+            telefono: result[0].telefono,
+        };
+
+        return usuarioDB;
+    }
 }

@@ -5,10 +5,10 @@ import direccionesRepository from "../../domain/direcciones.repository";
 
 export default class DireccionesRepositoryPostgres implements direccionesRepository {
     
-    async getDireccionesUsuario(usuario: Usuario): Promise<Direccion[]> {
+    async getDireccionesUsuario(id: string): Promise<Direccion[]> {
         const query = `SELECT * FROM Direccion WHERE idUsuario = ?}`;
 
-        const response = await executeQuery(query, [usuario.id]);
+        const response = await executeQuery(query, [id]);
 
         const direcciones: Direccion[] = response.map((direccion: any) => {
             return {
@@ -108,6 +108,8 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
 
         return direccion;
     }
+
+    
     async eliminarDireccion(id: number): Promise<Direccion> {
         throw new Error("Method not implemented.");
     }

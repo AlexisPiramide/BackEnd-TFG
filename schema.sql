@@ -27,11 +27,11 @@ CREATE TABLE Usuario (
 );
 
 CREATE TABLE Usuario_Direccion (
-    usuario_id VARCHAR(15),
-    direccion_id INT,
-    PRIMARY KEY (usuario_id, direccion_id),
-    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES Usuario(id) ON DELETE CASCADE,
-    CONSTRAINT fk_direccion FOREIGN KEY (direccion_id) REFERENCES Direccion(id) ON DELETE CASCADE
+    usuario VARCHAR(15) PRIMARY KEY,
+    direccion INT PRIMARY KEY,
+    PRIMARY KEY (usuario, direccion),
+    CONSTRAINT fk_usuario FOREIGN KEY (usuario) REFERENCES Usuario(id) ON DELETE CASCADE,
+    CONSTRAINT fk_direccion FOREIGN KEY (direcdireccioncion_id) REFERENCES Direccion(id) ON DELETE CASCADE
 );
 
 
@@ -48,26 +48,25 @@ CREATE TABLE Trabajador (
     FOREIGN KEY (sucursal) REFERENCES Sucursal(id)
 );
 
-CREATE TABLE Remitente (
-    id SERIAL PRIMARY KEY,
-    id_direccion INT,
-    id_usuario VARCHAR(15),
-    FOREIGN KEY (id_direccion) REFERENCES Direccion(id),
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id)
-);
 
 CREATE TABLE Paquete (
-    id SERIAL PRIMARY KEY,
-    id_dimension VARCHAR(24),  -- Now stores MongoDB ObjectId
-    id_remitente INT,
-    otros_datos VARCHAR(255),
-    FOREIGN KEY (id_remitente) REFERENCES Remitente(id)
+    id VARCHAR(15) PRIMARY KEY,
+    id_dimension VARCHAR(24),
+    remitente VARCHAR(15) PRIMARY KEY,
+    direccion_remitente INT,
+    destinatario VARCHAR(15) PRIMARY KEY,
+    direccion_destinatario INT,
+    peso FLOAT,
+    FOREIGN KEY (remitente) REFERENCES Usuario(id)
+    FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(usuario)
+    FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(direccion)
+    FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(direccion)
+    CONSTRAINT formato_id_dimension CHECK (id_dimension ~* '^[A-Za-z0-9]{24}$')
 );
 
 CREATE TABLE Envio (
     id SERIAL PRIMARY KEY,
-    id_paquete INT,
-    id_direccion INT,
-    FOREIGN KEY (id_paquete) REFERENCES Paquete(id),
-    FOREIGN KEY (id_direccion) REFERENCES Direccion(id)
+    paquete INT,
+    estado VARCHAR(50),
+    FOREIGN KEY (paquete) REFERENCES Paquete(id),
 );

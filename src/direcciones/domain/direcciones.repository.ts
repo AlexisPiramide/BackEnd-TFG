@@ -3,7 +3,7 @@ import Direccion from "./Direccion";
 
 export default interface direccionesRepository {
 
-    getDireccionesUsuario(usuario: Usuario): Promise<Direccion[]>;
+    getDireccionesUsuario(id: string): Promise<Direccion[]>;
     getDireccionById(id: number): Promise<Direccion>;
     nuevaDireccion(direccion: Direccion): Promise<Direccion>;
     nuevaDireccionUsuario(usuario:Usuario,direccion: Direccion): Promise<Direccion>;
