@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-
+import generateBarcode from "./../../../../barcode";
 import Dimension from "../../../dimensiones/domain/Dimension";
 import PaqueteRepository from "../../domain/paquetes.repository";
 import PaquetesUsecases from "../../application/paquetes.usecases";
@@ -41,5 +41,28 @@ router.post('/', async (req: Request, res: Response) => {
         res.status(error.estatus).json(error.message);
     }
 });
+
+
+router.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const paquete = await paquetesusecases.getPaquete(req.params.id);
+        res.status(200).json(paquete);
+    }
+    catch (error) {
+        res.status(error.estatus).json(error.message);
+    }
+});
+
+
+router.get('/gencode/:id', async (req: Request, res: Response) => {
+    try {
+        const paquete = await generateBarcode(req.params.id);
+        res.status(200).json(paquete);
+    }
+    catch (error) {
+        res.status(error.estatus).json(error.message);
+    }
+});
+
 
 export default router;
