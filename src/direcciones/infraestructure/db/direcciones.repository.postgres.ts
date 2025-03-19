@@ -6,35 +6,38 @@ import direccionesRepository from "../../domain/direcciones.repository";
 export default class DireccionesRepositoryPostgres implements direccionesRepository {
     
     async getDireccionesUsuario(id: string): Promise<Direccion[]> {
-        const query = `SELECT * FROM Direccion WHERE idUsuario = ?}`;
-
+        const query = `
+            SELECT d.id, d.calle, d.numero, d.codigo_postal AS "codigoPostal", 
+                   d.localidad, d.provincia, d.pais
+            FROM usuario_direccion ud
+            JOIN direccion d ON ud.direccion = d.id
+            WHERE ud.usuario = $1
+        `;
+    
         const response = await executeQuery(query, [id]);
-
-        const direcciones: Direccion[] = response.map((direccion: any) => {
-            return {
-                id: direccion.id,
-                calle: direccion.calle,
-                numero: direccion.numero,
-                codigoPostal: direccion.codigoPostal,
-                localidad: direccion.localidad,
-                provincia: direccion.provincia,
-                pais: direccion.pais
-            }
-        });
-
-        return direcciones;
+    
+        return response.map((direccion: any) => ({
+            id: direccion.id,
+            calle: direccion.calle,
+            numero: direccion.numero,
+            codigoPostal: direccion.codigoPostal,
+            localidad: direccion.localidad,
+            provincia: direccion.provincia,
+            pais: direccion.pais
+        }));
     }
+    
 
-    async nuevaDireccionUsuario(usuario: Usuario, direccion: Direccion): Promise<Direccion> {
+    async nuevaDireccionUsuario(usuario: string, direccion: Direccion): Promise<Direccion> {
         const result = await this.nuevaDireccion(direccion);
         const direccionId = result.id;
 
         const usuarioDireccionQuery = `
-            INSERT INTO Usuario_Direccion (usuario_id, direccion_id)
+            INSERT INTO usuario_direccion (usuario, direccion)
             VALUES ($1, $2)
         `;
 
-        await executeQuery(usuarioDireccionQuery, [usuario.id, direccionId]);
+        await executeQuery(usuarioDireccionQuery, [usuario, direccionId]);
 
         return {
             ...direccion,
@@ -43,9 +46,9 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
     }
 
     async getDireccionById(id: number): Promise<Direccion> {
-        const query = `SELECT * FROM Direccion WHERE id = ?`;
+        const query = `SELECT * FROM direccion WHERE id = $1`;
 
-        const response:any = await executeQuery(query, [id]);
+        const response: any[] = await executeQuery(query, [id]);
 
         if (response.length === 0) {
             throw new Error("Direccion no encontrada");

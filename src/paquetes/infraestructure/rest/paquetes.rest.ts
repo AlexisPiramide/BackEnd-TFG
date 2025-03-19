@@ -14,8 +14,9 @@ const paquetesusecases = new PaquetesUsecases(paquetesrepository);
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        
+
         const direccion_destinatario: Direccion = {
+            id:undefined,
             calle: req.body.direccion.calle,
             numero: req.body.direccion.numero,
             codigoPostal: req.body.direccion.codigoPostal,
@@ -23,6 +24,7 @@ router.post('/', async (req: Request, res: Response) => {
             provincia: req.body.direccion.provincia,
             pais: req.body.direccion.pais,
         };
+        
 
         const paquetebody : Paquete = {
             dimensiones:  req.body.dimensiones,
@@ -33,8 +35,8 @@ router.post('/', async (req: Request, res: Response) => {
             peso: req.body.peso
         }
 
-        const pedidos = await paquetesusecases.postPaquete(paquetebody);
-        res.status(201).json(pedidos);
+        const paquete = await paquetesusecases.postPaquete(paquetebody);
+        res.status(201).json(paquete);
     } catch (error) {
         res.status(error.estatus).json(error.message);
     }

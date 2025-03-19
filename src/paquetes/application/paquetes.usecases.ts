@@ -28,18 +28,21 @@ export default class PaquetesUsecases{
             paquete.id = idGenerado;
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
+
+        let direccion
         if(typeof paquete.direccion_destinatario != 'number') {
-            const direccion = await direccionesusecases.nuevaDireccion(paquete.direccion_destinatario);
+            direccion = await direccionesusecases.nuevaDireccion(paquete.direccion_destinatario);
             paquete.direccion_destinatario = direccion.id;
         }
 
         const paquetedb = await this.paqueteRepository.postPaquete(paquete);
 
+        paquetedb.direccion_destinatario = direccion;
+
         if(typeof paquete.remitente === 'string') {
             const datos = await usuariousecases.getUsuario(paquete.remitente);
             paquetedb.remitente = datos;
         }
-        
         if(typeof paquete.direccion_remitente === 'number') {
             const direccion = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
             paquetedb.direccion_remitente = direccion;

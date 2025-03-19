@@ -22,7 +22,16 @@ router.post('/login', async (req: Request, res: Response): Promise<any> => {
         const usuariodb: Usuario = await usuariosUsecases.login(usuario);
 
         const token = createToken(usuariodb);
-        res.status(200).json(token);
+        res.status(200).json({
+            usuario: {
+                id: usuariodb.id,   
+                nombre: usuariodb.nombre,
+                apellidos: usuariodb.apellidos,
+                correo: usuariodb.correo,
+                telefono: usuariodb.telefono
+            },
+            token: token
+        });
     } catch (error) {
         console.log(error);
         res.status(error.estatus).json(error.message);
@@ -44,7 +53,16 @@ router.post('/registro', async (req: Request, res: Response): Promise<any> => {
         if (usuariodb === null) return res.status(404).json({ mensaje: "Usuario no encontrado" });
         
         const token = createToken(usuariodb);
-        res.status(201).json(token);
+        res.status(201).json({
+            usuario: {
+                id: usuariodb.id,   
+                nombre: usuariodb.nombre,
+                apellidos: usuariodb.apellidos,
+                correo: usuariodb.correo,
+                telefono: usuariodb.telefono
+            },
+            token: token
+        });
     } catch (error) {
         console.log(error);
         res.status(error.estatus).json(error.message);

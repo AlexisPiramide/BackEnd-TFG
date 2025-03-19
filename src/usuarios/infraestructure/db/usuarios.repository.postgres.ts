@@ -93,7 +93,6 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
             nombre: result[0].nombre,
             apellidos: result[0].apellidos,
             correo: result[0].correo,
-            contraseña: result[0].password,
             telefono: result[0].telefono,
         };
 
