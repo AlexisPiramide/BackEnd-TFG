@@ -14,6 +14,7 @@ const usuariosUsecases = new UsuariosUsecases(usuariosRepository);
 
 router.post('/login', async (req: Request, res: Response): Promise<any> => {
     try {
+
         const usuario : Usuario = {
             correo: req.body.correo,
             contraseña: req.body.contraseña
