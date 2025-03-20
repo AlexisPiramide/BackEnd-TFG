@@ -1,12 +1,11 @@
 import bwipjs from "bwip-js";
 
-export default async function generateBarcode(id: string): Promise<File> {
+export default async function generateBarcode(id: string): Promise<Buffer> {
     try {
-        if(!id) throw new Error("ID is required");
-        const options = {bcid: "code128", text: id, scale: 3, height: 10, includetext: false};
+        if (!id) throw new Error("ID is required");
+        const options = { bcid: "code128", text: id, scale: 3, height: 10, includetext: false };
         const pngBuffer = await bwipjs.toBuffer(options);
-        const file = new File([pngBuffer], `${id}.png`, { type: 'image/png' });
-        return file;
+        return pngBuffer; // Return the buffer directly
     } catch (error) {
         throw new Error("Error generating barcode: " + error);
     }

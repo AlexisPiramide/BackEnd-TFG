@@ -53,7 +53,7 @@ export default class PaquetesUsecases{
 
     async getPaquete(id: string): Promise<Paquete> {
         const paquete = await this.paqueteRepository.getPaquete(id);
-
+        console.log(paquete);
         if (typeof paquete.remitente === 'string') {
             const datos = await usuariousecases.getUsuario(paquete.remitente);
             paquete.remitente = datos;

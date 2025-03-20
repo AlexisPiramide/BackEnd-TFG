@@ -53,16 +53,17 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
-
 router.get('/gencode/:id', async (req: Request, res: Response) => {
     try {
-        const paquete = await generateBarcode(req.params.id);
-        res.status(200).json(paquete);
-    }
-    catch (error) {
-        res.status(error.estatus).json(error.message);
+        const pngBuffer = await generateBarcode(req.params.id); // Get the buffer
+
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Content-Disposition', `attachment; filename="${req.params.id}.png"`);
+
+        res.send(pngBuffer); // Send the buffer directly
+    } catch (error) {
+        res.status(error.estatus || 500).json({ error: error.message });
     }
 });
-
 
 export default router;

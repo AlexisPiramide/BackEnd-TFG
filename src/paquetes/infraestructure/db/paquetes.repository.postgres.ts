@@ -46,12 +46,12 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
 
     async getPaquete(id: string): Promise<Paquete> {
 
-        const query = `SELECT id FROM paquete WHERE id = '${id}'`
+        const query = `SELECT * FROM paquete WHERE id = '${id}'`
         try{
             const result : any[] = await executeQuery(query)
 
             if(result.length === 0) {throw new ErrorPersonalizado('Error al buscar paquete',400)}
-    
+
             const pedidodb : Paquete = {
                 id: result[0].id,
                 dimensiones: result[0].id_dimension,
