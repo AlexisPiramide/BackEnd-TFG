@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import generateBarcode from "./../../../../barcode";
-import Dimension from "../../../dimensiones/domain/Dimension";
 import PaqueteRepository from "../../domain/paquetes.repository";
 import PaquetesUsecases from "../../application/paquetes.usecases";
 import PaqueteRepositoryPostgres from "../db/paquetes.repository.postgres";
