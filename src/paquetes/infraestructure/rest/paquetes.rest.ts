@@ -65,4 +65,14 @@ router.get('/gencode/:id', async (req: Request, res: Response) => {
     }
 });
 
+router.get("/precio/:tamaño/:peso", async (req: Request, res: Response) => {
+    try {
+        const precio = await paquetesusecases.calcularPrecio(req.params.tamaño, Number (req.params.peso));
+        res.status(200).json(precio);
+    }
+    catch (error) {
+        res.status(error.estatus).json(error.message);
+    }
+});
+
 export default router;

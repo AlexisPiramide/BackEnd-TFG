@@ -10,4 +10,6 @@ export default interface Paquete {
     destinatario: string;
     direccion_destinatario: Direccion | number;
     peso: number;
+    precio?: number;
+    fecha?: Date;
 }

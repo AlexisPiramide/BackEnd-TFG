@@ -5,4 +5,7 @@ export default interface PaqueteRepository {
     postPaquete(paquete: Paquete): Promise<Paquete>;
 
     comporbarID(id:string): Promise<boolean>;
+
+    calcularPrecio(paquete: Paquete): Promise<number>;
+    calcularPrecio(tamaño: string, peso: number): Promise<number>;
 }

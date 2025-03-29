@@ -3,8 +3,6 @@ import Usuario from "../../usuarios/domain/Usuario";
 import Envio from "./Envio";
 
 export default interface envioRepository{
-    getEnvio(id: number): Promise<Envio>;
-    postEnvio(paquete: string, usuario:string): Promise<Envio>;
-    
     tracking(id:number, usuario:Usuario): Promise<Envio>;
 }
+

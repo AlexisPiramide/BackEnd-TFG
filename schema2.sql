@@ -28,15 +28,17 @@ CREATE TABLE Usuario_Direccion (
 );
 
 CREATE TABLE Paquete (
-    id VARCHAR(24) PRIMARY KEY,
+    id VARCHAR(15) PRIMARY KEY,
     id_dimension VARCHAR(24),
-    peso FLOAT,
-    remitente VARCHAR(15),
+    remitente VARCHAR(15) PRIMARY KEY,
     direccion_remitente INT,
-    destinatario VARCHAR(15),
+    destinatario VARCHAR(15) PRIMARY KEY,
     direccion_destinatario INT,
-    FOREIGN KEY (remitente) REFERENCES Usuario(id),
-    FOREIGN KEY (direccion_remitente) REFERENCES Direccion(id),
-    FOREIGN KEY (direccion_destinatario) REFERENCES Direccion(id),
+    peso FLOAT,
+    precio FLOAT,
+    FOREIGN KEY (remitente) REFERENCES Usuario(id)
+    FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(usuario)
+    FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(direccion)
+    FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(direccion)
     CONSTRAINT formato_id_dimension CHECK (id_dimension ~* '^[A-Za-z0-9]{24}$')
 );

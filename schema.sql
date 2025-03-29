@@ -8,7 +8,6 @@ CREATE TABLE Direccion (
     pais VARCHAR(100),
 );
 
-
 CREATE TABLE Sucursal (
     id VARCHAR(15) PRIMARY KEY,
     nombre VARCHAR(100),
@@ -57,6 +56,9 @@ CREATE TABLE Paquete (
     destinatario VARCHAR(15) PRIMARY KEY,
     direccion_destinatario INT,
     peso FLOAT,
+    precio FLOAT,
+    estado VARCHAR(50),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (remitente) REFERENCES Usuario(id)
     FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(usuario)
     FOREIGN KEY (direccion_remitente) REFERENCES Usuario_Direccion(direccion)
@@ -67,6 +69,7 @@ CREATE TABLE Paquete (
 CREATE TABLE Envio (
     id SERIAL PRIMARY KEY,
     paquete INT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado VARCHAR(50),
     FOREIGN KEY (paquete) REFERENCES Paquete(id),
 );
