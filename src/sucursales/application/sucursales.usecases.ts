@@ -12,17 +12,11 @@ export default class SucursalesUseCases {
    
     constructor(private sucursalesrepository: sucuralesRepository) {}
        
-    async crearTrabajador(trabajador: Usuario): Promise<Usuario> {
-        const email = await createMail(trabajador);
-        trabajador.correo = email;
-        return await usuariosUsecases.registro(trabajador);
+    async getSucursal(sucursal: string) {
+        return await this.sucursalesrepository.getSucursal(sucursal);
     }
 
-    async vincularTrabajador(sucursal: string, trabajador: Usuario): Promise<Boolean> {
-        return await this.sucursalesrepository.vincularTrabajador(sucursal, trabajador);
-    }
-
-    async desvincularTrabajador(sucursal: string, trabajador: Usuario): Promise<Boolean> {
-        return await this.sucursalesrepository.desvincularTrabajador(sucursal, trabajador);
+    async getSucursales() {
+        return await this.sucursalesrepository.getSucursales();
     }
 }

@@ -1,9 +1,11 @@
+import { ObjectId } from "mongodb";
 import Paquete from "../../paquetes/domain/Paquete";
+import Usuario from "../../usuarios/domain/Usuario";
 
 export default interface Envio {
-    id: number;
+    id?: ObjectId;
     paquete: Paquete;
-    coste: number;
-    fechaCreaccion: Date;
+    trabajador : Usuario;
+    fecha: Date;
     estado: string;
 }
