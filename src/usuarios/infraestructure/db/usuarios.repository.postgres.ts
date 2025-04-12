@@ -38,6 +38,7 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
             const resultSucursal: any = await executeQuery(querySucursal, valuesSucursal);
             usuarioDB.sucursal = {
                 id: sucursal,
+                telefono: resultSucursal[0].telefono,
                 nombre: resultSucursal[0].nombre,
                 direccion: resultSucursal[0].direccion,
             };

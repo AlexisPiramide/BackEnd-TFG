@@ -8,16 +8,16 @@
     - [X] Conector base de datos.
     - [X] Seguridad Web Token.
     # API
-    - [ ] Instalar y preparar SWAGGER para la API.
+    - [X] Instalar y preparar SWAGGER para la API.
     # TEST
     - [X] Instalar y preparar test.
 
 # Código
     # Cálculos Envíos
-    - [ ] Crear tipos de envíos.
+    - [X] Crear tipos de envíos.
     - [X] Crear tamaños de envíos.
     - [ ] Crear calculo de distancias
-    - [ ] Crear cálculo de precios en función de las tres anteriores.
+    - [X] Crear cálculo de precios en función de las tres anteriores.
     # Usuarios
     - [ ] Crear usuarios.
     - [ ] Crear roles.
@@ -29,8 +29,8 @@
     - [ ] Crear estados de envíos.
     - [ ] Crear historial de envíos.
     # Trazabilidad
-    - [ ] Generar Barras para cada Envío
-    - [ ] Escanear Barras, guardar lugar, hora y trabajador que realiza el escaneo.
+    - [X] Generar Barras para cada Envío
+    - [X] Escanear Barras, guardar lugar, hora y trabajador que realiza el escaneo.
     # Tests
     - [ ] Realizar Tests:
         - [X] Dimensiones.
@@ -39,15 +39,15 @@
         ....
 # Investigación
     - [ ] Buscar API para cálculo de distancias.
-    - [ ] Buscar fórmula para calcular precios de envíos.
+    - [X] Buscar fórmula para calcular precios de envíos.
     ~~Buscar cómo generar y escanear QR.~~
     - [X] Generar Ids Diferenciados
         - [X] Usuario | XXXX-XXXX-XXXX.
         - [X] Envio | xxxxxxxxxxxxxxxx.
     - [X] Generar Codigos de barras con el id del paquete
-    - [ ] Buscar manera de acceder a la cámara desde el móvil desde una web.
-    - [ ] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
-
+    - [X] Buscar manera de acceder a la cámara desde el móvil desde una web.
+    - [X] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
+    - [ ] Enviar correos con contraseñas de activacion y nuevas contraseñas
 #Codigo TODO FRONT END
 
 # General
@@ -64,7 +64,7 @@
         # Trazabilidad(Por definir)
         # (Más por definir)
     # Generación Impresión pegatina Paquete
-    - [ ] Página html diseñada para ser imprimida con los datos del Back (QR o Código de barras, información básica ...)
+    - [X] Página html diseñada para ser imprimida con los datos del Back (QR o Código de barras, información básica ...)
 
 # Investigación
     - [ ] Forma de acceder a la cámara del Teléfono para escanear QR

@@ -13,6 +13,22 @@ const usuariosRepository: UsuariosRepository = new usuariosRepositoryPostgres();
 const usuariosUsecases = new UsuariosUsecases(usuariosRepository);
 
 router.post('/login', async (req: Request, res: Response): Promise<any> => {
+    /* #swagger.tags = ['Usuarios']
+        #swagger.description = 'Endpoint para iniciar sesión'
+        #swagger.responses[200] = { 
+            description: 'Usuario logueado correctamente',
+            schema: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' },
+                    nombre: { type: 'string' },
+                    apellidos: { type: 'string' },
+                    correo: { type: 'string' },
+                    telefono: { type: 'string' }
+                }
+            }
+        }
+    */
     try {
 
         const usuario : Usuario = {
@@ -40,6 +56,22 @@ router.post('/login', async (req: Request, res: Response): Promise<any> => {
 });
 
 router.post('/registro', async (req: Request, res: Response): Promise<any> => {
+    /* #swagger.tags = ['Usuarios']
+        #swagger.description = 'Endpoint para registrar un nuevo usuario'
+        #swagger.responses[201] = { 
+            description: 'Usuario registrado correctamente',
+            schema: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' },
+                    nombre: { type: 'string' },
+                    apellidos: { type: 'string' },
+                    correo: { type: 'string' },
+                    telefono: { type: 'string' }
+                }
+            }
+        }
+    */
     try {
         const usuario : Usuario = {
             nombre: req.body.nombre,

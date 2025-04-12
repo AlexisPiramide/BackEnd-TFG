@@ -25,6 +25,7 @@ const createToken = (user: Usuario): string => {
         payload.sucursal = {
             id: user.sucursal.id,
             nombre: user.sucursal.nombre,
+            telefono: user.sucursal.telefono,
             direccion: user.sucursal.direccion,
         };
     }
