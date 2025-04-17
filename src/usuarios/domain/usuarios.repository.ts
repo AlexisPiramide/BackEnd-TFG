@@ -5,4 +5,6 @@ export default interface usuariosRepository{
     registro(usuario : Usuario): Promise<Usuario>
     comporbarID(idGenerado:string): Promise<boolean>
     getUsuario(id: string): Promise<Usuario>
+
+    registrarUsuariosinContraseña(usuario: Usuario): Promise<Usuario>
 }

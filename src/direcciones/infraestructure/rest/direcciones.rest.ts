@@ -34,6 +34,7 @@ router.get('/:usuario', async (req: Request, res: Response) => {
     */
     try {
         const direcciones = await direccionesusecases.getDireccionesUsuario(req.params.usuario);
+        console.log(direcciones);
         res.status(200).json(direcciones);
     } catch (error) {
         res.status(error.estatus).json(error.message);

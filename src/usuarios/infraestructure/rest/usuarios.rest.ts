@@ -4,8 +4,6 @@ import usuariosRepositoryPostgres from "../db/usuarios.repository.postgres";
 import UsuariosUsecases from "../../application/usuarios.usecases";
 import Usuario from "../../domain/Usuario";
 import { createToken } from "./../../../../context/security/auth";
-import { generarIDUsuario } from "../../../../idGenerator";
-
 
 const router = express.Router();
 
@@ -80,7 +78,6 @@ router.post('/registro', async (req: Request, res: Response): Promise<any> => {
             contraseña: req.body.contraseña,
             telefono: req.body.telefono,
         }
-        generarIDUsuario();
 
         const usuariodb: Usuario = await usuariosUsecases.registro(usuario);
         if (usuariodb === null) return res.status(404).json({ mensaje: "Usuario no encontrado" });
@@ -101,5 +98,50 @@ router.post('/registro', async (req: Request, res: Response): Promise<any> => {
         res.status(error.estatus).json(error.message);
     }
 });
+
+router.post('/admin/registro', async (req: Request, res: Response): Promise<any> => {
+    /* #swagger.tags = ['Usuarios']
+        #swagger.description = 'Endpoint para registrar un nuevo usuario'
+        #swagger.responses[201] = { 
+            description: 'Usuario registrado correctamente',
+            schema: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' },
+                    nombre: { type: 'string' },
+                    apellidos: { type: 'string' },
+                    correo: { type: 'string' },
+                    telefono: { type: 'string' }
+                }
+            }
+        }
+    */
+    try {
+        const usuario : Usuario = {
+            nombre: req.body.nombre,
+            apellidos: req.body.apellidos,
+            correo: req.body.correo,
+            contraseña: req.body.contraseña,
+            telefono: req.body.telefono,
+        }   
+
+        const usuariodb: Usuario = await usuariosUsecases.registro(usuario);
+        if (usuariodb === null) return res.status(404).json({ mensaje: "Usuario no encontrado" });
+        
+        res.status(201).json({
+            usuario: {
+                id: usuariodb.id,   
+                nombre: usuariodb.nombre,
+                apellidos: usuariodb.apellidos,
+                correo: usuariodb.correo,
+                telefono: usuariodb.telefono
+            }});
+    } catch (error) {
+        console.log(error);
+        res.status(error.estatus).json(error.message);
+    }
+});
+
+
 
 export default router;

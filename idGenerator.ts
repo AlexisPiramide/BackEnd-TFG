@@ -11,7 +11,7 @@ async function generarIDUsuario(): Promise<string> {
 async function generarID16AN(): Promise<string> {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     
-    const idNuevo = Array.from({ length: 16 })
+    const idNuevo = Array.from({ length: 15 })
         .map(() => caracteres[Math.floor(Math.random() * caracteres.length)])
         .join('');
 

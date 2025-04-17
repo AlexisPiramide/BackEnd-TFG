@@ -56,6 +56,7 @@ router.post('/', async (req: Request, res: Response) => {
         const paquete = await paquetesusecases.postPaquete(paquetebody);
         res.status(201).json(paquete);
     } catch (error) {
+        console.log(error);
         res.status(error.estatus).json(error.message);
     }
 });
@@ -81,6 +82,33 @@ router.get('/:id', async (req: Request, res: Response) => {
     try {
         const paquete = await paquetesusecases.getPaquete(req.params.id);
         res.status(200).json(paquete);
+    } catch (error) {
+        res.status(error.estatus).json(error.message);
+    }
+});
+
+router.post('/paquetes/', async (req: Request, res: Response) => {
+    /* #swagger.tags = ['Paquetes']
+        #swagger.description = 'Endpoint para obtener paquete por id'
+        #swagger.responses[200] = { 
+            description: 'Paquete obtenido correctamente',
+            schema: {
+                type: 'object',
+                properties: {
+                    id: { type: 'string' },
+                    dimensiones: { type: 'string' },
+                    remitente: { type: 'string' },
+                    direccion_remitente: { type: 'string' },
+                    destinatario: { type: 'string' },
+                    direccion_destinatario: { type: 'object' },
+                    peso: { type: 'number' }
+                }
+            }
+        }
+    */
+    try {
+        const paquetes = await paquetesusecases.getPaquetesByUsuario(req.body.id);
+        res.status(200).json(paquetes);
     } catch (error) {
         res.status(error.estatus).json(error.message);
     }

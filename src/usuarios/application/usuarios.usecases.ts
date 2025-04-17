@@ -1,4 +1,5 @@
 import { generarIDUsuario } from "../../../idGenerator";
+import passwordGenerator from "../../../passwordGenerator";
 import ErrorPersonalizado from "../../Error/ErrorPersonalizado";
 import Usuario from "../domain/Usuario";
 import usuariosRepository from "../domain/usuarios.repository";
@@ -36,6 +37,37 @@ export default class usuariosUsecases{
         usuario.contraseña = await hash(usuario.contraseña);
     
         return await this.usuariosRepository.registro(usuario);
+    }
+
+    async registrosinContraseña(usuario: Usuario): Promise<Usuario> {
+        if (!usuario.correo) {
+            throw new ErrorPersonalizado("Faltan datos", 400);
+        }
+    
+        let result = true;
+        
+        while (result) {
+            const idGenerado = await generarIDUsuario(); 
+            usuario.id = idGenerado;
+            result = await this.usuariosRepository.comporbarID(idGenerado);
+        }
+        let nuevacontraseña = "";
+        while (true){
+            nuevacontraseña = await passwordGenerator();  
+            break
+        }
+        usuario.contraseña = await hash(usuario.contraseña);
+
+        try {
+            const usuarioregistrado = await this.usuariosRepository.registro(usuario)
+
+            //AQUI ENVIAR CONTRASEÑA POR CORREO SI FUNCIONA
+        
+            return usuarioregistrado;
+        } catch (error) {
+            throw new ErrorPersonalizado("Error al registrar el usuario", 500);
+            
+        }
     }
     
     async getUsuario(id: string): Promise<Usuario> {

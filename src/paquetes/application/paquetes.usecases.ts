@@ -54,6 +54,28 @@ export default class PaquetesUsecases{
         return paquetedb
     }
 
+    async getPaquetesByUsuario(id: string): Promise<Paquete[]> {
+        const paquetes = await this.paqueteRepository.getPaquetesByUsuario(id);
+        for (const paquete of paquetes) {
+            if (typeof paquete.remitente === 'string') {
+                const datos = await usuariousecases.getUsuario(paquete.remitente);
+                paquete.remitente = datos;
+            }
+
+            if (typeof paquete.direccion_remitente === 'number') {
+                const direccion = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
+                paquete.direccion_remitente = direccion;
+            }
+
+            if (typeof paquete.direccion_destinatario === 'number') {
+                const direccion = await direccionesusecases.getDireccionById(paquete.direccion_destinatario);
+                paquete.direccion_destinatario = direccion;
+            }
+        }
+
+        return paquetes;
+    }
+
     async getPaquete(id: string): Promise<Paquete> {
         const paquete = await this.paqueteRepository.getPaquete(id);
         console.log(paquete);

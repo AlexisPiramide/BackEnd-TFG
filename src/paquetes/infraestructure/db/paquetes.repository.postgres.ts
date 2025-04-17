@@ -82,6 +82,35 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
 
     }
 
+    async getPaquetesByUsuario(id: string): Promise<Paquete[]> {
+        const query = `SELECT * FROM paquete WHERE remitente = '${id}'`
+        try {
+
+            const result: any[] = await executeQuery(query)
+
+            if (result.length === 0) { throw new ErrorPersonalizado('Error al buscar paquete', 400) }
+
+            const pedidosdb: Paquete[] = result.map((row) => ({
+                id: row.id,
+                dimensiones: row.id_dimension,
+                peso: row.peso,
+                remitente: row.remitente,
+                direccion_remitente: row.direccion_remitente,
+                destinatario: row.destinatario,
+                direccion_destinatario: row.direccion_destinatario,
+                precio: row.precio,
+                fecha: row.fecha
+            }));
+
+            return pedidosdb
+
+        } catch {
+            throw new ErrorPersonalizado('La conexion a la base de datos no ha funcionado', 500)
+        }
+
+    }
+
+
     async comporbarID(id: string): Promise<boolean> {
         const query = `SELECT id FROM paquete WHERE id = '${id}'`
         try {
@@ -95,13 +124,13 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
     async calcularPrecio(paquete: Paquete | string, peso?: number): Promise<number> {
         const tarifaBase = [5.63, 6.05, 7.37, 12.6];
         const tarifa100G = [0.5, 0.4, 0.3, 0.2];
-    
+
         try {
             // Handle the case where paquete is a Paquete object
             if (paquete instanceof Object) {
                 const dimensiones = await dimensionesusecases.getDimensiones();
                 const dimension = dimensiones.find((dimension) => dimension.id === paquete.dimensiones);
-    
+
                 switch (dimension.nombre) {
                     case "Pequeño":
                         return tarifaBase[0] + (paquete.peso - 1) * tarifa100G[0];
@@ -113,8 +142,8 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                         return tarifaBase[3] + (paquete.peso - 1) * tarifa100G[3];
                 }
             }
-    
-        
+
+
             if (typeof paquete === "string" && peso !== undefined) {
                 switch (paquete) {
                     case "Pequeño":
@@ -127,11 +156,12 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                         return tarifaBase[3] + (peso - 1) * tarifa100G[3];
                 }
             }
-            
+
             throw new ErrorPersonalizado('Datos de entrada no válidos', 400);
         } catch (error) {
+            console.log(error);
             throw new ErrorPersonalizado('Error al calcular el precio', 400);
         }
     }
-    
+
 }

@@ -5,7 +5,6 @@ import usuariosRepository from "../../domain/usuarios.repository";
 
 export default class usuariosRepositoryPostgres implements usuariosRepository{
 
-    
     async login(usuario: Usuario): Promise<Usuario> {
 
         const queryLogin = 'SELECT * FROM Usuario WHERE correo = $1';
@@ -49,6 +48,28 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     
 
     async registro(usuario: Usuario): Promise<Usuario> {
+        const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, password,apellidos,telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+        const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono];
+        
+        const result: any = await executeQuery(queryRegistro, values);
+
+        if(result.length === 0){
+            throw new ErrorPersonalizado("Error al registrar el usuario", 500);
+        }
+
+        const usuarioRegistrado: Usuario = {
+            id: result[0].id,
+            nombre: result[0].nombre,
+            apellidos: result[0].apellidos,
+            correo: result[0].correo,
+            contraseña: result[0].password,
+            telefono: result[0].telefono,
+        }
+
+        return usuarioRegistrado;
+    }
+
+    async registrarUsuariosinContraseña(usuario: Usuario): Promise<Usuario> {
         const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, password,apellidos,telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
         const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono];
         
