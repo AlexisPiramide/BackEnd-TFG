@@ -10,7 +10,7 @@ const router = express.Router();
 const usuariosRepository: UsuariosRepository = new usuariosRepositoryPostgres();
 const usuariosUsecases = new UsuariosUsecases(usuariosRepository);
 
-router.post('/login', async (req: Request, res: Response): Promise<any> => {
+router.post('/login', async (req: Request, res: Response)=> {
     /* #swagger.tags = ['Usuarios']
         #swagger.description = 'Endpoint para iniciar sesión'
         #swagger.responses[200] = { 
@@ -136,6 +136,17 @@ router.post('/admin/registro', async (req: Request, res: Response): Promise<any>
                 correo: usuariodb.correo,
                 telefono: usuariodb.telefono
             }});
+    } catch (error) {
+        console.log(error);
+        res.status(error.estatus).json(error.message);
+    }
+});
+
+router.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        const usuariodb = await usuariosUsecases.getUsuario(id);
+        res.status(200).json(usuariodb);
     } catch (error) {
         console.log(error);
         res.status(error.estatus).json(error.message);

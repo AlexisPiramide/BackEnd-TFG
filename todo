@@ -65,6 +65,7 @@
         # (Más por definir)
     # Generación Impresión pegatina Paquete
     - [X] Página html diseñada para ser imprimida con los datos del Back (QR o Código de barras, información básica ...)
+    - [ ] Añadir un modal al crear paquete para que si no recuerda el id con correo, telefono o usuario se pueda sacar el id
 
 # Investigación
     - [ ] Forma de acceder a la cámara del Teléfono para escanear QR

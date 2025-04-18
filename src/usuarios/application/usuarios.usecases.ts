@@ -78,4 +78,12 @@ export default class usuariosUsecases{
         return await this.usuariosRepository.getUsuario(id);
     }
 
+    async comporbarID(id: string): Promise<boolean> {
+        if (!id) {
+            throw new ErrorPersonalizado("Faltan datos", 400);
+        }
+    
+        return await this.usuariosRepository.comporbarID(id);
+    }
+
 }
