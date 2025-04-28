@@ -30,8 +30,8 @@ export default class PaquetesUsecases{
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
         let destinatario, remitente;
-        destinatario = (typeof paquete.destinatario !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.destinatario);*/  : await usuariousecases.getUsuario(paquete.destinatario);
-        remitente = (typeof paquete.remitente !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.remitente);*/  : await usuariousecases.getUsuario(paquete.remitente);
+        destinatario = (typeof paquete.destinatario !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.destinatario)).id  : await usuariousecases.getUsuario(paquete.destinatario);
+        remitente = (typeof paquete.remitente !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.remitente)).id  : await usuariousecases.getUsuario(paquete.remitente);
 
 
         let direccion_destinatario,direccion_remitente;

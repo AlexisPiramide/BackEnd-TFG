@@ -34,11 +34,11 @@ CREATE TABLE Usuario (
 
 -- Tabla Usuario_Externo (Usuarios no registrados)
 CREATE TABLE Usuario_Externo (
-    id SERIAL PRIMARY KEY,  -- ID único para los usuarios externos
+    id VARCHAR(15) PRIMARY KEY,
     nombre VARCHAR(255),
-    correo VARCHAR(255),
-    telefono VARCHAR(50),
-    direccion VARCHAR(255)  -- Dirección del usuario externo
+    correo VARCHAR(255) NULL,
+    telefono VARCHAR(50) NULL,
+    CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$')
 );
 
 -- Tabla Usuario_Direccion (Relación entre Usuario y Direccion)

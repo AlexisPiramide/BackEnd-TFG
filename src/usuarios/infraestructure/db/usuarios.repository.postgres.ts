@@ -91,6 +91,26 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
         return usuarioRegistrado;
     }
 
+    async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
+        const queryRegistroExterno = 'INSERT INTO Usuario_Externo (nombre, correo, telefono, direccion) VALUES ($1, $2, $3, $4) RETURNING *';
+        const values = [usuario.nombre, usuario.correo, usuario.telefono];
+        
+        const result: any = await executeQuery(queryRegistroExterno, values);
+
+        if (result.length === 0) {
+            throw new ErrorPersonalizado("Error al registrar el usuario externo", 500);
+        }
+
+        const usuarioExternoRegistrado: Usuario = {
+            id: result[0].id,
+            nombre: result[0].nombre,
+            correo: result[0].correo,
+            telefono: result[0].telefono
+        };
+
+        return usuarioExternoRegistrado;
+    }
+
     async comporbarID(idGenerado: string): Promise<boolean> {
         const queryComprobarID = 'SELECT * FROM Usuario WHERE id = $1';
         const values = [idGenerado];

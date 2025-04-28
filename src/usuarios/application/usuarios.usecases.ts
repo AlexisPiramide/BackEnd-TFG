@@ -69,6 +69,27 @@ export default class usuariosUsecases{
             
         }
     }
+
+    async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
+
+        try {
+
+            let result = true;
+        
+            while (result) {
+                const idGenerado = await generarIDUsuario(); 
+                usuario.id = idGenerado;
+                result = await this.usuariosRepository.comporbarID(idGenerado);
+            }
+          
+            const usuarioregistrado = await this.usuariosRepository.registrarUsuarioExterno(usuario)
+        
+            return usuarioregistrado;
+        } catch (error) {
+            throw new ErrorPersonalizado("Error al registrar el usuario", 500);
+            
+        }
+    }
     
     async getUsuario(id: string): Promise<Usuario> {
         if (!id) {

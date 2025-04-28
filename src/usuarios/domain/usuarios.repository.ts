@@ -7,4 +7,5 @@ export default interface usuariosRepository{
     getUsuario(id: string): Promise<Usuario>
 
     registrarUsuariosinContraseña(usuario: Usuario): Promise<Usuario>
+    registrarUsuarioExterno(usuario: Usuario): Promise<Usuario>
 }
