@@ -7,7 +7,7 @@ export default interface Paquete {
     dimensiones: Dimension | string;
     remitente: Usuario | string;
     direccion_remitente?: Direccion | number;
-    destinatario: string;
+    destinatario: Usuario | string;
     direccion_destinatario: Direccion | number;
     peso: number;
     precio?: number;

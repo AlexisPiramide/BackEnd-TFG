@@ -29,28 +29,41 @@ export default class PaquetesUsecases{
             paquete.id = idGenerado;
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
+        let destinatario, remitente;
+        destinatario = (typeof paquete.destinatario !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.destinatario);*/  : await usuariousecases.getUsuario(paquete.destinatario);
+        remitente = (typeof paquete.remitente !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.remitente);*/  : await usuariousecases.getUsuario(paquete.remitente);
 
-        let direccion
-        if(typeof paquete.direccion_destinatario != 'number') {
-            direccion = await direccionesusecases.nuevaDireccion(paquete.direccion_destinatario);
-            paquete.direccion_destinatario = direccion.id;
-        }
+
+        let direccion_destinatario,direccion_remitente;
+        direccion_destinatario = (typeof paquete.direccion_destinatario !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.destinatario);*/  : direccionesusecases.nuevaDireccion(paquete.direccion_destinatario);;
+        direccion_remitente = (typeof paquete.direccion_remitente !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.remitente);*/  : direccionesusecases.nuevaDireccion(paquete.direccion_remitente);;
+        
+        paquete.destinatario = destinatario.id;
+        paquete.remitente = paquete.id;
+        paquete.direccion_destinatario = direccion_destinatario.id;
+        paquete.direccion_remitente = direccion_remitente.id;
     
         paquete.precio = await this.paqueteRepository.calcularPrecio(paquete);
 
         const paquetedb = await this.paqueteRepository.postPaquete(paquete);
 
-        paquetedb.direccion_destinatario = direccion;
+
+        //Esta parte solo da los datos completos;
+        if (typeof paquete.destinatario === 'string') {
+            paquetedb.destinatario = await usuariousecases.getUsuario(paquete.destinatario);
+        }
 
         if(typeof paquete.remitente === 'string') {
-            const datos = await usuariousecases.getUsuario(paquete.remitente);
-            paquetedb.remitente = datos;
-        }
-        if(typeof paquete.direccion_remitente === 'number') {
-            const direccion = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
-            paquetedb.direccion_remitente = direccion;
+            paquetedb.remitente = await usuariousecases.getUsuario(paquete.remitente);
         }
 
+        if (typeof paquete.direccion_destinatario === 'number') {
+            paquetedb.direccion_destinatario = await direccionesusecases.getDireccionById(paquete.direccion_destinatario);
+        }
+        if (typeof paquete.direccion_remitente === 'number') {
+            paquetedb.direccion_remitente = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
+        }
+        
         return paquetedb
     }
 

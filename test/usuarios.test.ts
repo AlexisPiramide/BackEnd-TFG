@@ -47,7 +47,7 @@ const registrodb = async () => {
             "nombre": "John",
             "apellidos": "Doe",
             "correo": "test@example.com",
-            "contraseña": "password123",
+            "contraseña": "Password123*",
             "telefono": "123456789"
           });
     return response;
