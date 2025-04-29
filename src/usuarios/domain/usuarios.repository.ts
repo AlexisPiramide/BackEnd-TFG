@@ -8,4 +8,6 @@ export default interface usuariosRepository{
 
     registrarUsuariosinContraseña(usuario: Usuario): Promise<Usuario>
     registrarUsuarioExterno(usuario: Usuario): Promise<Usuario>
+
+    encontrarcondatos(usuario: Usuario): Promise<Usuario>;
 }

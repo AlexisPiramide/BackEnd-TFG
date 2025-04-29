@@ -140,4 +140,24 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
 
         return usuarioDB;
     }
+
+    async encontrarcondatos(usuario: Usuario): Promise<Usuario> {
+        const queryEncontrarConDatos = 'SELECT * FROM Usuario WHERE nombre = $1 AND apellidos = $2 AND correo = $3';
+        const values = [usuario.nombre, usuario.apellidos,usuario.correo];
+        const result: any = await executeQuery(queryEncontrarConDatos, values);
+
+        if(result.length === 0){
+            throw new ErrorPersonalizado("No se ha encontrado ningun usuario que coindica con estos datos", 404);
+        }
+
+        const usuarioDB: Usuario = {
+            id: result[0].id,
+            nombre: result[0].nombre,
+            apellidos: result[0].apellidos,
+            correo: result[0].correo,
+            telefono: result[0].telefono,
+        };
+
+        return usuarioDB;
+    }
 }

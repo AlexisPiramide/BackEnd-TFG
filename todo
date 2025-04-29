@@ -47,7 +47,8 @@
     - [X] Generar Codigos de barras con el id del paquete
     - [X] Buscar manera de acceder a la cámara desde el móvil desde una web.
     - [X] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
-    - [ ] Enviar correos con contraseñas de activacion y nuevas contraseñas
+    - [X] Enviar correos con contraseñas de activacion y nuevas contraseñas
+        # Nodemailer (comprobar si funciona usando un correo nuevo);
 #Codigo TODO FRONT END
 
 # General

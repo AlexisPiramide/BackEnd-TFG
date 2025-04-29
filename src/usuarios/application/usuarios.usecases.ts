@@ -107,4 +107,13 @@ export default class usuariosUsecases{
         return await this.usuariosRepository.comporbarID(id);
     }
 
+
+    async encontrarcondatos(usuario: Usuario): Promise<Usuario> {
+        if (!usuario.nombre || !usuario.apellidos || !usuario.correo) {
+            throw new ErrorPersonalizado("Faltan datos", 400);
+        }
+    
+        return await this.usuariosRepository.encontrarcondatos(usuario);
+    }
+
 }
