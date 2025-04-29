@@ -3,7 +3,7 @@ import UsuariosRepository from "../../domain/usuarios.repository";
 import usuariosRepositoryPostgres from "../db/usuarios.repository.postgres";
 import UsuariosUsecases from "../../application/usuarios.usecases";
 import Usuario from "../../domain/Usuario";
-import { createToken } from "./../../../../context/security/auth";
+import { createToken, isAuth } from "./../../../../context/security/auth";
 
 const router = express.Router();
 
@@ -99,7 +99,7 @@ router.post('/registro', async (req: Request, res: Response): Promise<any> => {
     }
 });
 
-router.post('/admin/registro', async (req: Request, res: Response): Promise<any> => {
+router.post('/admin/registro',isAuth, async (req: Request, res: Response): Promise<any> => {
     /* #swagger.tags = ['Usuarios']
         #swagger.description = 'Endpoint para registrar un nuevo usuario'
         #swagger.responses[201] = { 

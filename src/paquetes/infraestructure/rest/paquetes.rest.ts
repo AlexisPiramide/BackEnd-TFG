@@ -7,13 +7,10 @@ import Direccion from "../../../direcciones/domain/Direccion";
 import Paquete from "../../domain/Paquete";
 import Usuario from "../../../usuarios/domain/Usuario";
 
-
 const router = express.Router();
 
 const paquetesrepository: PaqueteRepository = new PaqueteRepositoryPostgres();
 const paquetesusecases = new PaquetesUsecases(paquetesrepository);
-
-
 
 router.post('/', async (req: Request, res: Response) => {
     /* #swagger.tags = ['Paquetes']

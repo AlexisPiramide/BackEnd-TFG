@@ -14,6 +14,7 @@ CREATE TABLE Sucursal (
     id VARCHAR(15) PRIMARY KEY,
     nombre VARCHAR(100),
     id_direccion INT,
+    telefono VARCHAR(15),
     FOREIGN KEY (id_direccion) REFERENCES Direccion(id)
 );
 
