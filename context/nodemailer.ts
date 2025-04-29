@@ -19,7 +19,7 @@ const sendTrackingEmail = async (to: string, trackingCode: string) => {
 
     try {
         const info = await transporter.sendMail({
-            from: 'empresa.ejemplo@gmail.com', // Remitente
+            from: GMAIL_USER, // Remitente
             to, // Destinatario
             subject, // Asunto del correo
             text, // Texto del correo con el código de seguimiento
