@@ -1,6 +1,6 @@
 import PaqueteRepository from "../domain/paquetes.repository";
 import Paquete from "../domain/Paquete";
-import {generarID16AN} from "../../../idGenerator";
+import {generarID16AN} from "../../../context/idGenerator";
 import usuariosRepositoryPostgres from "../../usuarios/infraestructure/db/usuarios.repository.postgres";
 import usuariosRepository from "../../usuarios/domain/usuarios.repository";
 import usuariosUsecases from "../../usuarios/application/usuarios.usecases";

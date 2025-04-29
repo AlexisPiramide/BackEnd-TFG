@@ -1,5 +1,5 @@
-import { generarIDUsuario } from "../../../idGenerator";
-import passwordGenerator from "../../../passwordGenerator";
+import { generarIDUsuario } from "../../../context/idGenerator";
+import passwordGenerator from "../../../context/passwordGenerator";
 import ErrorPersonalizado from "../../Error/ErrorPersonalizado";
 import Usuario from "../domain/Usuario";
 import usuariosRepository from "../domain/usuarios.repository";
