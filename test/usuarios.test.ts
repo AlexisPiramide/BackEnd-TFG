@@ -37,6 +37,53 @@ describe("Usuarios Tests", () => {
         expect(response.body).toBeDefined();
     });
 
+    it("Post /admin/registro", async () => {
+        const adminToken = "Bearer your-admin-token";
+        const response = await request(app)
+            .post("/usuarios/admin/registro")
+            .set("Authorization", adminToken)
+            .send({
+                "nombre": "Admin",
+                "apellidos": "User",
+                "correo": "admin.user@example.com",
+                "contraseña": "AdminPassword123",
+                "telefono": "987654321"
+            });
+
+        expect(response.status).toBe(201);
+        expect(response.body).toBeDefined();
+        expect(response.body.usuario).toHaveProperty("id");
+        expect(response.body.usuario).toHaveProperty("nombre", "Admin");
+        expect(response.body.usuario).toHaveProperty("correo", "admin@example.com");
+    });
+
+    it("Post /existe", async () => {
+        await registrodb();
+        const response = await request(app)
+            .post("/usuarios/existe")
+            .send({
+                "nombre": "John",
+                "apellidos": "Doe",
+                "correo": "test@example.com"
+            });
+
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();
+        expect(response.body.usuario).toHaveProperty("nombre", "John");
+        expect(response.body.usuario).toHaveProperty("correo", "test@example.com");
+    });
+
+    it("Get /:id", async () => {
+        const registroResponse = await registrodb();
+        const userId = registroResponse.body.usuario.id;
+
+        const response = await request(app).get(`/usuarios/${userId}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();
+        expect(response.body).toHaveProperty("id", userId);
+        expect(response.body).toHaveProperty("nombre", "John");
+    });
 
 });
 

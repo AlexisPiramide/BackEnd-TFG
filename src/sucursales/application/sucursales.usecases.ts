@@ -4,6 +4,7 @@ import usuariosRepositoryPostgres from "../../usuarios/infraestructure/db/usuari
 import Usuario from "../../usuarios/domain/Usuario";
 import UsuariosRepository from "../../usuarios/domain/usuarios.repository";
 import createMail from "./../../../context/createMail";
+import Sucursal from "../domain/Sucursal";
 
 const usuariosRepository: UsuariosRepository = new usuariosRepositoryPostgres();
 const usuariosUsecases = new UsuariosUsecases(usuariosRepository);
@@ -18,5 +19,9 @@ export default class SucursalesUseCases {
 
     async getSucursales() {
         return await this.sucursalesrepository.getSucursales();
+    }
+    
+    async crearSucursal(sucursal: Sucursal) {
+        return await this.sucursalesrepository.crearSucursal(sucursal);
     }
 }
