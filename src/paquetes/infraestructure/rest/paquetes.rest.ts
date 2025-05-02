@@ -6,6 +6,7 @@ import PaqueteRepositoryPostgres from "../db/paquetes.repository.postgres";
 import Direccion from "../../../direcciones/domain/Direccion";
 import Paquete from "../../domain/Paquete";
 import Usuario from "../../../usuarios/domain/Usuario";
+import { isAuth } from "../../../../context/security/auth";
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/paquetes/', async (req: Request, res: Response) => {
+router.post('/paquetes/',isAuth, async (req: Request, res: Response) => {
     /* #swagger.tags = ['Paquetes']
         #swagger.description = 'Endpoint para obtener paquete por id'
         #swagger.responses[200] = { 
@@ -67,7 +68,7 @@ router.post('/paquetes/', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/gencode/:id', async (req: Request, res: Response) => {
+router.get('/gencode/:id',isAuth, async (req: Request, res: Response) => {
     /* #swagger.tags = ['Paquetes']
         #swagger.description = 'Endpoint para generar el código de barras'
         #swagger.responses[200] = { 
