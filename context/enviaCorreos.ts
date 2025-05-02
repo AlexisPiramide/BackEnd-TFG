@@ -4,12 +4,11 @@ import { google } from 'googleapis';
 
 dotenv.config();
 
-const {
-  GMAIL_USER,
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REFRESH_TOKEN,
-} = process.env;
+const GMAIL_USER = process.env.GMAIL_USER || '';
+const CLIENT_ID = process.env.GMAIL_USERCLIENT_ID || '';
+const CLIENT_SECRET = process.env.GMAIL_USERCLIENT_SECRET || '';
+const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || '';
+
 
 // Configura OAuth2
 const oAuth2Client = new google.auth.OAuth2(
