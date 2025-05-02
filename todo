@@ -34,9 +34,12 @@
     # Tests
     - [ ] Realizar Tests:
         - [X] Dimensiones.
-        - [X] Paquetes.
-        - [X] Usuarios.
-        ....
+        - [ ] Paquetes.
+        - [ ] Envios    .
+        - [ ] Usuarios.
+        - [X] Metodos.
+        - [ ] Direcciones.
+        - [ ] Sucursales.
 # Investigación
     - [ ] Buscar API para cálculo de distancias.
     - [X] Buscar fórmula para calcular precios de envíos.
