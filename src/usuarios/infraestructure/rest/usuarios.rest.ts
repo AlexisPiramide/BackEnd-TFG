@@ -55,7 +55,6 @@ router.post('/registro', async (req: Request, res: Response): Promise<any> => {
     }
 });
 
-
 router.post('/admin/registro', isAuth, async (req: Request, res: Response): Promise<any> => {
     // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para registrar un nuevo usuario (solo administradores)', #swagger.parameters[0] = { in: 'body', description: 'Datos para registrar un nuevo usuario', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, contraseña: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Usuario registrado correctamente', schema: { type: 'object', properties: { usuario: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado o error en el registro', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[401] = { description: 'No autorizado para realizar esta acción (se requiere autenticación de administrador)', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
@@ -76,7 +75,6 @@ router.post('/admin/registro', isAuth, async (req: Request, res: Response): Prom
         res.status(error.estatus).json(error.message);
     }
 });
-
 
 router.get('/:id', async (req: Request, res: Response) => {
     // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para obtener los datos de un usuario por su ID', #swagger.parameters[0] = { in: 'path', description: 'ID del usuario que se desea obtener', required: true, type: 'string' }, #swagger.responses[200] = { description: 'Usuario encontrado correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
@@ -111,7 +109,6 @@ router.post('/existe', async (req: Request, res: Response) => {
     }
 });
 
-
 const devolverUsuario = (usuariodb) =>{
     return {
         id: usuariodb.id,   
@@ -121,7 +118,5 @@ const devolverUsuario = (usuariodb) =>{
         telefono: usuariodb.telefono
     }
 }
-
-
 
 export default router;
