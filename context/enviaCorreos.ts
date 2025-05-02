@@ -1,33 +1,59 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import { google } from 'googleapis';
 
-const GMAIL_USER = process.env.GMAIL_USER;
-const GMAIL_PASS = process.env.GMAIL_PASS;
-// Crea el transportador con las credenciales de tu cuenta de Gmail
-const transporter = nodemailer.createTransport({
+dotenv.config();
+
+const {
+  GMAIL_USER,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REFRESH_TOKEN,
+} = process.env;
+
+// Configura OAuth2
+const oAuth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  'https://developers.google.com/oauthplayground' // o tu redirect_uri
+);
+
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+
+async function createTransporter() {
+  const { token } = await oAuth2Client.getAccessToken();
+
+  return nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: GMAIL_USER,// Tu correo de Gmail
-        pass: GMAIL_PASS,// La contraseña de aplicación (si tienes 2FA)
+      type: 'OAuth2',
+      user: GMAIL_USER,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
+      refreshToken: REFRESH_TOKEN,
+      accessToken: token as string,
     },
-});
+  });
+}
 
-// Función para enviar el correo con un código de seguimiento
 const sendTrackingEmail = async (to: string, trackingCode: string) => {
-    const subject = 'Notificación de seguimiento';
-    const text = `Tu código de seguimiento es: ${trackingCode}. Puedes usarlo para verificar el estado de tu envio.`;
+  const subject = 'Notificación de seguimiento';
+  const text = `Tu código de seguimiento es: ${trackingCode}. Puedes usarlo para verificar el estado de tu envío.`;
 
-    try {
-        const info = await transporter.sendMail({
-            from: GMAIL_USER, // Remitente
-            to, // Destinatario
-            subject, // Asunto del correo
-            text, // Texto del correo con el código de seguimiento
-        });
-        console.log('Correo enviado: %s', info.messageId);
-    } catch (error) {
-        console.error('Error enviando el correo: ', error);
-    }
+  try {
+    const transporter = await createTransporter();
+
+    const info = await transporter.sendMail({
+      from: GMAIL_USER,
+      to,
+      subject,
+      text,
+    });
+
+    console.log('Correo enviado: %s', info.messageId);
+  } catch (error) {
+    console.error('Error enviando el correo: ', error);
+  }
 };
 
 export default sendTrackingEmail;
