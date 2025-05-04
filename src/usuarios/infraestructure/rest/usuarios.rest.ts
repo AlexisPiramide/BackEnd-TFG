@@ -31,7 +31,7 @@ router.post('/login', async (req: Request, res: Response)=> {
     }
 });
 
-router.post('/registro', async (req: Request, res: Response): Promise<any> => {
+router.post('/registro', async (req: Request, res: Response) => {
     // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para registrar un nuevo usuario', #swagger.parameters[0] = { in: 'body', description: 'Datos para registrar un nuevo usuario', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, contraseña: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Usuario registrado correctamente', schema: { type: 'object', properties: { usuario: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } }, token: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado o error en el registro', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
         const usuario : Usuario = {
@@ -55,7 +55,7 @@ router.post('/registro', async (req: Request, res: Response): Promise<any> => {
     }
 });
 
-router.post('/admin/registro', isAuth, async (req: Request, res: Response): Promise<any> => {
+router.post('/admin/registro', isAuth, async (req: Request, res: Response) => {
     // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para registrar un nuevo usuario (solo administradores)', #swagger.parameters[0] = { in: 'body', description: 'Datos para registrar un nuevo usuario', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, contraseña: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Usuario registrado correctamente', schema: { type: 'object', properties: { usuario: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado o error en el registro', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[401] = { description: 'No autorizado para realizar esta acción (se requiere autenticación de administrador)', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
         const usuario : Usuario = {
@@ -68,7 +68,9 @@ router.post('/admin/registro', isAuth, async (req: Request, res: Response): Prom
 
         const usuariodb: Usuario = await usuariosUsecases.registro(usuario); 
         res.status(201).json({
-            usuario: devolverUsuario(usuariodb)
+            usuario: devolverUsuario({
+                usuario: devolverUsuario(usuariodb)
+            })
         });
     } catch (error) {
         console.log(error);
@@ -76,21 +78,21 @@ router.post('/admin/registro', isAuth, async (req: Request, res: Response): Prom
     }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
-    // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para obtener los datos de un usuario por su ID', #swagger.parameters[0] = { in: 'path', description: 'ID del usuario que se desea obtener', required: true, type: 'string' }, #swagger.responses[200] = { description: 'Usuario encontrado correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
+
+router.get('/:id', isAuth, async (req: Request, res: Response) => {
+    // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para obtener un usuario por ID', #swagger.parameters[0] = { in: 'path', description: 'ID del usuario', required: true, type: 'string' }, #swagger.responses[200] = { description: 'Usuario encontrado', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[401] = { description: 'No autorizado para realizar esta acción (se requiere autenticación de administrador)', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
         const id = req.params.id;
-        const usuariodb = await usuariosUsecases.getUsuario(id);
-        if (!usuariodb) return res.status(404).json({ message: 'Usuario no encontrado' });
-        res.status(200).json(usuariodb);
+        const usuariodb : Usuario = await usuariosUsecases.getUsuario(id);
+        res.status(200).json(devolverUsuario(usuariodb));
     } catch (error) {
         console.log(error);
         res.status(error.estatus).json(error.message);
     }
 });
 
-router.post('/existe', async (req: Request, res: Response) => {
-    // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para encontrar un usuario por nombre, apellidos y correo', #swagger.parameters[0] = { in: 'body', description: 'Datos del usuario que se desea encontrar', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' } } } }, #swagger.responses[200] = { description: 'Usuario encontrado correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
+router.post("/existe", async (req: Request, res: Response) => {
+    // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para verificar si un usuario existe', #swagger.parameters[0] = { in: 'body', description: 'Datos del usuario a verificar', required: true, schema: { type: 'object', properties: { correo: { type: 'string' } } } }, #swagger.responses[200] = { description: 'Usuario encontrado', schema: { type: 'object', properties: { existe: { type: 'boolean' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
         const usuario : Usuario = {
             nombre : req.body.nombre,
@@ -98,11 +100,8 @@ router.post('/existe', async (req: Request, res: Response) => {
             correo : req.body.correo
         }
 
-        const usuariodb = await usuariosUsecases.encontrarcondatos(usuario);
-        if (!usuariodb) return res.status(404).json({ message : "No se ha encontrado ningun usuario que coindica con estos datos" });
-        res.status(200).json({
-            usuario: devolverUsuario(usuariodb)
-        });
+        const existe = await usuariosUsecases.encontrarcondatos(usuario);
+        res.status(200).json({existe});
     } catch (error) {
         console.log(error);
         res.status(error.estatus).json(error.message);
