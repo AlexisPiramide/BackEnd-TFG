@@ -1,5 +1,4 @@
 import { generarIDUsuario } from "../../../context/idGenerator";
-import passwordGenerator from "../../../context/passwordGenerator";
 import ErrorPersonalizado from "../../Error/ErrorPersonalizado";
 import Usuario from "../domain/Usuario";
 import usuariosRepository from "../domain/usuarios.repository";
@@ -11,13 +10,12 @@ export default class usuariosUsecases{
         if (!usuario.correo || !usuario.contraseña) {
             throw new ErrorPersonalizado("Faltan datos", 400);
         }
-    
+        
+        const passwordHash = hash(usuario.contraseña);
+        usuario.contraseña = passwordHash;
+
         const usuarioDB = await this.usuariosRepository.login(usuario);
-        const isMatch = await compare(usuario.contraseña, usuarioDB.contraseña);
-    
-        if (!isMatch) {
-            throw new ErrorPersonalizado("Correo o Contraseña Erroneos", 401);
-        }
+
         return usuarioDB;
     }
     
@@ -34,40 +32,13 @@ export default class usuariosUsecases{
             result = await this.usuariosRepository.comporbarID(idGenerado);
         }
         
-        usuario.contraseña = await hash(usuario.contraseña);
-    
-        return await this.usuariosRepository.registro(usuario);
-    }
-
-    async registrosinContraseña(usuario: Usuario): Promise<Usuario> {
-        if (!usuario.correo) {
-            throw new ErrorPersonalizado("Faltan datos", 400);
-        }
-    
-        let result = true;
+        const passwordHash = hash(usuario.contraseña);
+        usuario.contraseña = passwordHash;
         
-        while (result) {
-            const idGenerado = await generarIDUsuario(); 
-            usuario.id = idGenerado;
-            result = await this.usuariosRepository.comporbarID(idGenerado);
-        }
-        let nuevacontraseña = "";
-        while (true){
-            nuevacontraseña = await passwordGenerator();  
-            break
-        }
-        usuario.contraseña = await hash(usuario.contraseña);
-
-        try {
-            const usuarioregistrado = await this.usuariosRepository.registro(usuario)
-
-            //AQUI ENVIAR CONTRASEÑA POR CORREO SI FUNCIONA
-        
-            return usuarioregistrado;
-        } catch (error) {
-            throw new ErrorPersonalizado("Error al registrar el usuario", 500);
-            
-        }
+        const usuarioDB = await this.usuariosRepository.registro(usuario);
+   
+        return usuarioDB;
+     
     }
 
     async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
@@ -90,6 +61,20 @@ export default class usuariosUsecases{
             
         }
     }
+
+    async convertirdeUsuarioExterno(usuario: Usuario): Promise<Usuario> {
+        if (!usuario.nombre || !usuario.apellidos || !usuario.correo || !usuario.telefono) {
+            throw new ErrorPersonalizado("Faltan datos", 400);
+        }
+
+        const passwordHash = hash(usuario.contraseña);
+        usuario.contraseña = passwordHash;
+
+        const usuarioDB = await this.usuariosRepository.convertirdeUsuarioExterno(usuario);
+
+        return usuarioDB;
+    }
+
     
     async getUsuario(id: string): Promise<Usuario> {
         if (!id) {

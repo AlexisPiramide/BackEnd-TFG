@@ -6,7 +6,7 @@ export default interface usuariosRepository{
     comporbarID(idGenerado:string): Promise<boolean>
     getUsuario(id: string): Promise<Usuario>
 
-    registrarUsuariosinContraseña(usuario: Usuario): Promise<Usuario>
+    convertirdeUsuarioExterno(usuario: Usuario): Promise<Usuario>
     registrarUsuarioExterno(usuario: Usuario): Promise<Usuario>
 
     encontrarcondatos(usuario: Usuario): Promise<Usuario>;
