@@ -5,9 +5,8 @@ CREATE TABLE Direccion (
     numero VARCHAR(15),
     codigo_postal VARCHAR(10),
     localidad VARCHAR(100),
-    provincia VARCHAR(100),
-    pais VARCHAR(100)
-);
+    provincia VARCHAR(100)
+    );
 
 -- Tabla Sucursal
 CREATE TABLE Sucursal (
@@ -28,7 +27,8 @@ CREATE TABLE Usuario (
     telefono VARCHAR(15) UNIQUE,
     puesto VARCHAR(50),
     sucursal VARCHAR(15),
-    es_externo BOOLEAN DEFAULT FALSE,  -- Indica si el usuario es externo o no
+    es_externo BOOLEAN DEFAULT FALSE,
+    es_admin BOOLEAN DEFAULT FALSE,
     CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$'),
     FOREIGN KEY (sucursal) REFERENCES Sucursal(id),
     CHECK (correo IS NOT NULL OR telefono IS NOT NULL)
