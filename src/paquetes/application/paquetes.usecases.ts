@@ -30,13 +30,14 @@ export default class PaquetesUsecases{
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
         let destinatario, remitente;
-        destinatario = (typeof paquete.destinatario !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.destinatario)).id  : await usuariousecases.getUsuario(paquete.destinatario);
-        remitente = (typeof paquete.remitente !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.remitente)).id  : await usuariousecases.getUsuario(paquete.remitente);
+        
+        destinatario = (typeof paquete.destinatario !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.destinatario))  : await usuariousecases.getUsuario(paquete.destinatario);
+        remitente = (typeof paquete.remitente !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.remitente))  : await usuariousecases.getUsuario(paquete.remitente);
 
 
         let direccion_destinatario,direccion_remitente;
-        direccion_destinatario = (typeof paquete.direccion_destinatario !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.destinatario);*/  : direccionesusecases.nuevaDireccion(paquete.direccion_destinatario);;
-        direccion_remitente = (typeof paquete.direccion_remitente !== 'string') ? 1 /* await usuariousecases.postUsuario_Externo(paquete.remitente);*/  : direccionesusecases.nuevaDireccion(paquete.direccion_remitente);;
+        direccion_destinatario = (typeof paquete.direccion_destinatario !== 'number') ?  direccionesusecases.nuevaDireccion(paquete.direccion_destinatario): direccionesusecases.getDireccionById(paquete.direccion_destinatario);
+        direccion_remitente = (typeof paquete.direccion_remitente !== 'number') ? direccionesusecases.nuevaDireccion(paquete.direccion_remitente): direccionesusecases.getDireccionById(paquete.direccion_remitente);
         
         paquete.destinatario = destinatario.id;
         paquete.remitente = paquete.id;
@@ -75,6 +76,11 @@ export default class PaquetesUsecases{
                 paquete.remitente = datos;
             }
 
+            if (typeof paquete.destinatario === 'string') {
+                const datos = await usuariousecases.getUsuario(paquete.destinatario);
+                paquete.destinatario = datos;
+            }
+
             if (typeof paquete.direccion_remitente === 'number') {
                 const direccion = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
                 paquete.direccion_remitente = direccion;
@@ -95,6 +101,11 @@ export default class PaquetesUsecases{
         if (typeof paquete.remitente === 'string') {
             const datos = await usuariousecases.getUsuario(paquete.remitente);
             paquete.remitente = datos;
+        }
+        
+        if (typeof paquete.destinatario === 'string') {
+            const datos = await usuariousecases.getUsuario(paquete.destinatario);
+            paquete.destinatario = datos;
         }
 
         if (typeof paquete.direccion_remitente === 'number') {

@@ -41,7 +41,7 @@ export default class usuariosUsecases{
      
     }
 
-    async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
+    async registrarUsuarioExterno(usuario: Usuario): Promise<string> {
 
         try {
 
@@ -55,7 +55,7 @@ export default class usuariosUsecases{
           
             const usuarioregistrado = await this.usuariosRepository.registrarUsuarioExterno(usuario)
         
-            return usuarioregistrado;
+            return usuarioregistrado.id;
         } catch (error) {
             throw new ErrorPersonalizado("Error al registrar el usuario", 500);
             
