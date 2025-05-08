@@ -1,0 +1,34 @@
+{
+    "_id": "aZ3kLm9QpW2xT5c",
+    "id_dimension": "24CHARSLONGSTRING12345678",
+    "remitente": {
+        "id": "USER-0001-WXYZ",
+        "nombre": "Juan",
+        "apellidos": "Pérez",
+        "correo": "juan@ejemplo.com"
+    },
+    "destinatario": {
+        "id": "USER-0002-WXYZ",
+        "nombre": "Laura",
+        "apellidos": "Gómez",
+        "correo": "laura@ejemplo.com"
+    },
+    "direccion_remitente": {
+        "calle": "Calle Falsa",
+        "numero": "123",
+        "codigo_postal": "28080",
+        "localidad": "Madrid",
+        "provincia": "Madrid",
+        "pais": "España"
+    },
+    "direccion_destinatario": {
+        "calle": "Av. Siempre Viva",
+        "numero": "742",
+        "codigo_postal": "12345",
+        "localidad": "Springfield",
+        "provincia": "Illinois",
+        "pais": "USA"
+    },
+    "peso": 1.2,
+    "precio": 10.5
+}
