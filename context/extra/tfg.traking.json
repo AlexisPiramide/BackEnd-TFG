@@ -1,60 +1,25 @@
 {
-    "_id": {
-        "$oid": "6800db885e41963e06338699"
-    },
-    "paquete": {
-      "id": "aZ3kLm9QpW2xT5c",
-      "id_dimension": "24CHARSLONGSTRING12345678",
-      "remitente": {
-        "id": "USER-0001-WXYZ",
-        "nombre": "Juan",
-        "apellidos": "Pérez",
-        "correo": "juan@ejemplo.com"
-      },
-      "destinatario": {
-        "id": "USER-0002-WXYZ",
-        "nombre": "Laura",
-        "apellidos": "Gómez",
-        "correo": "laura@ejemplo.com"
-      },
-      "direccion_remitente": {
-        "calle": "Calle Falsa",
-        "numero": "123",
-        "codigo_postal": "28080",
-        "localidad": "Madrid",
-        "provincia": "Madrid",
-        "pais": "España"
-      },
-      "direccion_destinatario": {
-        "calle": "Av. Siempre Viva",
-        "numero": "742",
-        "codigo_postal": "12345",
-        "localidad": "Springfield",
-        "provincia": "Illinois",
-        "pais": "USA"
-      },
-      "peso": 1.2,
-      "precio": 10.5
-    },
-    "trabajador": {
-      "id": "TRAB-5678-ASDF",
-      "nombre": "María",
-      "apellidos": "López",
-      "sucursal": {
-        "id": "SUC-1234-ABCD",
-        "nombre": "Sucursal Centro",
-        "direccion": {
-          "calle": "Gran Vía",
-          "numero": "45",
-          "codigo_postal": "28013",
-          "localidad": "Madrid",
-          "provincia": "Madrid",
-          "pais": "España"
-        },
-        "telefono": "+34910000000"
-      }
-    },
-    "fecha": "2025-04-28T10:00:00Z",
-    "estado": "en tránsito"
+	"_id": {"$oid": "6800db885e41963e06338699"},
+	"paquete_id": "aZ3kLm9QpW2xT5c",
+	"trabajador": {
+	  "id": "TRAB-5678-ASDF",
+	  "nombre": "María",
+	  "apellidos": "López",
+	  "sucursal": {
+		"id": "SUC-1234-ABCD",
+		"nombre": "Sucursal Centro",
+		"direccion": {
+		  "calle": "Gran Vía",
+		  "numero": "45",
+		  "codigo_postal": "28013",
+		  "localidad": "Madrid",
+		  "provincia": "Madrid",
+		  "pais": "España"
+		},
+		"telefono": "+34910000000"
+	  }
+	},
+	"fecha": "2025-04-28T10:00:00Z",
+	"estado": "en tránsito"
   }
   

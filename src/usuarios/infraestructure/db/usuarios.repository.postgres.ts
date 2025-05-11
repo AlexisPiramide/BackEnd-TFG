@@ -21,7 +21,7 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
             nombre: result[0].nombre,
             apellidos: result[0].apellidos,
             correo: result[0].correo,
-            contraseña: result[0].password,
+            contraseña: result[0].contraseña,
             telefono: result[0].telefono,
         };
     
@@ -48,8 +48,8 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     
 
     async registro(usuario: Usuario): Promise<Usuario> {
-        const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, password,apellidos,telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-        const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono];
+        const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, contraseña,apellidos,telefono,es_externo) VALUES ($1, $2, $3, $4, $5, $6 ,$7) RETURNING *';
+        const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono,false];
         
         const result: any = await executeQuery(queryRegistro, values);
 
@@ -62,29 +62,7 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
             nombre: result[0].nombre,
             apellidos: result[0].apellidos,
             correo: result[0].correo,
-            contraseña: result[0].password,
-            telefono: result[0].telefono,
-        }
-
-        return usuarioRegistrado;
-    }
-
-    async registrarUsuariosinContraseña(usuario: Usuario): Promise<Usuario> {
-        const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, password,apellidos,telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-        const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono];
-        
-        const result: any = await executeQuery(queryRegistro, values);
-
-        if(result.length === 0){
-            throw new ErrorPersonalizado("Error al registrar el usuario", 500);
-        }
-
-        const usuarioRegistrado: Usuario = {
-            id: result[0].id,
-            nombre: result[0].nombre,
-            apellidos: result[0].apellidos,
-            correo: result[0].correo,
-            contraseña: result[0].password,
+            contraseña: result[0].contraseña,
             telefono: result[0].telefono,
         }
 
@@ -92,8 +70,8 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     }
 
     async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
-        const queryRegistroExterno = 'INSERT INTO Usuario_Externo (nombre, correo, telefono, direccion) VALUES ($1, $2, $3, $4) RETURNING *';
-        const values = [usuario.nombre, usuario.correo, usuario.telefono];
+        const queryRegistroExterno = 'INSERT INTO Usuario_Externo (nombre, apellidos, correo, telefono, es_externo) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+        const values = [usuario.nombre, usuario.apellidos, usuario.correo || null, usuario.telefono || null, true];
         
         const result: any = await executeQuery(queryRegistroExterno, values);
 
@@ -104,6 +82,7 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
         const usuarioExternoRegistrado: Usuario = {
             id: result[0].id,
             nombre: result[0].nombre,
+            apellidos: result[0].apellidos,
             correo: result[0].correo,
             telefono: result[0].telefono
         };
@@ -142,14 +121,25 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     }
 
     async encontrarcondatos(usuario: Usuario): Promise<Usuario> {
-        const queryEncontrarConDatos = 'SELECT * FROM Usuario WHERE nombre = $1 AND apellidos = $2 AND correo = $3';
-        const values = [usuario.nombre, usuario.apellidos,usuario.correo];
-        const result: any = await executeQuery(queryEncontrarConDatos, values);
-
-        if(result.length === 0){
-            throw new ErrorPersonalizado("No se ha encontrado ningun usuario que coindica con estos datos", 404);
+        let query = '';
+        let values: any[] = [];
+    
+        if (usuario.correo) {
+            query = 'SELECT * FROM Usuario WHERE correo = $1';
+            values = [usuario.correo];
+        } else if (usuario.telefono) {
+            query = 'SELECT * FROM Usuario WHERE telefono = $1';
+            values = [usuario.telefono];
+        } else {
+            throw new ErrorPersonalizado("Debe proporcionar al menos un correo o teléfono para buscar el usuario.", 400);
         }
-
+    
+        const result: any = await executeQuery(query, values);
+    
+        if (result.length === 0) {
+            throw new ErrorPersonalizado("No se ha encontrado ningún usuario con los datos proporcionados", 404);
+        }
+    
         const usuarioDB: Usuario = {
             id: result[0].id,
             nombre: result[0].nombre,
@@ -157,7 +147,39 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
             correo: result[0].correo,
             telefono: result[0].telefono,
         };
-
+    
         return usuarioDB;
     }
+
+    async convertirdeUsuarioExterno(usuario: Usuario): Promise<Usuario> {
+
+        const queryUpdate = ` UPDATE Usuario SET es_externo = FALSE, correo = COALESCE($2, correo), telefono = COALESCE($3, telefono), contraseña = $4 WHERE id = $1 RETURNING *;  `;
+    
+        const values = [
+            usuario.id,
+            usuario.correo,
+            usuario.telefono,
+            usuario.contraseña
+        ];
+    
+        const result: any = await executeQuery(queryUpdate, values);
+    
+        if (result.length === 0) {
+            throw new ErrorPersonalizado("No se encontró el usuario para convertir.", 404);
+        }
+    
+        const usuarioConvertido: Usuario = {
+            id: result[0].id,
+            nombre: result[0].nombre,
+            apellidos: result[0].apellidos,
+            correo: result[0].correo,
+            telefono: result[0].telefono,
+
+        };
+    
+        return usuarioConvertido;
+    }
+    
+
+    
 }
