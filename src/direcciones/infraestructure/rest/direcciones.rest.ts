@@ -134,7 +134,7 @@ router.put('/:id',isAuth, async (req: Request, res: Response) => {
     */
     try {
         const direccion = {
-            id:req.params.id,
+            id: Number(req.params.id),
             calle: req.body.calle,
             numero: req.body.numero,
             codigoPostal: req.body.codigoPostal,
@@ -171,7 +171,7 @@ router.delete('/:id',isAuth, async (req: Request, res: Response) => {
     */
 
     try {
-        const direccion = await direccionesusecases.eliminarDireccion(req.params.id);
+        const direccion = await direccionesusecases.eliminarDireccion(Number(req.params.id));
         res.status(200).json(direccion);
     } catch (error) {
         res.status(error.estatus).json(error.message);
