@@ -1,7 +1,12 @@
 import request from "supertest";
 import app from "./../src/app";
+import { limpiarDB, postDireccion } from "./unitarios";
 
 describe("Direcciones Tests", () => {
+    
+    beforeEach(async () => {
+        await limpiarDB();
+    }
 
     it("should create a new direccion", async () => {
         const usuario = "XXXX-XXXX-XXXX";
@@ -28,7 +33,7 @@ describe("Direcciones Tests", () => {
 
     it("GET /direcciones/:usuario - Should retrieve the created direccion", async () => {
         const usuario = "XXXX-XXXX-XXXX";
-        const direccionId =await postDireccion(usuario);
+        const direccionId =await postDireccion();
 
         const response = await request(app).get(`/direcciones/${direccionId}`);
 
@@ -37,22 +42,3 @@ describe("Direcciones Tests", () => {
         expect(response.body.calle).toBe("Calle Falsa");
     });
 });
-
-
-const postDireccion =async (usuario: string) => {
-
-    const response = await request(app)
-        .post("/direcciones/" + usuario)
-        .send({
-            calle: "Calle Falsa",
-            numero: "123",
-            codigoPostal: "54321",
-            localidad: "Shelbyville",
-            provincia: "Illinois",
-            pais: "USA"
-        });
-
-        return response.body.id;
-}
-
-

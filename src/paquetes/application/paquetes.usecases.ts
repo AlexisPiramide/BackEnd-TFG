@@ -48,76 +48,19 @@ export default class PaquetesUsecases{
 
         const paquetedb = await this.paqueteRepository.postPaquete(paquete);
 
+        const paqueteCompleto = await this.getPaquete(paquetedb.id);
 
-        //Esta parte solo da los datos completos;
-        if (typeof paquete.destinatario === 'string') {
-            paquetedb.destinatario = await usuariousecases.getUsuario(paquete.destinatario);
-        }
-
-        if(typeof paquete.remitente === 'string') {
-            paquetedb.remitente = await usuariousecases.getUsuario(paquete.remitente);
-        }
-
-        if (typeof paquete.direccion_destinatario === 'number') {
-            paquetedb.direccion_destinatario = await direccionesusecases.getDireccionById(paquete.direccion_destinatario);
-        }
-        if (typeof paquete.direccion_remitente === 'number') {
-            paquetedb.direccion_remitente = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
-        }
-        
-        return paquetedb
+        return paqueteCompleto
     }
 
     async getPaquetesByUsuario(id: string): Promise<Paquete[]> {
         const paquetes = await this.paqueteRepository.getPaquetesByUsuario(id);
-        for (const paquete of paquetes) {
-            if (typeof paquete.remitente === 'string') {
-                const datos = await usuariousecases.getUsuario(paquete.remitente);
-                paquete.remitente = datos;
-            }
-
-            if (typeof paquete.destinatario === 'string') {
-                const datos = await usuariousecases.getUsuario(paquete.destinatario);
-                paquete.destinatario = datos;
-            }
-
-            if (typeof paquete.direccion_remitente === 'number') {
-                const direccion = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
-                paquete.direccion_remitente = direccion;
-            }
-
-            if (typeof paquete.direccion_destinatario === 'number') {
-                const direccion = await direccionesusecases.getDireccionById(paquete.direccion_destinatario);
-                paquete.direccion_destinatario = direccion;
-            }
-        }
 
         return paquetes;
     }
 
     async getPaquete(id: string): Promise<Paquete> {
         const paquete = await this.paqueteRepository.getPaquete(id);
-        console.log(paquete);
-        if (typeof paquete.remitente === 'string') {
-            const datos = await usuariousecases.getUsuario(paquete.remitente);
-            paquete.remitente = datos;
-        }
-        
-        if (typeof paquete.destinatario === 'string') {
-            const datos = await usuariousecases.getUsuario(paquete.destinatario);
-            paquete.destinatario = datos;
-        }
-
-        if (typeof paquete.direccion_remitente === 'number') {
-            const direccion = await direccionesusecases.getDireccionById(paquete.direccion_remitente);
-            paquete.direccion_remitente = direccion;
-        }
-
-        if (typeof paquete.direccion_destinatario === 'number') {
-            const direccion = await direccionesusecases.getDireccionById(paquete.direccion_destinatario);
-            paquete.direccion_destinatario = direccion;
-        }
-
         return paquete;
     }
     

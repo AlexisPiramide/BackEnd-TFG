@@ -1,8 +1,8 @@
 //import Usuario from "../../usuarios/domain/Usuario"
 import Sucursal from "./Sucursal"
 
-export default interface sucuralesRepository{
-    
+export default interface sucuralesRepository {
+
 
     getSucursales(): Promise<Sucursal[]>
     getSucursal(sucursal: string): Promise<Sucursal>

@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "./../src/app";
+import { postPaquete } from "./unitarios";
 
 describe("Paquetes Tests", () => {
 
@@ -50,69 +51,3 @@ describe("Paquetes Tests", () => {
         expect(typeof response.body).toBe("number");
     });
 });
-
-const postPaquete = async () => {
-    const destinatario = {
-        "nombre": "John",
-        "apellidos": "Doe",
-        "correo": "test@example.com",
-        "contraseña": "Password123*",
-        "telefono": "123456789"
-    };
-
-    const remitente = {
-        "nombre": "Jane",
-        "apellidos": "Doe",
-        "correo": "test2@example.com",
-        "contraseña": "Password123*",
-        "telefono": "987654321"
-    };
-
-    const usuario = await registrodb(destinatario);
-    const id = usuario.body.id;
-    const token = usuario.body.token;
-    
-    const paqueteData = {
-        dimensiones: "Extra Pequeño",
-        remitente: remitente,
-        direccion_remitente: {
-            calle: "Calle Verdadera",
-            numero: "1",
-            codigoPostal: "22600",
-            localidad: "Sabiñanigo",
-            provincia: "Huesca",
-            pais: "España"
-        },
-        destinatario: id,
-        direccion_destinatario: {
-            calle: "Calle Verdadera",
-            numero: "1",
-            codigoPostal: "22600",
-            localidad: "Sabiñanigo",
-            provincia: "Huesca",
-            pais: "España"
-        },
-        peso: 2.0
-    };
-
-    const response = await request(app)
-        .post("/paquetes")
-        .set("Authorization", `Bearer ${token}`)
-        .send(paqueteData);
-
-    if (response.status !== 201) {
-        throw new Error(`Error creating paquete: ${response.text}`);
-    }
-
-    return {
-        id: response.body.id,
-        paqueteData
-    };
-};
-
-const registrodb = async (usuario) => {
-    const response = await request(app)
-        .post("/usuarios/registro")
-        .send(usuario);
-    return response;
-}

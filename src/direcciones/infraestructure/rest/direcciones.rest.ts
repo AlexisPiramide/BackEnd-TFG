@@ -11,27 +11,8 @@ const direccionesRepository: DireccionesRepository = new DireccionesRepositoryMo
 const direccionesusecases = new direccionesUsecases(direccionesRepository);
 
 router.get('/:usuario', async (req: Request, res: Response) => {
-    /* #swagger.tags = ['Direcciones']
-        #swagger.description = 'Endpoint para obtener todas las direcciones de un usuario'
-        #swagger.responses[200] = { 
-            description: 'Direcciones obtenidas correctamente',
-            schema: {
-                type: 'array',
-                items: {
-                    type: 'object',
-                    properties: {
-                        id: { type: 'string' },
-                        calle: { type: 'string' },
-                        numero: { type: 'integer' },
-                        codigoPostal: { type: 'string' },
-                        localidad: { type: 'string' },
-                        provincia: { type: 'string' },
-                        pais: { type: 'string' }
-                    }
-                }
-            }
-        }
-    */
+    /* #swagger.tags = ['Direcciones'] #swagger.description = 'Endpoint para obtener las direcciones de un usuario' #swagger.responses[200] = { description: 'Lista de direcciones obtenida correctamente', schema: { type: 'array', items: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } } */
+        
     try {
         const direcciones = await direccionesusecases.getDireccionesUsuario(req.params.usuario);
         res.status(200).json(direcciones);
@@ -41,26 +22,9 @@ router.get('/:usuario', async (req: Request, res: Response) => {
 });
 
 
-router.post('/:usuario',isAuth, async (req: Request, res: Response) => {
-    /* #swagger.tags = ['Direcciones']
-        #swagger.description = 'Endpoint para añadir una nueva dirección a un usuario'
-        #swagger.responses[201] = { 
-            description: 'Dirección añadida correctamente',
-            schema: {
-                type: 'object',
-                properties: {
-                    id: { type: 'string' },
-                    calle: { type: 'string' },
-                    numero: { type: 'integer' },
-                    codigoPostal: { type: 'string' },
-                    localidad: { type: 'string' },
-                    provincia: { type: 'string' },
-                    pais: { type: 'string' }
-                }
-            }
-        }
-    */
-   
+router.post('/:usuario', isAuth, async (req: Request, res: Response) => {
+    /* #swagger.tags = ['Direcciones'], #swagger.description = 'Endpoint para añadir una nueva dirección a un usuario', #swagger.responses[201] = { description: 'Dirección añadida correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } */
+
     try {
         const direccion = {
             calle: req.body.calle,
@@ -78,25 +42,9 @@ router.post('/:usuario',isAuth, async (req: Request, res: Response) => {
     }
 });
 
-router.post('/',isAuth,async(req:Request,res: Response)=>{
-    /* #swagger.tags = ['Direcciones']
-        #swagger.description = 'Endpoint para añadir una nueva dirección'
-        #swagger.responses[201] = { 
-            description: 'Dirección añadida correctamente',
-            schema: {
-                type: 'object',
-                properties: {
-                    id: { type: 'string' },
-                    calle: { type: 'string' },
-                    numero: { type: 'integer' },
-                    codigoPostal: { type: 'string' },
-                    localidad: { type: 'string' },
-                    provincia: { type: 'string' },
-                    pais: { type: 'string' }
-                }
-            }
-        }
-    */
+router.post('/', isAuth, async (req: Request, res: Response) => {
+    /* #swagger.tags = ['Direcciones'], #swagger.description = 'Endpoint para añadir una nueva dirección', #swagger.responses[201] = { description: 'Dirección añadida correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } */
+
     try {
         const direccion = {
             calle: req.body.calle,
@@ -113,25 +61,9 @@ router.post('/',isAuth,async(req:Request,res: Response)=>{
     }
 });
 
-router.put('/:id',isAuth, async (req: Request, res: Response) => {
-    /* #swagger.tags = ['Direcciones']
-        #swagger.description = 'Endpoint para actualizar una dirección'
-        #swagger.responses[200] = { 
-            description: 'Dirección actualizada correctamente',
-            schema: {
-                type: 'object',
-                properties: {
-                    id: { type: 'string' },
-                    calle: { type: 'string' },
-                    numero: { type: 'integer' },
-                    codigoPostal: { type: 'string' },
-                    localidad: { type: 'string' },
-                    provincia: { type: 'string' },
-                    pais: { type: 'string' }
-                }
-            }
-        }
-    */
+router.put('/:id', isAuth, async (req: Request, res: Response) => {
+    /* #swagger.tags = ['Direcciones'], #swagger.description = 'Endpoint para actualizar una dirección', #swagger.responses[200] = { description: 'Dirección actualizada correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } */
+
     try {
         const direccion = {
             id: Number(req.params.id),
@@ -149,27 +81,8 @@ router.put('/:id',isAuth, async (req: Request, res: Response) => {
     }
 });
 
-router.delete('/:id',isAuth, async (req: Request, res: Response) => {
-    /* 
-    #swagger.tags = ['Direcciones']
-    #swagger.description = 'Endpoint para eliminar una dirección'
-    #swagger.responses[200] = { 
-        description: 'Dirección eliminada correctamente',
-        schema: {
-            type: 'object',
-            properties: {
-                id: { type: 'string' },
-                calle: { type: 'string' },
-                numero: { type: 'integer' }, 
-                codigoPostal: { type: 'string' },
-                localidad: { type: 'string' },
-                provincia: { type: 'string' },
-                pais: { type: 'string' }
-            }
-        }
-    }
-    */
-
+router.delete('/:id', isAuth, async (req: Request, res: Response) => {
+    /* #swagger.tags = ['Direcciones'], #swagger.description = 'Endpoint para eliminar una dirección', #swagger.responses[200] = { description: 'Dirección eliminada correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } */
     try {
         const direccion = await direccionesusecases.eliminarDireccion(Number(req.params.id));
         res.status(200).json(direccion);

@@ -1,12 +1,11 @@
 import request from "supertest";
 import app from "./../src/app";
-import executeQuery from "../context/postgres.db";
+import { insertarAdminUser, limpiarDB, registrodb } from "./unitarios";
 
 describe("Usuarios Tests", () => {
 
     beforeEach(async () => {
-        const query = `DELETE FROM Usuario`;
-        await executeQuery(query);
+        limpiarDB
     });
     
 
@@ -119,46 +118,3 @@ describe("Usuarios Tests", () => {
     });
 
 });
-
-const registrodb = async () => {
-    const response = await request(app)
-        .post("/usuarios/registro")
-        .send({
-            "nombre": "Usuario",
-            "apellidos": "de Prueba",
-            "correo": "220240@fppiramide.com",
-            "contraseña": "Contraseña123*",
-            "telefono": "609690709"
-        });
-    return {
-        usuario: response.body.usuario,
-        token: response.body.token
-    };
-}
-
-const insertarAdminUser = async () => {
-    const direccionResponse = await executeQuery(`
-        INSERT INTO Direccion (calle, numero, codigo_postal, localidad, provincia, pais) 
-        VALUES ('Calle Falsa', '123', '28080', 'Madrid', 'Madrid', 'España') 
-        RETURNING id;
-    `);
-    const direccionId = direccionResponse.rows[0].id;
-
-    const sucursalResponse = await executeQuery(`
-        INSERT INTO Sucursal (id, nombre, id_direccion, telefono) 
-        VALUES ('SUC001', 'Sucursal Central', ${direccionId}, '910000000') 
-        RETURNING id;
-    `);
-    const sucursalId = sucursalResponse.rows[0].id;
-
-    const validAdminEmail = "1234@mycompany.com";
-    const usuarioResponse = await executeQuery(`
-        INSERT INTO Usuario (id, nombre, apellidos, correo, contraseña, telefono, puesto, sucursal, es_externo) 
-        VALUES ('AD-1234-5678', 'Admin', 'User', '${validAdminEmail}', 'AdminPassword123', '600000000', 'Administrador', '${sucursalId}', FALSE) 
-        RETURNING id, correo;
-    `);
-    const adminId = usuarioResponse.rows[0].id;
-    const adminEmail = usuarioResponse.rows[0].correo;
-
-    return { adminId, adminEmail, adminPassword: "AdminPassword123" };
-};
