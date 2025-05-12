@@ -24,7 +24,7 @@ const registrodbSecundario = async () => {
         .send({
             "nombre": "Usuario",
             "apellidos": "de Prueba",
-            "correo": "",
+            "correo": "230282@fppiramide.com",
             "contraseña": "Contraseña123*",
             "telefono": "639040769",
         });
