@@ -9,20 +9,28 @@ import DireccionesRepositoryPostgres from "../../direcciones/infraestructure/db/
 import DireccionesUseCases from "../../direcciones/application/direcciones.usecases";
 import ErrorPersonalizado from "../../Error/ErrorPersonalizado";
 
+import sendTrackingEmail from "../../../context/enviaCorreos";
+
+import enviosRepositoryMongo from "../../envios/infraestructure/db/envios.repository.mongo";
+import enviosUsecases from "../../envios/application/envios.usecases";
+import enviosRepository from "../../envios/domain/envios.repository";
+import Usuario from "../../usuarios/domain/Usuario";
 
 const usuariorepository: usuariosRepository = new usuariosRepositoryPostgres();
 const usuariousecases = new usuariosUsecases(usuariorepository);
 
-
 const direccionrepository: direccionesRepository = new DireccionesRepositoryPostgres();
 const direccionesusecases = new DireccionesUseCases(direccionrepository);
+
+const enviorepository: enviosRepository = new enviosRepositoryMongo();
+const enviousecases = new enviosUsecases(enviorepository);
 
 export default class PaquetesUsecases{
 
     constructor(private paqueteRepository: PaqueteRepository) {}
     
 
-    async postPaquete(paquete: Paquete): Promise<Paquete> {
+    async postPaquete(paquete: Paquete,trabajador: Usuario): Promise<Paquete> {
         let result = true;
         while(result){
             const idGenerado = await generarID16AN(); 
@@ -48,8 +56,16 @@ export default class PaquetesUsecases{
 
         const paquetedb = await this.paqueteRepository.postPaquete(paquete);
 
-        const paqueteCompleto = await this.getPaquete(paquetedb.id);
+        const paqueteCompleto  = await this.getPaquete(paquetedb.id);
 
+        const correo1 = (typeof paqueteCompleto.destinatario !== 'string' ) ? paqueteCompleto.destinatario.correo : "";
+        const correo2 = (typeof paqueteCompleto.remitente !== 'string' ) ? paqueteCompleto.remitente.correo : "";
+
+        // Enviar correo de seguimiento a ambos usuarios
+        await sendTrackingEmail(correo1, paqueteCompleto.id);
+        await sendTrackingEmail(correo2, paqueteCompleto.id);
+
+        enviousecases.tracking(paquetedb.id, trabajador, 0);
         return paqueteCompleto
     }
 

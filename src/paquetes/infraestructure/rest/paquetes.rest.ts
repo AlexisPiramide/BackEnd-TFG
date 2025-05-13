@@ -6,14 +6,14 @@ import PaqueteRepositoryPostgres from "../db/paquetes.repository.postgres";
 import Direccion from "../../../direcciones/domain/Direccion";
 import Paquete from "../../domain/Paquete";
 import Usuario from "../../../usuarios/domain/Usuario";
-import { isAuth } from "../../../../context/security/auth";
+import { isAuth, isWorker } from "../../../../context/security/auth";
 
 const router = express.Router();
 
 const paquetesrepository: PaqueteRepository = new PaqueteRepositoryPostgres();
 const paquetesusecases = new PaquetesUsecases(paquetesrepository);
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/',isWorker, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Registrar un nuevo paquete', #swagger.parameters[0] = { in: 'body', description: 'Datos del paquete', required: true, schema: { type: 'object', properties: { dimensiones: { type: 'string' }, remitente: { type: 'object' }, direccion_remitente: { type: 'object' }, destinatario: { type: 'object' }, direccion_destinatario: { type: 'object' }, peso: { type: 'number' } } } }, #swagger.responses[201] = { description: 'Paquete registrado correctamente' }, #swagger.responses[400] = { description: 'Datos inválidos' }, #swagger.responses[500] = { description: 'Error en el servidor' }
     try {
         const paquetebody: Paquete = {
@@ -25,7 +25,9 @@ router.post('/', async (req: Request, res: Response) => {
             peso: req.body.peso
         };
 
-        const paquete = await paquetesusecases.postPaquete(paquetebody);
+        const trabajador : Usuario = req.body.trabajador;
+
+        const paquete = await paquetesusecases.postPaquete(paquetebody,trabajador);
         res.status(201).json(paquete);
     } catch (error) {
         console.log(error);
@@ -43,7 +45,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/paquetes/',isAuth, async (req: Request, res: Response) => {
+router.post('/paquetes/',isWorker, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Obtener paquetes por usuario', #swagger.security = [{ "bearerAuth": [] }], #swagger.parameters[0] = { in: 'body', name: 'id', required: true, description: 'ID del usuario', schema: { type: 'string' } }, #swagger.responses[200] = { description: 'Paquetes obtenidos' }, #swagger.responses[401] = { description: 'No autorizado' }, #swagger.responses[500] = { description: 'Error en el servidor' }
     try {
         const paquetes = await paquetesusecases.getPaquetesByUsuario(req.body.id);

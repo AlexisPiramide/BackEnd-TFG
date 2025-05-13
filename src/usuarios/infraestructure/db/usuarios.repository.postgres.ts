@@ -153,12 +153,10 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
 
     async convertirdeUsuarioExterno(usuario: Usuario): Promise<Usuario> {
 
-        const queryUpdate = ` UPDATE Usuario SET es_externo = FALSE, correo = COALESCE($2, correo), telefono = COALESCE($3, telefono), contraseña = $4 WHERE id = $1 RETURNING *;  `;
+        const queryUpdate = ` UPDATE Usuario SET es_externo = FALSE, contraseña = $2 WHERE id = $1 RETURNING *;  `;
     
         const values = [
             usuario.id,
-            usuario.correo,
-            usuario.telefono,
             usuario.contraseña
         ];
     
@@ -178,6 +176,16 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
         };
     
         return usuarioConvertido;
+    }
+
+    async isExterno(id: string): Promise<Boolean> {
+        const query = 'SELECT es_externo FROM Usuario WHERE id = $1';
+        const values = [id];
+        const result: any = await executeQuery(query, values);
+        if (result.length === 0) {
+            throw new ErrorPersonalizado("Usuario no encontrado", 404);
+        }
+        return result[0].es_externo;
     }
     
 

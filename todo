@@ -1,54 +1,55 @@
 #Codigo TODO BACKEND
 
 # General
-    # Base de datos
-    - [X] Diseñar base de datos.
-    - [X] Crear Docker compose.
-    # Conexión y seguridad
-    - [X] Conector base de datos.
-    - [X] Seguridad Web Token.
-    # API
-    - [X] Instalar y preparar SWAGGER para la API.
-    # TEST
-    - [X] Instalar y preparar test.
+  ## Base de datos
+  - [X] Diseñar base de datos.
+  - [X] Crear Docker compose.
+  ## Conexión y seguridad
+  - [X] Conector base de datos.
+  - [X] Seguridad Web Token.
+  ## API
+  - [X] Instalar y preparar SWAGGER para la API.
+  ## TEST
+  - [X] Instalar y preparar test.
 
 # Código
-    # Cálculos Envíos
-    - [X] Crear tipos de envíos.
-    - [X] Crear tamaños de envíos.
-    - [ ] Crear calculo de distancias
-    - [X] Crear cálculo de precios en función de las tres anteriores.
-    # Usuarios
-    - [ ] Crear usuarios.
-    - [ ] Crear roles.
-        - [ ] Usuario Base.
-        - [ ] Usuario Admin.
-        - [ ] Usuario Trabajador.
-    # Envíos
-    - [ ] Crear envíos.
-    - [ ] Crear estados de envíos.
-    - [ ] Crear historial de envíos.
-    # Trazabilidad
-    - [X] Generar Barras para cada Envío
-    - [X] Escanear Barras, guardar lugar, hora y trabajador que realiza el escaneo.
-    # Tests
-    - [ ] Realizar Tests:
-        - [X] Dimensiones.
-        - [ ] Paquetes.
-        - [ ] Envios    .
-        - [ ] Usuarios.
-        - [X] Metodos.
-        - [ ] Direcciones.
-        - [ ] Sucursales.
+  ## Cálculos Envíos
+  - [X] Crear tipos de envíos.
+  - [X] Crear tamaños de envíos.
+  -  ~~Crear cálculo de distancias.~~
+  - [X] Crear cálculo de precios en función de las tres anteriores.
+  ## Usuarios
+  - [X] Crear usuarios.
+  - [X] Crear roles.
+    - [X] Usuario Base.
+    - [X] Usuario Admin.
+    - [X] Usuario Trabajador.
+  ## Envíos
+  - [X] Crear envíos.
+  - [X] Crear estados de envíos.
+  - [X] Crear historial de envíos.
+  ## Trazabilidad
+  - [X] Generar Barras para cada Envío.
+  - [X] Escanear Barras, guardar lugar, hora y trabajador.
+  ## Tests
+  - [ ] Realizar Tests:
+    - [X] Dimensiones.
+    - [~] Paquetes.
+    - [~] Envios.
+    - [~] Usuarios.
+    - [X] Metodos.
+    - [~] Direcciones.
+    - [~] Sucursales.
+
 # Investigación
-    - [ ] Buscar API para cálculo de distancias.
-    - [X] Buscar fórmula para calcular precios de envíos.
-    ~~Buscar cómo generar y escanear QR.~~
-    - [X] Generar Ids Diferenciados
-        - [X] Usuario | XXXX-XXXX-XXXX.
-        - [X] Envio | xxxxxxxxxxxxxxxx.
-    - [X] Generar Codigos de barras con el id del paquete
-    - [X] Buscar manera de acceder a la cámara desde el móvil desde una web.
-    - [X] Investigar uso y generación de códigos de barras en caso de que el QR envíe demasiada información y sea posible usar el código de barras para mayor optimización
-    - [X] Enviar correos con contraseñas de activacion y nuevas contraseñas
-        # Nodemailer (comprobar si funciona usando un correo nuevo);
+  - [ ] Buscar API para cálculo de distancias.
+  - [X] Buscar fórmula para calcular precios de envíos.
+  - ~~Buscar cómo generar y escanear QR.~~
+  - [X] Generar Ids Diferenciados:
+    - [X] Usuario | XXXX-XXXX-XXXX.
+    - [X] Envío | xxxxxxxxxxxxxxxx.
+  - [X] Generar Códigos de barras con el ID del paquete.
+  - [X] Buscar manera de acceder a la cámara desde el móvil desde una web.
+  - [X] Investigar uso y generación de códigos de barras si QR no es viable.
+  - [X] Enviar correos con contraseñas de activación y nuevas contraseñas.
+    - [X] Nodemailer (comprobar si funciona con un correo nuevo).

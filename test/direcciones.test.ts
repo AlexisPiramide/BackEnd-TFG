@@ -6,9 +6,9 @@ describe("Direcciones Tests", () => {
     
     beforeEach(async () => {
         await limpiarDB();
-    }
+        }
 
-    it("should create a new direccion", async () => {
+        it("POST /direcciones debería crear una nueva dirección", async () => {
         const usuario = "XXXX-XXXX-XXXX";
         const response = await request(app)
         .post("/direcciones/" + usuario)
@@ -20,7 +20,7 @@ describe("Direcciones Tests", () => {
             provincia: "Illinois",
             pais: "USA"
         });
-    
+        
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty("id");
         expect(response.body.calle).toBe("Calle Falsa");
@@ -29,9 +29,9 @@ describe("Direcciones Tests", () => {
         expect(response.body.localidad).toBe("Shelbyville");
         expect(response.body.provincia).toBe("Illinois");
         expect(response.body.pais).toBe("USA");
-    });
+        });
 
-    it("GET /direcciones/:usuario - Should retrieve the created direccion", async () => {
+        it("GET /direcciones/:usuario - debería recuperar la dirección creada", async () => {
         const usuario = "XXXX-XXXX-XXXX";
         const direccionId =await postDireccion();
 

@@ -7,5 +7,6 @@ export default interface Usuario {
     correo?: string;
     contraseña?: string;
     telefono?: string;
+    puesto?: string;
     sucursal?: Sucursal;
 }

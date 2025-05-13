@@ -17,7 +17,7 @@ router.post('/tracking/:usuario', async (req: Request, res: Response) => {
         const usuario = req.params.usuario;
         const tipo = req.body.tipo;
         const envio = await enviosusecases.tracking(id, usuario, tipo);
-        res.status(200).json(envio);
+        res.status(201).json(envio);
     } catch (error) {
         throw new ErrorPersonalizado(`Error al insertar el envio`, error);
     }

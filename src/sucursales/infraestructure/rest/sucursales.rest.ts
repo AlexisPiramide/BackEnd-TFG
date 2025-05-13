@@ -5,6 +5,7 @@ import  SucursalRepositoryMongo  from './../../infraestructure/db/sucursales.rep
 import ErrorPersonalizado from '../../../Error/ErrorPersonalizado';
 import Sucursal from '../../domain/Sucursal';
 import { isAdmin } from '../../../../context/security/auth';
+import Usuario from '../../../usuarios/domain/Usuario';
 
 
 const router = express.Router();
@@ -49,5 +50,50 @@ router.post('/',isAdmin, async (req: Request, res: Response) => {
     }
 });
 
+
+router.post('/trabajador',isAdmin, async (req: Request, res: Response) => {
+
+    try{
+        const trabajador: Usuario = {
+            nombre: req.body.nombre,
+            apellidos: req.body.apellidos,
+            correo: req.body.correo,
+            contraseña: req.body.contraseña,
+            telefono: req.body.telefono,
+            puesto: req.body.puesto
+        }
+
+        const sucursal = req.body.sucursal;
+
+        const trabajadorCreado = await sucursalesUsecases.crearTrabajador(trabajador, sucursal);
+        res.status(201).json(trabajadorCreado);
+
+    } catch (error) {
+        throw new ErrorPersonalizado(`Error al insertar la sucursal`, error);
+    }
+
+});
+
+router.patch('/:sucursal',isAdmin, async (req: Request, res: Response) => {
+
+    try {
+        const id = req.params.sucursal;
+        const trabajador: Usuario = {
+            id: req.body.id,
+            nombre: req.body.nombre,
+            apellidos: req.body.apellidos,
+            correo: req.body.correo,
+            contraseña: req.body.contraseña,
+            telefono: req.body.telefono,
+            puesto: req.body.puesto
+        }
+
+        const trabajadorCreado = await sucursalesUsecases.vincularTrabajador(id, trabajador);
+        res.status(201).json(trabajadorCreado);
+    } catch (error) {
+        throw new ErrorPersonalizado(`Error al insertar la sucursal`, error);
+    }
+
+});
 
 export default router;

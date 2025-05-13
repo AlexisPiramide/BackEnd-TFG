@@ -105,4 +105,8 @@ export default class usuariosUsecases {
         return await this.usuariosRepository.encontrarcondatos(usuario);
     }
 
+    async isExterno(id: string): Promise<Boolean> {
+        return await this.usuariosRepository.isExterno(id);
+    }
+
 }

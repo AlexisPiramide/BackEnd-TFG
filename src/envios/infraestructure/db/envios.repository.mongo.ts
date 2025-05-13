@@ -4,12 +4,10 @@ import Usuario from "../../../usuarios/domain/Usuario";
 import Envio from "../../domain/Envio";
 import envioRepository from "../../domain/envios.repository";
 
-export default class enviosrepositoryMongo implements envioRepository{
+export default class enviosrepositoryMongo implements envioRepository {
+    async tracking(paquete: Paquete, usuario: Usuario, tipo: number): Promise<Envio> {
 
-    
-    async tracking(paquete: Paquete, usuario:Usuario,tipo: number): Promise<Envio> {
-
-        const estados = ["En camino", "Entregado", "Cancelado"];
+        const estados = ["Registrado ", "En tránsito", "Entregado", "Cancelado"];
         const estado = estados[tipo];
 
         const envio: Envio = {

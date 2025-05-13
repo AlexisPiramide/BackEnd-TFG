@@ -10,4 +10,6 @@ export default interface usuariosRepository{
     comporbarID(idGenerado:string): Promise<boolean>
     getUsuario(id: string): Promise<Usuario>
     encontrarcondatos(usuario: Usuario): Promise<Usuario>;
+
+    isExterno(id: string): Promise<Boolean>;
 }
