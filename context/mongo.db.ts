@@ -19,6 +19,7 @@ async function createMongoConnection() {
 
 const addCollections = (db: Db) => {
   collections.dimensiones = db.collection("dimensiones");
+  collections.envios = db.collection("envios");
 };
 
 export default createMongoConnection;

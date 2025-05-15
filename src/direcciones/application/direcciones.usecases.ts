@@ -11,12 +11,12 @@ export default class DireccionesUseCases {
         return await this.direccionesRepository.getDireccionById(id);
     }
 
-    async nuevaDireccion(direccion: Direccion): Promise<Direccion> {
-        return await this.direccionesRepository.nuevaDireccion(direccion);
+    async nuevaDireccion(direccion: Direccion,es_temporal:boolean): Promise<Direccion> {
+        return await this.direccionesRepository.nuevaDireccion(direccion,es_temporal);
     }
 
-    async nuevaDireccionUsuario(usuario: string, direccion: Direccion): Promise<Direccion> {
-        return await this.direccionesRepository.nuevaDireccionUsuario(usuario, direccion);
+    async nuevaDireccionUsuario(usuario: string, direccion: Direccion,es_temporal:boolean): Promise<Direccion> {
+        return await this.direccionesRepository.nuevaDireccionUsuario(usuario, direccion,es_temporal);
     }
 
     async updateDireccion(direccion: Direccion): Promise<Direccion> {

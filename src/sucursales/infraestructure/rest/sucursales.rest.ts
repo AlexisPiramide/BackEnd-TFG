@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import  SucursalRepository  from './../../domain/sucursales.repository';
-import  SucursalesUsecases  from './../../application/sucursales.usecases';
-import  SucursalRepositoryMongo  from './../../infraestructure/db/sucursales.repository.postgres';
+import SucursalRepository from './../../domain/sucursales.repository';
+import SucursalesUsecases from './../../application/sucursales.usecases';
+import SucursalRepositoryMongo from './../../infraestructure/db/sucursales.repository.postgres';
 import ErrorPersonalizado from '../../../Error/ErrorPersonalizado';
 import Sucursal from '../../domain/Sucursal';
 import { isAdmin } from '../../../../context/security/auth';
@@ -34,10 +34,10 @@ router.get('/:sucursal', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/',isAdmin, async (req: Request, res: Response) => {
+router.post('/', isAdmin, async (req: Request, res: Response) => {
     // #swagger.tags = ['Sucursales'], #swagger.description = 'Endpoint para crear una nueva sucursal', #swagger.parameters[0] = { in: 'body', description: 'Datos de la sucursal a crear', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, direccion: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Sucursal creada correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, direccion: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
-        const sucursal : Sucursal = {
+        const sucursal: Sucursal = {
             nombre: req.body.nombre,
             direccion: req.body.direccion,
             telefono: req.body.telefono
@@ -51,9 +51,9 @@ router.post('/',isAdmin, async (req: Request, res: Response) => {
 });
 
 
-router.post('/trabajador',isAdmin, async (req: Request, res: Response) => {
-
-    try{
+router.post('/trabajador', isAdmin, async (req: Request, res: Response) => {
+    // #swagger.tags = ['Trabajadores'], #swagger.description = 'Endpoint para crear un nuevo trabajador', #swagger.parameters[0] = { in: 'body', description: 'Datos del trabajador a crear', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, contraseña: { type: 'string' }, telefono: { type: 'string' }, puesto: { type: 'string' }, sucursal: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Trabajador creado correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' }, puesto: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
+    try {
         const trabajador: Usuario = {
             nombre: req.body.nombre,
             apellidos: req.body.apellidos,
@@ -74,8 +74,8 @@ router.post('/trabajador',isAdmin, async (req: Request, res: Response) => {
 
 });
 
-router.patch('/:sucursal',isAdmin, async (req: Request, res: Response) => {
-
+router.patch('/:sucursal', isAdmin, async (req: Request, res: Response) => {
+    // #swagger.tags = ['Trabajadores'], #swagger.description = 'Endpoint para vincular un trabajador a una sucursal', #swagger.parameters[0] = { in: 'path', description: 'ID de la sucursal', required: true, type: 'string' }, #swagger.parameters[1] = { in: 'body', description: 'Datos del trabajador a vincular', required: true, schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, contraseña: { type: 'string' }, telefono: { type: 'string' }, puesto: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Trabajador vinculado correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' }, puesto: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
         const id = req.params.sucursal;
         const trabajador: Usuario = {

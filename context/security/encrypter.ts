@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-const saltRounds = 10;
+const saltRounds = 12;
 
 const hash = (text: string): string => {
   const salt = bcrypt.genSaltSync(saltRounds);

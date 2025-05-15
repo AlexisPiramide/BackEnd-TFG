@@ -1,5 +1,4 @@
 import executeQuery from "../../../../context/postgres.db";
-import Usuario from "../../../usuarios/domain/Usuario";
 import Direccion from "../../domain/Direccion";
 import direccionesRepository from "../../domain/direcciones.repository";
 
@@ -11,7 +10,7 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
                    d.localidad, d.provincia, d.pais
             FROM usuario_direccion ud
             JOIN direccion d ON ud.direccion = d.id
-            WHERE ud.usuario = $1
+            WHERE ud.usuario = $1 && d.es_temporal = false;
         `;
     
         const response = await executeQuery(query, [id]);
@@ -28,8 +27,8 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
     }
     
 
-    async nuevaDireccionUsuario(usuario: string, direccion: Direccion): Promise<Direccion> {
-        const result = await this.nuevaDireccion(direccion);
+    async nuevaDireccionUsuario(usuario: string, direccion: Direccion, es_temporal:boolean): Promise<Direccion> {
+        const result = await this.nuevaDireccion(direccion,es_temporal);
         const direccionId = result.id;
 
         const usuarioDireccionQuery = `
@@ -65,10 +64,10 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
         };
     }
     
-    async nuevaDireccion(direccion: Direccion): Promise<Direccion> {
+    async nuevaDireccion(direccion: Direccion,es_temporal: boolean): Promise<Direccion> {
         const query = `
-            INSERT INTO Direccion (calle, numero, codigo_postal, localidad, provincia, pais)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO Direccion (calle, numero, codigo_postal, localidad, provincia, pais, es_temporal)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING id
         `;
 
@@ -78,7 +77,8 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             direccion.codigoPostal,
             direccion.localidad,
             direccion.provincia,
-            direccion.pais
+            direccion.pais,
+            es_temporal
         ];
 
         const response: any = await executeQuery(query, values);
@@ -114,7 +114,22 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
 
     
     async eliminarDireccion(id: number): Promise<Direccion> {
-        throw new Error("Method not implemented.");
+        const query = `DELETE FROM Direccion WHERE id = $1 RETURNING *`;
+        const response: any = await executeQuery(query, [id]);
+
+        if (response.length === 0) {
+            throw new Error("Direccion no encontrada");
+        }
+
+        return {
+            id: response[0].id,
+            calle: response[0].calle,
+            numero: response[0].numero,
+            codigoPostal: response[0].codigo_postal,
+            localidad: response[0].localidad,
+            provincia: response[0].provincia,
+            pais: response[0].pais
+        };
     }
     
 }

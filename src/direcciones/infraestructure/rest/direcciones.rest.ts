@@ -12,7 +12,7 @@ const direccionesusecases = new direccionesUsecases(direccionesRepository);
 
 router.get('/:usuario', async (req: Request, res: Response) => {
     /* #swagger.tags = ['Direcciones'] #swagger.description = 'Endpoint para obtener las direcciones de un usuario' #swagger.responses[200] = { description: 'Lista de direcciones obtenida correctamente', schema: { type: 'array', items: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } } */
-        
+    
     try {
         const direcciones = await direccionesusecases.getDireccionesUsuario(req.params.usuario);
         res.status(200).json(direcciones);
@@ -34,8 +34,10 @@ router.post('/:usuario', isAuth, async (req: Request, res: Response) => {
             provincia: req.body.provincia,
             pais: req.body.pais
         }
+        const es_temporal = req.body.es_temporal;
+
         const usuario = req.params.usuario;
-        const nuevaDireccion = await direccionesusecases.nuevaDireccionUsuario(usuario, direccion);
+        const nuevaDireccion = await direccionesusecases.nuevaDireccionUsuario(usuario, direccion,es_temporal);
         res.status(201).json(nuevaDireccion);
     } catch (error) {
         res.status(error.estatus).json(error.message);
@@ -54,7 +56,9 @@ router.post('/', isAuth, async (req: Request, res: Response) => {
             provincia: req.body.provincia,
             pais: req.body.pais
         }
-        const nuevaDireccion = await direccionesusecases.nuevaDireccion(direccion);
+
+        const es_temporal = req.body.es_temporal;
+        const nuevaDireccion = await direccionesusecases.nuevaDireccion(direccion,es_temporal);
         res.status(201).json(nuevaDireccion);
     } catch (error) {
         res.status(error.estatus).json(error.message);

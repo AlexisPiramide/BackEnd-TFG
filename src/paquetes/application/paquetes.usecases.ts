@@ -44,8 +44,8 @@ export default class PaquetesUsecases{
 
 
         let direccion_destinatario,direccion_remitente;
-        direccion_destinatario = (typeof paquete.direccion_destinatario !== 'number') ?  direccionesusecases.nuevaDireccion(paquete.direccion_destinatario): direccionesusecases.getDireccionById(paquete.direccion_destinatario);
-        direccion_remitente = (typeof paquete.direccion_remitente !== 'number') ? direccionesusecases.nuevaDireccion(paquete.direccion_remitente): direccionesusecases.getDireccionById(paquete.direccion_remitente);
+        direccion_destinatario = (typeof paquete.direccion_destinatario !== 'number') ?  direccionesusecases.nuevaDireccionUsuario(destinatario.id,paquete.direccion_destinatario,true): direccionesusecases.getDireccionById(paquete.direccion_destinatario);
+        direccion_remitente = (typeof paquete.direccion_remitente !== 'number') ? direccionesusecases.nuevaDireccionUsuario(remitente.id,paquete.direccion_remitente,true): direccionesusecases.getDireccionById(paquete.direccion_remitente);
         
         paquete.destinatario = destinatario.id;
         paquete.remitente = paquete.id;

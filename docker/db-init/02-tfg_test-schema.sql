@@ -1,3 +1,7 @@
+-- Connect to tfg
+\connect tfg_test
+
+
 -- Tabla Direccion
 CREATE TABLE Direccion (
     id SERIAL PRIMARY KEY,
@@ -12,7 +16,7 @@ CREATE TABLE Direccion (
 
 -- Tabla Sucursal
 CREATE TABLE Sucursal (
-    id SERIAL PRIMARY KEY,
+    id VARCHAR(15) PRIMARY KEY,
     nombre VARCHAR(100),
     id_direccion INT,
     telefono VARCHAR(15),
@@ -28,7 +32,7 @@ CREATE TABLE Usuario (
     contraseña VARCHAR(100),
     telefono VARCHAR(15) UNIQUE,
     puesto VARCHAR(50),
-    sucursal SERIAL,
+    sucursal VARCHAR(15),
     es_externo BOOLEAN DEFAULT FALSE,
     es_admin BOOLEAN DEFAULT FALSE,
     CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$'),
@@ -62,48 +66,3 @@ CREATE TABLE Paquete (
     CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$'),
     CONSTRAINT formato_id_dimension CHECK (id_dimension ~* '^[A-Za-z0-9]{24}$')
 );
-
-WITH inserted_direccion AS (
-    INSERT INTO Direccion (calle, numero, codigo_postal, localidad, provincia, pais, es_temporal)
-    VALUES ('Carretera de Cuarte', '0', '22071', 'Huesca', 'Huesca', 'España', FALSE)
-    RETURNING id
-),
-
-inserted_sucursal AS (
-    INSERT INTO Sucursal (nombre, id_direccion, telefono)
-    VALUES ( 'CPIFP Piramide', (SELECT id FROM inserted_direccion), '666666666')
-    RETURNING id
-)
-
--- Contraseña hasheada = Password*9
-
-INSERT INTO Usuario (id, nombre, apellidos, correo, contraseña, telefono, puesto, sucursal, es_externo, es_admin)
-VALUES 
-    ('Q7XZ-3B9L-PD4K', 'Alexis', 'Torres Climente', '220240@fppiramide.com','$2a$12$DoopKGMWaCdGrXB1CMX5iOIXAqvb3pLPMbw4jI3HeT58H2vV2eCsu', '639040769', 'Gerente', (SELECT id FROM inserted_sucursal), FALSE, TRUE),
-    ('M8CN-R2VF-JT5W', 'Nuria', 'Torrelles Guerris', '230282@fppiramide.com','$2a$12$DoopKGMWaCdGrXB1CMX5iOIXAqvb3pLPMbw4jI3HeT58H2vV2eCsu', '000000000', NULL, (SELECT id FROM inserted_sucursal), FALSE, FALSE);
-
--- 1. Insert Direcciones and capture their IDs
-WITH inserted_direcciones AS (
-    INSERT INTO Direccion (calle, numero, codigo_postal, localidad, provincia, pais, es_temporal)
-    VALUES 
-        ('Calle Torla 1', '3B', '22600', 'Sabiñanigo', 'Huesca', 'España', FALSE),
-        ('Av. del Tenor Fleta 1', '4C', '50008', 'Zaragoza', 'Zaragoza', 'España', FALSE)
-    RETURNING id
-),
-
--- 2. Number the inserted direcciones to match them with users
-enumerated_direcciones AS (
-    SELECT id, ROW_NUMBER() OVER () AS rn
-    FROM inserted_direcciones
-)
-
--- 3. Insert into Usuario_Direccion linking each direccion to the correct user
-INSERT INTO Usuario_Direccion (usuario, direccion)
-SELECT 
-    CASE rn
-        WHEN 1 THEN 'Q7XZ-3B9L-PD4K'
-        WHEN 2 THEN 'M8CN-R2VF-JT5W'
-    END AS usuario,
-    id AS direccion
-FROM enumerated_direcciones;
-

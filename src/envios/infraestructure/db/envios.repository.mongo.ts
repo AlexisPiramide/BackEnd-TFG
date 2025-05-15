@@ -7,7 +7,7 @@ import envioRepository from "../../domain/envios.repository";
 export default class enviosrepositoryMongo implements envioRepository {
     async tracking(paquete: Paquete, usuario: Usuario, tipo: number): Promise<Envio> {
 
-        const estados = ["Registrado ", "En tránsito", "Entregado", "Cancelado"];
+        const estados = ["Registrado ", "En tránsito", "No recogido", "Entregado", "Cancelado"];
         const estado = estados[tipo];
 
         const envio: Envio = {
