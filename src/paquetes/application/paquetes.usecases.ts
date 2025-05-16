@@ -25,7 +25,7 @@ const direccionesusecases = new DireccionesUseCases(direccionrepository);
 const enviorepository: enviosRepository = new enviosRepositoryMongo();
 const enviousecases = new enviosUsecases(enviorepository);
 
-export default class PaquetesUsecases{
+class PaquetesUsecases{
 
     constructor(private paqueteRepository: PaqueteRepository) {}
     
@@ -99,3 +99,5 @@ export default class PaquetesUsecases{
     }
     
 }
+
+export default PaquetesUsecases;
