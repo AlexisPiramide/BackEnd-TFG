@@ -12,8 +12,8 @@ createMongoConnection()
 
 dotenv.config();
 
-const allowedOrigins = ["http://localhost:5173","http://44.212.1.19:5174"];
-//const allowedOrigins = ["*"]
+const allowedOrigins = ["http://localhost:5173","https://front.alexis.daw.cpifppiramide.com"];
+
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
