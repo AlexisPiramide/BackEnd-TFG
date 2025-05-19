@@ -20,19 +20,30 @@ const oAuth2Client = new google.auth.OAuth2(
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 async function createTransporter() {
-  const { token } = await oAuth2Client.getAccessToken();
+  try {
+    const accessTokenResponse = await oAuth2Client.getAccessToken();
 
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      type: 'OAuth2',
-      user: GMAIL_USER,
-      clientId: CLIENT_ID,
-      clientSecret: CLIENT_SECRET,
-      refreshToken: REFRESH_TOKEN,
-      accessToken: token as string,
-    },
-  });
+    if (!accessTokenResponse || !accessTokenResponse.token) {
+      throw new Error('Failed to obtain access token.');
+    }
+
+    const accessToken = accessTokenResponse.token;
+
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: GMAIL_USER,
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken,
+      },
+    });
+  } catch (error) {
+    console.error('Error getting access token:', error);
+    throw error; // propagate error to handle in sendTrackingEmail
+  }
 }
 
 const sendTrackingEmail = async (to: string, trackingCode: string) => {
@@ -50,7 +61,10 @@ const sendTrackingEmail = async (to: string, trackingCode: string) => {
     });
 
     console.log('Correo enviado: %s', info.messageId);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.response?.includes('Invalid Credentials')) {
+      console.error('Your refresh token may be invalid or expired. You need to regenerate it.');
+    }
     console.error('Error enviando el correo: ', error);
   }
 };
