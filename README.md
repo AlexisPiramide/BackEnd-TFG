@@ -20,11 +20,11 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 ## Estructura del proyecto
 
 ```
-├── context/
-│ └── security/ # Módulos relacionados con seguridad (JWT, auth, etc.)
+├─┬ context/
+│ ├── security/ # Módulos relacionados con seguridad (JWT, auth, etc.)
 | └── # Conexiones bases de datos, generadores ...
 ├── docker/ # Docker compose + schemas.sql
-├── src/ # Código fuente principal
+├─┬ src/ # Código fuente principal
 │ ├── dimensiones/
 │ ├── direcciones/
 │ ├── envios/

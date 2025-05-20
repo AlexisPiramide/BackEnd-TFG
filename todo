@@ -9,8 +9,12 @@
   - [X] Seguridad Web Token.
   ## API
   - [X] Instalar y preparar SWAGGER para la API.
-  ## TEST
-  - [X] Instalar y preparar test.
+  ~~## TEST~~
+  - ~~Instalar y preparar test.~~
+  ## Otros
+  - [X] READ.ME
+  - [X] Base de Datos MONGODB Desplegada -> Mongo ATLAS
+  - [X] Base de Datos POSTGRES Desplegada -> NEON
 
 # Código
   ## Cálculos Envíos
@@ -31,18 +35,18 @@
   ## Trazabilidad
   - [X] Generar Barras para cada Envío.
   - [X] Escanear Barras, guardar lugar, hora y trabajador.
-  ## Tests
-  - [ ] Realizar Tests:
-    - [X] Dimensiones.
-    - [~] Paquetes.
-    - [~] Envios.
-    - [~] Usuarios.
-    - [X] Metodos.
-    - [~] Direcciones.
-    - [~] Sucursales.
+  ~~## Tests~~
+  - ~~Realizar Tests:~~
+    - ~~Dimensiones.~~
+    - ~~Paquetes.~~
+    - ~~Envios.~~
+    - ~~Usuarios.~~
+    - ~~Metodos.~~
+    - ~~Direcciones.~~
+    - ~~Sucursales.~~
 
 # Investigación
-  - [ ] Buscar API para cálculo de distancias.
+  - ~~Buscar API para cálculo de distancias.~~
   - [X] Buscar fórmula para calcular precios de envíos.
   - ~~Buscar cómo generar y escanear QR.~~
   - [X] Generar Ids Diferenciados:

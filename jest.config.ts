@@ -4,6 +4,6 @@ module.exports = {
     transform: {
       "^.+\\.tsx?$": ["ts-jest", {}],
     },
-    setupFiles: ["./jest.setup.ts"], // Add the setup file here
+    setupFiles: ["./jest.setup.ts"],
   };
   

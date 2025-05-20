@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import Usuario from "./../src/usuarios/domain/Usuario";
-import ErrorPersonalizado from "./../src/Error/ErrorPersonalizado";
+import Usuario from "../src/usuarios/domain/Usuario";
+import ErrorPersonalizado from "../src/Error/ErrorPersonalizado";
 dotenv.config();
 const DOMINIO: string = process.env.DOMINIO || "";
 

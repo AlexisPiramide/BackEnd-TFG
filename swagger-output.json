@@ -213,11 +213,6 @@
                 }
               }
             }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -226,9 +221,6 @@
           },
           "400": {
             "description": "Datos inválidos"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "500": {
             "description": "Error en el servidor"
@@ -278,11 +270,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -1880,6 +1867,9 @@
                 "es_temporal": {
                   "example": "any"
                 },
+                "id": {
+                  "example": "any"
+                },
                 "nombre": {
                   "example": "any"
                 },
@@ -1887,6 +1877,9 @@
                   "example": "any"
                 },
                 "correo": {
+                  "example": "any"
+                },
+                "telefono": {
                   "example": "any"
                 },
                 "sucursal": {
@@ -2025,6 +2018,9 @@
                 "es_temporal": {
                   "example": "any"
                 },
+                "id": {
+                  "example": "any"
+                },
                 "nombre": {
                   "example": "any"
                 },
@@ -2032,6 +2028,9 @@
                   "example": "any"
                 },
                 "correo": {
+                  "example": "any"
+                },
+                "telefono": {
                   "example": "any"
                 },
                 "sucursal": {
@@ -2173,6 +2172,9 @@
                 "pais": {
                   "example": "any"
                 },
+                "id": {
+                  "example": "any"
+                },
                 "nombre": {
                   "example": "any"
                 },
@@ -2180,6 +2182,9 @@
                   "example": "any"
                 },
                 "correo": {
+                  "example": "any"
+                },
+                "telefono": {
                   "example": "any"
                 },
                 "sucursal": {
@@ -2301,6 +2306,9 @@
             "schema": {
               "type": "object",
               "properties": {
+                "id": {
+                  "example": "any"
+                },
                 "nombre": {
                   "example": "any"
                 },
@@ -2308,6 +2316,9 @@
                   "example": "any"
                 },
                 "correo": {
+                  "example": "any"
+                },
+                "telefono": {
                   "example": "any"
                 },
                 "sucursal": {

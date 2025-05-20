@@ -1,2 +1,0 @@
-CREATE DATABASE tfg;
-CREATE DATABASE tfg_test;
