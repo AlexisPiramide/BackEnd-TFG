@@ -101,16 +101,12 @@ npm install
 cp .env.example .env
 cp .env.example .test.env
 
-```
 # Ejecutar en modo desarrollo
-
 npm run dev
 
 # Ejecutar tests
-
 npm run test
 
 # Generar documentación Swagger automáticamente
-
 npm run swagger
 ```
