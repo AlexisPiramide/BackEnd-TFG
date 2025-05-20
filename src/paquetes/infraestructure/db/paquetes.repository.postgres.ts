@@ -21,7 +21,6 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                 RETURNING *;
             `;
-
         try {
 
             const result: any[] = await executeQuery(query, [

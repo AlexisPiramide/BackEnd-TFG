@@ -20,6 +20,7 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 
 ## Estructura del proyecto
 
+
 ├── context/
 │ └── security/ # Módulos relacionados con seguridad (JWT, auth, etc.)
 | └── # Conexiones bases de datos, generadores ...
@@ -51,35 +52,37 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 
 ### Generales
 
-- `express` – Framework principal del servidor
-- `cors` – Configuración de políticas CORS
-- `dotenv` – Manejo de variables de entorno
-- `bwip-js` – Generación de códigos de barras
-- `nodemailer` – Envío de correos electrónicos
-- `leaflet` – Mapas interactivos
-- `googleapis` – Integración con APIs de Google
+- `express` — Framework principal del servidor  
+- `cors` — Configuración de políticas CORS  
+- `dotenv` — Manejo de variables de entorno  
+- `bwip-js` — Generación de códigos de barras  
+- `nodemailer` — Envío de correos electrónicos  
+- `leaflet` — Mapas interactivos  
+- `googleapis` — Integración con APIs de Google  
 
 ### Base de datos
 
-- `mongodb` – Driver oficial de MongoDB
-- `pg` – Cliente de PostgreSQL
-- `pgadmin` – Interfaz gráfica para PostgreSQL
+- `mongodb` — Driver oficial de MongoDB  
+  [Usando Capa Gratuita de MongoDB Atlas](https://www.mongodb.com/)
+
+- `pg` — Cliente de PostgreSQL  
+  [Usando Capa Gratuita de Neon.tech](https://neon.tech/)
 
 ### Seguridad
 
-- `bcrypt` – Hashing de contraseñas
-- `jsonwebtoken` – Manejo de tokens JWT
+- `bcrypt` — Hashing de contraseñas  
+- `jsonwebtoken` — Manejo de tokens JWT  
 
 ### Testing
 
-- `jest` – Framework de testing
-- `supertest` – Pruebas HTTP
-- `ts-jest` – Integración de Jest con TypeScript
+- `jest` — Framework de testing  
+- `supertest` — Pruebas HTTP  
+- `ts-jest` — Integración de Jest con TypeScript  
 
 ### Documentación
 
-- `swagger-ui-express` – Visualización de documentación
-- `swagger-autogen` – Generación automática de Swagger
+- `swagger-ui-express` — Visualización de documentación  
+- `swagger-autogen` — Generación automática de Swagger  
 
 ---
 
@@ -87,6 +90,7 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 
 ### Instalación local
 
+```bash
 # Clona el repositorio
 git clone https://github.com/AlexisPiramide/backend-tfg.git .
 
@@ -96,16 +100,3 @@ npm install
 # Copia el archivo de entorno de ejemplo
 cp .env.example .env
 cp .env.example .test.env
-
-# Ejecutar en modo desarrollo
-
-npm run dev
-
-# Ejecutar tests
-
-npm run test
-
-# Generar documentación Swagger automáticamente
-
-npm run swagger
-
