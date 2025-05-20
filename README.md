@@ -8,9 +8,8 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 
 - **Lenguajes**:
   - TypeScript
-  - JavaScript
+  - JavaScript 
   - SQL
-  - Docker
 
 - **Bases de datos**:
   - PostgreSQL
@@ -20,7 +19,7 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 
 ## Estructura del proyecto
 
-
+```
 ├── context/
 │ └── security/ # Módulos relacionados con seguridad (JWT, auth, etc.)
 | └── # Conexiones bases de datos, generadores ...
@@ -44,8 +43,8 @@ Este repositorio contiene el backend desarrollado para el Trabajo de Fin de Grad
 ├── package.json
 ├── package-lock.json
 ├── swagger.js # Configuración de Swagger
-├── tsconfig.json # Configuración de TypeScript
-
+└── tsconfig.json # Configuración de TypeScript
+```
 
 ---
 
@@ -102,16 +101,12 @@ npm install
 cp .env.example .env
 cp .env.example .test.env
 
-```
 # Ejecutar en modo desarrollo
-
 npm run dev
 
 # Ejecutar tests
-
 npm run test
 
 # Generar documentación Swagger automáticamente
-
 npm run swagger
 ```
