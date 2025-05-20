@@ -7,10 +7,21 @@ const dbUser = process.env.POSTGRES_USER;
 const dbPassword = process.env.POSTGRES_PASSWORD;
 const dbName = process.env.POSTGRES_DB;
 
+/** SI NO SE USA NEON USAR ESTO
 const pool = new Pool({
   max: 1000,
   connectionString: `postgres://${dbUser}:${dbPassword}@${dbHost}:5432/${dbName}`,
   idleTimeoutMillis: 30000,
+});
+*/
+
+const pool = new Pool({
+  max: 1000,
+  connectionString: `postgres://${dbUser}:${dbPassword}@${dbHost}:5432/${dbName}?sslmode=require`,
+  idleTimeoutMillis: 30000,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 const executeQuery = async (sql: any, data?: any[]) => {
