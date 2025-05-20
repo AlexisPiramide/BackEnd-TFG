@@ -11,10 +11,9 @@ import ErrorPersonalizado from "../../Error/ErrorPersonalizado";
 
 import sendTrackingEmail from "../../../context/enviaCorreos";
 
-import enviosRepositoryMongo from "../../envios/infraestructure/db/envios.repository.mongo";
-import enviosUsecases from "../../envios/application/envios.usecases";
-import enviosRepository from "../../envios/domain/envios.repository";
 import Usuario from "../../usuarios/domain/Usuario";
+import envioRepository from "../../envios/domain/envios.repository";
+import enviosrepositoryMongo from "../../envios/infraestructure/db/envios.repository.mongo";
 
 const usuariorepository: usuariosRepository = new usuariosRepositoryPostgres();
 const usuariousecases = new usuariosUsecases(usuariorepository);
@@ -22,13 +21,13 @@ const usuariousecases = new usuariosUsecases(usuariorepository);
 const direccionrepository: direccionesRepository = new DireccionesRepositoryPostgres();
 const direccionesusecases = new DireccionesUseCases(direccionrepository);
 
-const enviorepository: enviosRepository = new enviosRepositoryMongo();
-const enviousecases = new enviosUsecases(enviorepository);
+const enviorepository: envioRepository = new enviosrepositoryMongo();
 
-class PaquetesUsecases{
 
-    constructor(private paqueteRepository: PaqueteRepository) {}
-    
+
+export default class PaquetesUsecases{
+
+    constructor(private paqueteRepository: PaqueteRepository, private enviorepository: envioRepository ) { }
 
     async postPaquete(paquete: Paquete,trabajador: Usuario): Promise<Paquete> {
         let result = true;
@@ -65,7 +64,7 @@ class PaquetesUsecases{
         await sendTrackingEmail(correo1, paqueteCompleto.id);
         await sendTrackingEmail(correo2, paqueteCompleto.id);
 
-        enviousecases.tracking(paquetedb.id, trabajador, 0);
+        this.enviorepository.tracking(paquetedb.id, trabajador.id, 0);
         return paqueteCompleto
     }
 
@@ -99,5 +98,3 @@ class PaquetesUsecases{
     }
     
 }
-
-export default PaquetesUsecases;

@@ -7,11 +7,14 @@ import Direccion from "../../../direcciones/domain/Direccion";
 import Paquete from "../../domain/Paquete";
 import Usuario from "../../../usuarios/domain/Usuario";
 import { isAuth, isWorker } from "../../../../context/security/auth";
+import envioRepository from "../../../envios/domain/envios.repository";
+import enviosrepositoryMongo from "../../../envios/infraestructure/db/envios.repository.mongo";
 
 const router = express.Router();
 
 const paquetesrepository: PaqueteRepository = new PaqueteRepositoryPostgres();
-const paquetesusecases = new PaquetesUsecases(paquetesrepository);
+const enviosrepository: envioRepository = new enviosrepositoryMongo();
+const paquetesusecases = new PaquetesUsecases(paquetesrepository,enviosrepository);
 
 router.post('/',isWorker, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Registrar un nuevo paquete', #swagger.parameters[0] = { in: 'body', description: 'Datos del paquete', required: true, schema: { type: 'object', properties: { dimensiones: { type: 'string' }, remitente: { type: 'object' }, direccion_remitente: { type: 'object' }, destinatario: { type: 'object' }, direccion_destinatario: { type: 'object' }, peso: { type: 'number' } } } }, #swagger.responses[201] = { description: 'Paquete registrado correctamente' }, #swagger.responses[400] = { description: 'Datos inválidos' }, #swagger.responses[500] = { description: 'Error en el servidor' }
