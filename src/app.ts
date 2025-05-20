@@ -26,7 +26,11 @@ app.use(express.json());
 app.use(cors(options));
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  swaggerOptions: {
+     supportedSubmitMethods: [],
+  }
+}));
 
 app.use(`/api/dimensiones`, DimensionesRest);
 app.use(`/paquetes`, PaquetesRest);

@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "nodemon ./src/index.ts",
         "test": "NODE_ENV=test jest --runInBand",
-        "swagger": "node ./swagger.js"
+        "swagger": "node ./swagger.js", 
+        "build": "tsc"
     },
     "author": "",
     "license": "ISC",
