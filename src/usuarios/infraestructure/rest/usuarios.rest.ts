@@ -5,6 +5,8 @@ import UsuariosUsecases from "../../application/usuarios.usecases";
 import Usuario from "../../domain/Usuario";
 import { createToken, isAdmin, isAuth } from "./../../../../context/security/auth";
 
+import Sucursal from "../../../sucursales/domain/Sucursal";
+
 const router = express.Router();
 
 const usuariosRepository: UsuariosRepository = new usuariosRepositoryPostgres();
@@ -19,12 +21,14 @@ router.post('/login', async (req: Request, res: Response) => {
         }
 
         const usuariodb: Usuario = await usuariosUsecases.login(usuario);
-
+        console.log("usuario ",usuariodb)
         const token = createToken(usuariodb);
         res.status(200).json({
             usuario: devolverUsuario(usuariodb),
             token: token
         });
+
+
     } catch (error) {
         console.log(error);
         res.status(error.estatus).json(error.message);
@@ -44,6 +48,7 @@ router.post('/registro', async (req: Request, res: Response) => {
 
         const usuariodb: Usuario = await usuariosUsecases.registro(usuario);
         const token = createToken(usuariodb);
+
         res.status(201).json({
             usuario: devolverUsuario(usuariodb),
             token: token
@@ -68,9 +73,7 @@ router.post('/admin/registro', isAdmin, async (req: Request, res: Response) => {
 
         const usuariodb: Usuario = await usuariosUsecases.registro(usuario);
         res.status(201).json({
-            usuario: devolverUsuario({
-                usuario: devolverUsuario(usuariodb)
-            })
+            usuario: devolverUsuario(usuariodb)
         });
     } catch (error) {
         console.log(error);
@@ -84,6 +87,7 @@ router.get('/:id', isAuth, async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
         const usuariodb: Usuario = await usuariosUsecases.getUsuario(id);
+        
         res.status(200).json(devolverUsuario(usuariodb));
     } catch (error) {
         console.log(error);
@@ -99,7 +103,6 @@ router.post("/existe", async (req: Request, res: Response) => {
             apellidos: req.body.apellidos,
             correo: req.body.correo
         }
-
         const existe = await usuariosUsecases.encontrarcondatos(usuario);
         res.status(200).json({ existe });
     } catch (error) {
@@ -142,14 +145,26 @@ router.get("/isExterno/:id", async (req: Request, res: Response) => {
     }
 });
 
-const devolverUsuario = (usuariodb) => {
-    return {
+const devolverUsuario = (usuariodb: Usuario) => {
+    const usuario: Usuario = {
         id: usuariodb.id,
         nombre: usuariodb.nombre,
         apellidos: usuariodb.apellidos,
         correo: usuariodb.correo,
-        telefono: usuariodb.telefono
+        telefono: usuariodb.telefono,
     }
+
+    if (usuariodb.sucursal) {
+        const sucursal: Sucursal = {
+            id: usuariodb.sucursal.id,
+            nombre: usuariodb.sucursal.nombre,
+            telefono: usuariodb.sucursal.telefono,
+            direccion: null,
+        }
+        usuario.sucursal = sucursal;
+    }
+
+    return usuario;
 }
 
 export default router;

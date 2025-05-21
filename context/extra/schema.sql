@@ -28,7 +28,7 @@ CREATE TABLE Usuario (
     contraseña VARCHAR(100),
     telefono VARCHAR(15) UNIQUE,
     puesto VARCHAR(50),
-    sucursal SERIAL,
+    sucursal INT,
     es_externo BOOLEAN DEFAULT FALSE,
     es_admin BOOLEAN DEFAULT FALSE,
     CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$'),
@@ -59,7 +59,7 @@ CREATE TABLE Paquete (
     FOREIGN KEY (destinatario) REFERENCES Usuario(id),
     FOREIGN KEY (direccion_remitente) REFERENCES Direccion(id),
     FOREIGN KEY (direccion_destinatario) REFERENCES Direccion(id),
-    CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$'),
+    CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{15}$')
     CONSTRAINT formato_id_dimension CHECK (id_dimension ~* '^[A-Za-z0-9]{24}$')
 );
 
@@ -79,8 +79,8 @@ inserted_sucursal AS (
 
 INSERT INTO Usuario (id, nombre, apellidos, correo, contraseña, telefono, puesto, sucursal, es_externo, es_admin)
 VALUES 
-    ('Q7XZ-3B9L-PD4K', 'Alexis', 'Torres Climente', '220240@fppiramide.com','$2a$12$DoopKGMWaCdGrXB1CMX5iOIXAqvb3pLPMbw4jI3HeT58H2vV2eCsu', '639040769', 'Gerente', (SELECT id FROM inserted_sucursal), FALSE, TRUE),
-    ('M8CN-R2VF-JT5W', 'Nuria', 'Torrelles Guerris', '230282@fppiramide.com','$2a$12$DoopKGMWaCdGrXB1CMX5iOIXAqvb3pLPMbw4jI3HeT58H2vV2eCsu', '000000000', NULL, (SELECT id FROM inserted_sucursal), FALSE, FALSE);
+    ('Q7XZ-3B9L-PD4K', 'Alexis', 'Torres Climente', '220240@fppiramide.com', '$2b$12$3InWgxc/ED7SIBxsj8uOje5Ba9omgfk37iwpWdW4PEMe2RQxuDtOa', '639040769', 'Gerente', (SELECT id FROM inserted_sucursal), FALSE, TRUE),
+    ('M8CN-R2VF-JT5W', 'Nuria', 'Torrelles Guerris', '230282@fppiramide.com','$2b$12$3InWgxc/ED7SIBxsj8uOje5Ba9omgfk37iwpWdW4PEMe2RQxuDtOa', '000000000', NULL, (SELECT id FROM inserted_sucursal), FALSE, FALSE);
 
 -- 1. Insert Direcciones and capture their IDs
 WITH inserted_direcciones AS (

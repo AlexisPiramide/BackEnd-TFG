@@ -10,11 +10,10 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
                    d.localidad, d.provincia, d.pais
             FROM usuario_direccion ud
             JOIN direccion d ON ud.direccion = d.id
-            WHERE ud.usuario = $1 && d.es_temporal = false;
+            WHERE ud.usuario = $1 AND d.es_temporal = false;
         `;
-    
+        
         const response = await executeQuery(query, [id]);
-    
         return response.map((direccion: any) => ({
             id: direccion.id,
             calle: direccion.calle,

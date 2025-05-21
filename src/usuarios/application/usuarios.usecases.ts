@@ -7,21 +7,21 @@ export default class usuariosUsecases {
     constructor(private usuariosRepository: usuariosRepository) { }
 
     async login(usuario: Usuario): Promise<Usuario> {
-        if (!usuario.correo || !usuario.contraseña) {
-            throw new ErrorPersonalizado("Faltan datos", 400);
-        }
-
-        const passwordHash = hash(usuario.contraseña);
-        usuario.contraseña = passwordHash;
-
-        const usuarioDB = await this.usuariosRepository.login(usuario);
-
-        const result = compare(usuarioDB.contraseña, usuario.contraseña);
-
-        if (!result) { throw new ErrorPersonalizado("Contraseña incorrecta", 401); }
-
-        return usuarioDB;
+    if (!usuario.correo || !usuario.contraseña) {
+        throw new ErrorPersonalizado("Faltan datos", 400);
     }
+
+    const usuarioDB = await this.usuariosRepository.login(usuario);
+
+    const result = compare(usuario.contraseña, usuarioDB.contraseña); // <-- corrected here
+
+    if (!result) { 
+        throw new ErrorPersonalizado("Contraseña incorrecta", 401); 
+    }
+
+    return usuarioDB;
+    }
+
 
     async registro(usuario: Usuario): Promise<Usuario> {
         if (!usuario.correo || !usuario.contraseña) {
@@ -40,7 +40,6 @@ export default class usuariosUsecases {
         usuario.contraseña = passwordHash;
 
         const usuarioDB = await this.usuariosRepository.registro(usuario);
-
         return usuarioDB;
 
     }

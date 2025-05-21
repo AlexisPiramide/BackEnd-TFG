@@ -42,20 +42,20 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
                 direccion: resultSucursal[0].direccion,
             };
         }
-    
+        
         return usuarioDB;
     }
     
 
     async registro(usuario: Usuario): Promise<Usuario> {
-        const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, contraseña,apellidos,telefono,es_externo) VALUES ($1, $2, $3, $4, $5, $6 ,$7) RETURNING *';
-        const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono,false];
+        const queryRegistro = 'INSERT INTO Usuario (id,nombre, correo, "contraseña",apellidos,telefono,es_externo,sucursal,puesto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *';
+        const values = [usuario.id,usuario.nombre, usuario.correo, usuario.contraseña,usuario.apellidos,usuario.telefono,false,null,null];
         
         const result: any = await executeQuery(queryRegistro, values);
-
+        
         if(result.length === 0){
             throw new ErrorPersonalizado("Error al registrar el usuario", 500);
-        }
+        } 
 
         const usuarioRegistrado: Usuario = {
             id: result[0].id,
@@ -70,8 +70,8 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     }
 
     async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
-        const queryRegistroExterno = 'INSERT INTO Usuario_Externo (nombre, apellidos, correo, telefono, es_externo) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-        const values = [usuario.nombre, usuario.apellidos, usuario.correo || null, usuario.telefono || null, true];
+        const queryRegistroExterno = 'INSERT INTO Usuario_Externo (nombre, apellidos, correo, telefono, es_externo,sucursal,puesto) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+        const values = [usuario.nombre, usuario.apellidos, usuario.correo || null, usuario.telefono || null, true,null,null];
         
         const result: any = await executeQuery(queryRegistroExterno, values);
 
@@ -190,4 +190,4 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     
 
     
-}
+} 

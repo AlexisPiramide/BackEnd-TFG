@@ -19,12 +19,13 @@ const paquetesusecases = new PaquetesUsecases(paquetesrepository,enviosrepositor
 router.post('/',isWorker, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Registrar un nuevo paquete', #swagger.parameters[0] = { in: 'body', description: 'Datos del paquete', required: true, schema: { type: 'object', properties: { dimensiones: { type: 'string' }, remitente: { type: 'object' }, direccion_remitente: { type: 'object' }, destinatario: { type: 'object' }, direccion_destinatario: { type: 'object' }, peso: { type: 'number' } } } }, #swagger.responses[201] = { description: 'Paquete registrado correctamente' }, #swagger.responses[400] = { description: 'Datos inválidos' }, #swagger.responses[500] = { description: 'Error en el servidor' }
     try {
+
         const paquetebody: Paquete = {
             dimensiones: req.body.dimensiones,
-            remitente: typeof req.body.remitente === "object" ? nuevoUsuario(req) : req.body.remitente,
-            direccion_remitente: typeof req.body.direccion_remitente === "object" ? nuevaDireccion(req): req.body.direccion_remitente,
-            destinatario: typeof req.body.destinatario === "object" ? nuevoUsuario(req) : req.body.destinatario,
-            direccion_destinatario: typeof req.body.direccion_destinatario === "object" ? nuevaDireccion(req) : req.body.direccion_destinatario,
+            remitente: typeof req.body.remitente === "object" ? nuevoUsuario(req.body.remitente) : req.body.remitente,
+            direccion_remitente: (req.body.direccion_remitente.id === undefined) ? nuevaDireccion(req.body.direccion_remitente) : req.body.direccion_remitente.id,
+            destinatario: typeof req.body.destinatario === "object" ? nuevoUsuario(req.body.destinatario) : req.body.destinatario,
+            direccion_destinatario: (req.body.direccion_destinatario.id === undefined) ? nuevaDireccion(req.body.direccion_destinatario) : req.body.direccion_destinatario.id,
             peso: req.body.peso
         };
 
@@ -48,7 +49,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/paquetes/',isWorker, async (req: Request, res: Response) => {
+router.post('/paquetes/',isAuth, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Obtener paquetes por usuario', #swagger.security = [{ "bearerAuth": [] }], #swagger.parameters[0] = { in: 'body', name: 'id', required: true, description: 'ID del usuario', schema: { type: 'string' } }, #swagger.responses[200] = { description: 'Paquetes obtenidos' }, #swagger.responses[401] = { description: 'No autorizado' }, #swagger.responses[500] = { description: 'Error en el servidor' }
     try {
         const paquetes = await paquetesusecases.getPaquetesByUsuario(req.body.id);
@@ -70,10 +71,10 @@ router.get('/gencode/:id',isAuth, async (req: Request, res: Response) => {
     }
 });
 
-router.get("/precio/:tamaño/:peso", async (req: Request, res: Response) => {
+router.get("/precio/:tamanio/:peso", async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Calcular precio de envío', #swagger.parameters[0] = { in: 'path', name: 'tamaño', required: true, description: 'Tamaño del paquete', schema: { type: 'string' } }, #swagger.parameters[1] = { in: 'path', name: 'peso', required: true, description: 'Peso del paquete', schema: { type: 'number' } }, #swagger.responses[200] = { description: 'Precio calculado' }, #swagger.responses[400] = { description: 'Parámetros inválidos' }, #swagger.responses[500] = { description: 'Error en el servidor' }
     try {
-        const precio = await paquetesusecases.calcularPrecio(req.params.tamaño, Number(req.params.peso));
+        const precio = await paquetesusecases.calcularPrecio(req.params.tamanio, Number(req.params.peso));
         res.status(200).json(precio);
     } catch (error) {
         res.status(error.estatus).json(error.message);

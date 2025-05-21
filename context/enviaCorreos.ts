@@ -5,9 +5,9 @@ import { google } from 'googleapis';
 dotenv.config();
 
 const GMAIL_USER = process.env.GMAIL_USER || '';
-const CLIENT_ID = process.env.GMAIL_USERCLIENT_ID || '';
-const CLIENT_SECRET = process.env.GMAIL_USERCLIENT_SECRET || '';
-const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || '';
+const CLIENT_ID = process.env.CLIENT_ID || '';
+const CLIENT_SECRET = process.env.CLIENT_SECRET || '';
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN || '';
 
 
 // Configura OAuth2

@@ -52,6 +52,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
 
             return paqueteDb;
         } catch (error) {
+            console.log(error);
             throw new ErrorPersonalizado('La conexión a la base de datos no ha funcionado', 500);
         }
     }
@@ -204,12 +205,14 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
         const tarifaBase = [5.63, 6.05, 7.37, 12.6];
         const tarifa100G = [0.5, 0.4, 0.3, 0.2];
 
-        try {
-            // Handle the case where paquete is a Paquete object
-            if (paquete instanceof Object) {
+        try {  
+            // Check if paquete is a Paquete object (not a string)
+            if (typeof paquete === "object" && paquete !== null && "dimensiones" in paquete && "peso" in paquete) {
                 const dimensiones = await dimensionesusecases.getDimensiones();
                 const dimension = dimensiones.find((dimension) => dimension.id === paquete.dimensiones);
-
+                if (!dimension) {
+                    throw new ErrorPersonalizado('Dimensión no encontrada', 400);
+                }
                 switch (dimension.nombre) {
                     case "Pequeño":
                         return tarifaBase[0] + (paquete.peso - 1) * tarifa100G[0];
@@ -219,11 +222,13 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                         return tarifaBase[2] + (paquete.peso - 1) * tarifa100G[2];
                     case "Extra grande":
                         return tarifaBase[3] + (paquete.peso - 1) * tarifa100G[3];
+                    default:
+                        throw new ErrorPersonalizado('Nombre de dimensión no válido', 400);
                 }
             }
 
-
             if (typeof paquete === "string" && peso !== undefined) {
+                
                 switch (paquete) {
                     case "Pequeño":
                         return tarifaBase[0] + (peso - 1) * tarifa100G[0];
@@ -233,9 +238,11 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                         return tarifaBase[2] + (peso - 1) * tarifa100G[2];
                     case "Extra grande":
                         return tarifaBase[3] + (peso - 1) * tarifa100G[3];
+                    default:
+                        throw new ErrorPersonalizado('Nombre de dimensión no válido', 400);
                 }
             }
-
+          
             throw new ErrorPersonalizado('Datos de entrada no válidos', 400);
         } catch (error) {
             console.log(error);

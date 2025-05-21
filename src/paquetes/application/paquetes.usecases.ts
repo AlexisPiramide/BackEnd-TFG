@@ -23,8 +23,6 @@ const direccionesusecases = new DireccionesUseCases(direccionrepository);
 
 const enviorepository: envioRepository = new enviosrepositoryMongo();
 
-
-
 export default class PaquetesUsecases{
 
     constructor(private paqueteRepository: PaqueteRepository, private enviorepository: envioRepository ) { }
@@ -37,21 +35,28 @@ export default class PaquetesUsecases{
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
         let destinatario, remitente;
-        
-        destinatario = (typeof paquete.destinatario !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.destinatario))  : await usuariousecases.getUsuario(paquete.destinatario);
-        remitente = (typeof paquete.remitente !== 'string') ? (await usuariousecases.registrarUsuarioExterno(paquete.remitente))  : await usuariousecases.getUsuario(paquete.remitente);
 
+        if(typeof paquete.destinatario !== 'string'){
+            const dd = await usuariousecases.registrarUsuarioExterno(paquete.destinatario);
+            paquete.destinatario = dd;
+        }
+        if(typeof paquete.remitente !== 'string'){
+            const dr = await usuariousecases.registrarUsuarioExterno(paquete.remitente);
+            paquete.remitente = dr;
+        }
 
-        let direccion_destinatario,direccion_remitente;
-        direccion_destinatario = (typeof paquete.direccion_destinatario !== 'number') ?  direccionesusecases.nuevaDireccionUsuario(destinatario.id,paquete.direccion_destinatario,true): direccionesusecases.getDireccionById(paquete.direccion_destinatario);
-        direccion_remitente = (typeof paquete.direccion_remitente !== 'number') ? direccionesusecases.nuevaDireccionUsuario(remitente.id,paquete.direccion_remitente,true): direccionesusecases.getDireccionById(paquete.direccion_remitente);
-        
-        paquete.destinatario = destinatario.id;
-        paquete.remitente = paquete.id;
-        paquete.direccion_destinatario = direccion_destinatario.id;
-        paquete.direccion_remitente = direccion_remitente.id;
+        if(typeof paquete.direccion_destinatario !== 'number'){
+            const dd = await direccionesusecases.nuevaDireccionUsuario(destinatario.id,paquete.direccion_destinatario,true);
+            paquete.direccion_destinatario = dd.id;
+        }
+        if(typeof paquete.direccion_remitente !== 'number'){
+            const dr = await direccionesusecases.nuevaDireccionUsuario(remitente.id,paquete.direccion_remitente,true);
+            paquete.direccion_remitente = dr.id;
+        }
     
         paquete.precio = await this.paqueteRepository.calcularPrecio(paquete);
+
+        console.log(paquete); 
 
         const paquetedb = await this.paqueteRepository.postPaquete(paquete);
 
@@ -62,7 +67,9 @@ export default class PaquetesUsecases{
 
         // Enviar correo de seguimiento a ambos usuarios
         await sendTrackingEmail(correo1, paqueteCompleto.id);
-        await sendTrackingEmail(correo2, paqueteCompleto.id);
+        console.log("correo1",correo1);
+        //console.log("correo2",correo2);
+        //await sendTrackingEmail(correo2, paqueteCompleto.id);
 
         this.enviorepository.tracking(paquetedb.id, trabajador.id, 0);
         return paqueteCompleto
@@ -81,8 +88,9 @@ export default class PaquetesUsecases{
     
     async calcularPrecio(paquete: Paquete | string, peso?: number): Promise<number> {
         try {
-            // Si 'paquete' es un objeto, lo pasamos a la función de repositorio
-            if (paquete instanceof Object) {
+
+            // Si 'paquete' es un objeto (Paquete), lo pasamos a la función de repositorio
+            if (typeof paquete === "object" && paquete !== null) {
                 return await this.paqueteRepository.calcularPrecio(paquete);
             }
     
@@ -93,6 +101,7 @@ export default class PaquetesUsecases{
     
             throw new ErrorPersonalizado('Datos de entrada no válidos', 400);
         } catch (error) {
+            console.log(error);
             throw new ErrorPersonalizado('Error al calcular el precio', 400);
         }
     }

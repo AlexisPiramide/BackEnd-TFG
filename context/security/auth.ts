@@ -106,9 +106,8 @@ const isWorker = asyncHandler(async (req: Request, res: Response, next: NextFunc
 
     const query = "SELECT sucursal FROM Usuario WHERE correo = $1";
     const values = [decoded.correo];
-
+    
     const result: any = await executeQuery(query, values);
-
     if (result.length === 0 || !result[0].sucursal) {
         return res.status(401).json({ mensaje: "No autorizado" });
     }
