@@ -27,10 +27,15 @@ router.get('/tracking/:id', async (req: Request, res: Response) => {
     /* #swagger.tags = ['Envios'] #swagger.description = 'Endpoint para obtener el estado de un envio' #swagger.responses[200] = { description: 'Envio encontrado' } #swagger.responses[404] = { description: 'No encontrado' } #swagger.responses[500] = { description: 'Error en el servidor' } */
     try {
         const id = req.params.id;
+        console.log("ID",id);
         const envio = await enviosusecases.getTracking(id);
+        console.log("ENVIO",envio);
         res.status(200).json(envio);
+        
     } catch (error) {
+        console.log("ERROR",error);
         throw new ErrorPersonalizado(`Error al buscar el envio`, error);
     }
 });
 
+export default router;

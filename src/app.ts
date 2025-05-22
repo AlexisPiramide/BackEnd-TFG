@@ -6,8 +6,8 @@ import PaquetesRest from "./paquetes/infraestructure/rest/paquetes.rest"
 import DimensionesRest from "./dimensiones/infraestructure/rest/dimensiones.rest"
 import UsuariosRest from "./usuarios/infraestructure/rest/usuarios.rest"
 import DireccionesRest from "./direcciones/infraestructure/rest/direcciones.rest"
-
-import createMongoConnection from "../context/mongo.db";
+import EnviosRest from "./envios/infraestructure/rest/envios.rest"
+import createMongoConnection from "../context/mongo.db";  
 createMongoConnection()
 
 dotenv.config();
@@ -35,6 +35,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
 app.use(`/api/dimensiones`, DimensionesRest);
 app.use(`/paquetes`, PaquetesRest);
 app.use(`/usuarios`, UsuariosRest);
+app.use(`/envios`, EnviosRest);	
 app.use(`/direcciones`, DireccionesRest);
 
 
