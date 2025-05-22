@@ -70,8 +70,8 @@ export default class usuariosRepositoryPostgres implements usuariosRepository{
     }
 
     async registrarUsuarioExterno(usuario: Usuario): Promise<Usuario> {
-        const queryRegistroExterno = 'INSERT INTO Usuario_Externo (nombre, apellidos, correo, telefono, es_externo,sucursal,puesto) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
-        const values = [usuario.nombre, usuario.apellidos, usuario.correo || null, usuario.telefono || null, true,null,null];
+        const queryRegistroExterno = `INSERT INTO Usuario (id, nombre, apellidos, correo, telefono, es_externo, sucursal, puesto, es_admin, "contraseña") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)RETURNING *`;
+        const values = [usuario.id,usuario.nombre, usuario.apellidos, usuario.correo || null, usuario.telefono || null, true,null,null,false,null];
         
         const result: any = await executeQuery(queryRegistroExterno, values);
 

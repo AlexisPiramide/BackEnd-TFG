@@ -16,6 +16,8 @@ export default class DireccionesUseCases {
     }
 
     async nuevaDireccionUsuario(usuario: string, direccion: Direccion,es_temporal:boolean): Promise<Direccion> {
+        console.log(usuario);
+        console.log(direccion);
         return await this.direccionesRepository.nuevaDireccionUsuario(usuario, direccion,es_temporal);
     }
 

@@ -19,7 +19,6 @@ const paquetesusecases = new PaquetesUsecases(paquetesrepository,enviosrepositor
 router.post('/',isWorker, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Registrar un nuevo paquete', #swagger.parameters[0] = { in: 'body', description: 'Datos del paquete', required: true, schema: { type: 'object', properties: { dimensiones: { type: 'string' }, remitente: { type: 'object' }, direccion_remitente: { type: 'object' }, destinatario: { type: 'object' }, direccion_destinatario: { type: 'object' }, peso: { type: 'number' } } } }, #swagger.responses[201] = { description: 'Paquete registrado correctamente' }, #swagger.responses[400] = { description: 'Datos inválidos' }, #swagger.responses[500] = { description: 'Error en el servidor' }
     try {
-
         const paquetebody: Paquete = {
             dimensiones: req.body.dimensiones,
             remitente: typeof req.body.remitente === "object" ? nuevoUsuario(req.body.remitente) : req.body.remitente,
@@ -82,23 +81,23 @@ router.get("/precio/:tamanio/:peso", async (req: Request, res: Response) => {
 });
 
 
-const nuevoUsuario = (req: Request): Usuario => {
+const nuevoUsuario = (req: any): Usuario => {
     return {
-        nombre: req.body.nombre,
-        apellidos: req.body.apellidos,
-        correo: req.body.email,
-        contraseña: req.body.password,
-        telefono: req.body.telefono
+        nombre: req.nombre,
+        apellidos: req.apellidos,
+        correo: req.correo,
+        contraseña: req.contraseña,
+        telefono: req.telefono
     };
 }
-const nuevaDireccion = (req: Request): Direccion => {
+const nuevaDireccion = (req: any): Direccion => {
     return {
-        calle: req.body.calle,
-        numero: req.body.numero,
-        codigoPostal: req.body.codigoPostal,
-        localidad: req.body.localidad,
-        provincia: req.body.provincia,
-        pais: req.body.pais
+        calle: req.calle,
+        numero: req.numero,
+        codigoPostal: req.codigoPostal,
+        localidad: req.localidad,
+        provincia: req.provincia,
+        pais: req.pais
     };
 }
 export default router;

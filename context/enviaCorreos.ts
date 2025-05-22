@@ -48,7 +48,8 @@ async function createTransporter() {
 
 const sendTrackingEmail = async (to: string, trackingCode: string) => {
   const subject = 'Notificación de seguimiento';
-  const text = `Tu código de seguimiento es: ${trackingCode}. Puedes usarlo para verificar el estado de tu envío.`;
+  const text = `Tu código de seguimiento es: ${trackingCode}. Puedes usarlo para verificar el estado de tu envío.
+  Si te esta llegando esto te jodes porque estoy de pruebas 33`;
 
   try {
     const transporter = await createTransporter();

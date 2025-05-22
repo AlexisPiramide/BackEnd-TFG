@@ -34,7 +34,7 @@ export default class PaquetesUsecases{
             paquete.id = idGenerado;
             result = await this.paqueteRepository.comporbarID(idGenerado);
         }
-        let destinatario, remitente;
+
 
         if(typeof paquete.destinatario !== 'string'){
             const dd = await usuariousecases.registrarUsuarioExterno(paquete.destinatario);
@@ -46,17 +46,15 @@ export default class PaquetesUsecases{
         }
 
         if(typeof paquete.direccion_destinatario !== 'number'){
-            const dd = await direccionesusecases.nuevaDireccionUsuario(destinatario.id,paquete.direccion_destinatario,true);
+            const dd = await direccionesusecases.nuevaDireccionUsuario(paquete.destinatario,paquete.direccion_destinatario,true);
             paquete.direccion_destinatario = dd.id;
         }
         if(typeof paquete.direccion_remitente !== 'number'){
-            const dr = await direccionesusecases.nuevaDireccionUsuario(remitente.id,paquete.direccion_remitente,true);
+            const dr = await direccionesusecases.nuevaDireccionUsuario(paquete.remitente,paquete.direccion_remitente,true);
             paquete.direccion_remitente = dr.id;
         }
     
         paquete.precio = await this.paqueteRepository.calcularPrecio(paquete);
-
-        console.log(paquete); 
 
         const paquetedb = await this.paqueteRepository.postPaquete(paquete);
 
@@ -68,8 +66,8 @@ export default class PaquetesUsecases{
         // Enviar correo de seguimiento a ambos usuarios
         await sendTrackingEmail(correo1, paqueteCompleto.id);
         console.log("correo1",correo1);
-        //console.log("correo2",correo2);
-        //await sendTrackingEmail(correo2, paqueteCompleto.id);
+        console.log("correo2",correo2);
+        await sendTrackingEmail(correo2, paqueteCompleto.id);
 
         this.enviorepository.tracking(paquetedb.id, trabajador.id, 0);
         return paqueteCompleto
