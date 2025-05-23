@@ -85,8 +85,8 @@ router.put('/:id', isAuth, async (req: Request, res: Response) => {
     }
 });
 
+/*
 router.delete('/:id', isAuth, async (req: Request, res: Response) => {
-    /* #swagger.tags = ['Direcciones'], #swagger.description = 'Endpoint para eliminar una dirección', #swagger.responses[200] = { description: 'Dirección eliminada correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } */
     try {
         const direccion = await direccionesusecases.eliminarDireccion(Number(req.params.id));
         res.status(200).json(direccion);
@@ -94,7 +94,7 @@ router.delete('/:id', isAuth, async (req: Request, res: Response) => {
         res.status(error.estatus).json(error.message);
     }
 });
-
+/* #swagger.tags = ['Direcciones'], #swagger.description = 'Endpoint para eliminar una dirección', #swagger.responses[200] = { description: 'Dirección eliminada correctamente', schema: { type: 'object', properties: { id: { type: 'string' }, calle: { type: 'string' }, numero: { type: 'integer' }, codigoPostal: { type: 'string' }, localidad: { type: 'string' }, provincia: { type: 'string' }, pais: { type: 'string' } } } } */
 
 
 export default router;
