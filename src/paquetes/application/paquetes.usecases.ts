@@ -64,12 +64,13 @@ export default class PaquetesUsecases{
         const correo2 = (typeof paqueteCompleto.remitente !== 'string' ) ? paqueteCompleto.remitente.correo : "";
 
         // Enviar correo de seguimiento a ambos usuarios
-        await sendTrackingEmail(correo1, paqueteCompleto.id);
-        console.log("correo1",correo1);
-        console.log("correo2",correo2);
-        await sendTrackingEmail(correo2, paqueteCompleto.id);
+        //await sendTrackingEmail(correo1, paqueteCompleto.id);
+        //await sendTrackingEmail(correo2, paqueteCompleto.id);
 
-        this.enviorepository.tracking(paquetedb.id, trabajador.id, 0);
+        const direccion_sucursal = await direccionesusecases.getDireccionSucursal(trabajador.sucursal.id);
+
+        const tracking = await this.enviorepository.tracking(paquetedb.id, trabajador.id, 0,direccion_sucursal);
+        console.log(tracking);
         return paqueteCompleto
     }
 

@@ -9,4 +9,5 @@ export default interface direccionesRepository {
     updateDireccion(direccion: Direccion): Promise<Direccion>;
     eliminarDireccion(id: number): Promise<Direccion>;
 
+    getDireccionSucursal(id: string): Promise<Direccion>;
 }

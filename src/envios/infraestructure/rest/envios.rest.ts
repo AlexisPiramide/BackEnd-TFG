@@ -4,6 +4,7 @@ import  EnvioRepository  from './../../domain/envios.repository';
 import  EnviosUsecases  from './../../application/envios.usecases';
 import enviosrepositoryMongo from '../db/envios.repository.mongo';
 import ErrorPersonalizado from '../../../Error/ErrorPersonalizado';
+import Direccion from '../../../direcciones/domain/Direccion';
 
 const router = express.Router();
 
@@ -16,7 +17,16 @@ router.post('/tracking/:usuario', async (req: Request, res: Response) => {
         const id = req.body.id;
         const usuario = req.params.usuario;
         const tipo = req.body.tipo;
-        const envio = await enviosusecases.tracking(id, usuario, tipo);
+
+        const direccion: Direccion = {
+            calle: req.body.direccion.calle,
+            numero: req.body.direccion.numero,
+            codigoPostal: req.body.direccion.codigoPostal,
+            localidad: req.body.direccion.localidad,
+            provincia: req.body.direccion.provincia,
+            pais: "España"
+        }
+        const envio = await enviosusecases.tracking(id, usuario, tipo,direccion);
         res.status(201).json(envio);
     } catch (error) {
         throw new ErrorPersonalizado(`Error al insertar el envio`, error);

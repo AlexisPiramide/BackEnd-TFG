@@ -28,4 +28,8 @@ export default class DireccionesUseCases {
     async eliminarDireccion(id: number): Promise<Direccion> {
         return await this.direccionesRepository.eliminarDireccion(id);
     }
+
+    async getDireccionSucursal(id: string): Promise<Direccion> {
+        return await this.direccionesRepository.getDireccionSucursal(id);
+    }
 }

@@ -130,5 +130,30 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             pais: response[0].pais
         };
     }
+
+    async getDireccionSucursal(id: string): Promise<Direccion> {
+        const query = `
+            SELECT d.id, d.calle, d.numero, d.codigo_postal AS "codigoPostal", 
+            d.localidad, d.provincia, d.pais
+            FROM sucursal s
+            JOIN direccion d ON s.id_direccion = d.id
+            WHERE s.id = $1;`;
+        
+        const response: any[] = await executeQuery(query, [id]);
+
+        if (response.length === 0) {
+            throw new Error("Direccion no encontrada");
+        }
+
+        return {
+            id: response[0].id,
+            calle: response[0].calle,
+            numero: response[0].numero,
+            codigoPostal: response[0].codigoPostal,
+            localidad: response[0].localidad,
+            provincia: response[0].provincia,
+            pais: response[0].pais
+        };
+    }
     
 }

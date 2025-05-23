@@ -1,4 +1,5 @@
 
+import Direccion from "../../direcciones/domain/Direccion";
 import PaquetesUsecases from "../../paquetes/application/paquetes.usecases";
 import PaqueteRepository from "../../paquetes/domain/paquetes.repository";
 import PaqueteRepositoryPostgres from "../../paquetes/infraestructure/db/paquetes.repository.postgres";
@@ -31,10 +32,11 @@ const direccionesusecases = new DireccionesUseCases(direccionesrepository);
 export default class EnviosUseCases {
     constructor(private enviosrepository: envioRepository) { }
 
-    async tracking(id: string, usuario: string, tipo: number): Promise<Envio> {
+    async tracking(id: string, usuario: string, tipo: number, direccion: Direccion): Promise<Envio> {
+
         const paquete = await paqueteusecases.getPaquete(id);
         const usuariodb: Usuario = await usuariousecases.getUsuario(usuario);
-        const result = await this.enviosrepository.tracking(paquete, usuariodb, tipo);
+        const result = await this.enviosrepository.tracking(paquete, usuariodb, tipo,direccion);
         
         // Elimina direcciones temporales, seguramente lo elimine
 
