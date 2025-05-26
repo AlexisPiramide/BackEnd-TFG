@@ -108,4 +108,9 @@ export default class usuariosUsecases {
         return await this.usuariosRepository.isExterno(id);
     }
 
+    async actualizar(usuario: Usuario): Promise<Usuario> {
+        const usuarioDB = await this.usuariosRepository.actualizar(usuario);
+        return usuarioDB;
+    }
+
 }

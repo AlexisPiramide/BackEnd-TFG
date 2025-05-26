@@ -12,4 +12,6 @@ export default interface usuariosRepository{
     encontrarcondatos(usuario: Usuario): Promise<Usuario>;
 
     isExterno(id: string): Promise<Boolean>;
+
+    actualizar(usuario: Usuario): Promise<Usuario>;
 }

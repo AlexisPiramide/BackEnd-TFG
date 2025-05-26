@@ -35,6 +35,30 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 });
 
+router.put('/actualizar', isAuth, async (req: Request, res: Response) => {
+    // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para actualizar los datos del usuario', #swagger.parameters[0] = { in: 'body', description: 'Datos del usuario a actualizar', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[200] = { description: 'Usuario actualizado correctamente', schema: { type: 'object', properties: { usuario: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado o error en la actualización', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[401] = { description: 'No autorizado para realizar esta acción (se requiere autenticación de administrador)', schema: { type: 'object', properties: { message: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
+    try {
+        const usuarioActualizado = {
+            id : req.body.id,
+            nombre : req.body.datos.nombre,
+            apellidos : req.body.datos.apellidos,
+            correo : req.body.datos.correo,
+            telefono : req.body.datos.telefono
+        }
+        console.log(req.body)
+        const usuariodb = await usuariosUsecases.actualizar(usuarioActualizado);
+
+        const token = createToken(usuariodb);
+        res.status(200).json({
+            usuario: devolverUsuario(usuariodb),
+            token: token
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(error.estatus).json(error.message);
+    }
+});
+
 router.post('/registro', async (req: Request, res: Response) => {
     // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para registrar un nuevo usuario', #swagger.parameters[0] = { in: 'body', description: 'Datos para registrar un nuevo usuario', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, contraseña: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Usuario registrado correctamente', schema: { type: 'object', properties: { usuario: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } }, token: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado o error en el registro', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
