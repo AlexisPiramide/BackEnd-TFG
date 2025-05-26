@@ -54,7 +54,13 @@ router.post('/paquetes/',isAuth, async (req: Request, res: Response) => {
         const paquetes = await paquetesusecases.getPaquetesByUsuario(req.body.id);
         res.status(200).json(paquetes);
     } catch (error) {
-        res.status(error.estatus).json(error.message);
+        console.log(error);
+        if (error.estatus === 200) {
+            res.status(200).json([]);
+        }else{
+            res.status(error.estatus).json(error.message);
+        }
+    
     }
 });
 

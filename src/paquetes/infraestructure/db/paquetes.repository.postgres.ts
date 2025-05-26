@@ -46,9 +46,13 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                 direccion_remitente: result[0].direccion_remitente,
                 destinatario: result[0].destinatario,
                 direccion_destinatario: result[0].direccion_destinatario,
-                precio: result[0].precio,
-                fecha: result[0].fecha
+                fecha_envio: result[0].fecha_envio,
+                precio: result[0].precio
             };
+
+            if (result[0].fecha_entrega) {
+                paqueteDb.fecha_entrega = result[0].fecha_entrega;
+            }
 
             return paqueteDb;
         } catch (error) {
@@ -59,7 +63,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
 
     async getPaquete(id: string): Promise<Paquete> {
 
-        const query = `SELECT p.id AS paquete_id, p.id_dimension, p.peso, p.precio, ur.id AS remitente_id, ur.nombre AS remitente_nombre, ur.apellidos AS remitente_apellidos, ur.correo AS remitente_correo, ur.contraseña AS remitente_contraseña, ur.telefono AS remitente_telefono, sur.id AS remitente_sucursal_id, sur.nombre AS remitente_sucursal_nombre, dr.id AS direccion_remitente_id, dr.calle AS direccion_remitente_calle, dr.numero AS direccion_remitente_numero, dr.codigo_postal AS direccion_remitente_codigo_postal, dr.localidad AS direccion_remitente_localidad, dr.provincia AS direccion_remitente_provincia, ud.id AS destinatario_id, ud.nombre AS destinatario_nombre, ud.apellidos AS destinatario_apellidos, ud.correo AS destinatario_correo, ud.contraseña AS destinatario_contraseña, ud.telefono AS destinatario_telefono, sud.id AS destinatario_sucursal_id, sud.nombre AS destinatario_sucursal_nombre, dd.id AS direccion_destinatario_id, dd.calle AS direccion_destinatario_calle, dd.numero AS direccion_destinatario_numero, dd.codigo_postal AS direccion_destinatario_codigo_postal, dd.localidad AS direccion_destinatario_localidad, dd.provincia AS direccion_destinatario_provincia FROM Paquete p JOIN Usuario ur ON p.remitente = ur.id JOIN Direccion dr ON p.direccion_remitente = dr.id LEFT JOIN Sucursal sur ON ur.sucursal = sur.id JOIN Usuario ud ON p.destinatario = ud.id JOIN Direccion dd ON p.direccion_destinatario = dd.id LEFT JOIN Sucursal sud ON ud.sucursal = sud.id WHERE p.id = $1;`;
+        const query = `SELECT p.fecha_entrega, p.fecha_envio, p.id AS paquete_id, p.id_dimension, p.peso, p.precio, ur.id AS remitente_id, ur.nombre AS remitente_nombre, ur.apellidos AS remitente_apellidos, ur.correo AS remitente_correo, ur.contraseña AS remitente_contraseña, ur.telefono AS remitente_telefono, sur.id AS remitente_sucursal_id, sur.nombre AS remitente_sucursal_nombre, dr.id AS direccion_remitente_id, dr.calle AS direccion_remitente_calle, dr.numero AS direccion_remitente_numero, dr.codigo_postal AS direccion_remitente_codigo_postal, dr.localidad AS direccion_remitente_localidad, dr.provincia AS direccion_remitente_provincia, ud.id AS destinatario_id, ud.nombre AS destinatario_nombre, ud.apellidos AS destinatario_apellidos, ud.correo AS destinatario_correo, ud.contraseña AS destinatario_contraseña, ud.telefono AS destinatario_telefono, sud.id AS destinatario_sucursal_id, sud.nombre AS destinatario_sucursal_nombre, dd.id AS direccion_destinatario_id, dd.calle AS direccion_destinatario_calle, dd.numero AS direccion_destinatario_numero, dd.codigo_postal AS direccion_destinatario_codigo_postal, dd.localidad AS direccion_destinatario_localidad, dd.provincia AS direccion_destinatario_provincia FROM Paquete p JOIN Usuario ur ON p.remitente = ur.id JOIN Direccion dr ON p.direccion_remitente = dr.id LEFT JOIN Sucursal sur ON ur.sucursal = sur.id JOIN Usuario ud ON p.destinatario = ud.id JOIN Direccion dd ON p.direccion_destinatario = dd.id LEFT JOIN Sucursal sud ON ud.sucursal = sud.id WHERE p.id = $1;`;
         const result: any[] = await executeQuery(query, [id]);
 
         if (result.length === 0) {
@@ -114,21 +118,26 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
             remitente,
             direccion_remitente: direccionRemitente,
             destinatario,
-            direccion_destinatario: direccionDestinatario
+            direccion_destinatario: direccionDestinatario,
+            fecha_entrega: row.fecha_entrega,
         };
+
+        if (result[0].fecha_entrega) {
+            paquete.fecha_entrega = result[0].fecha_entrega;
+        }
 
         return paquete;
 
     }
 
     async getPaquetesByUsuario(id: string): Promise<Paquete[]> {
-        const query = `SELECT p.id AS paquete_id, p.id_dimension, p.peso, p.precio, ur.id AS remitente_id, ur.nombre AS remitente_nombre, ur.apellidos AS remitente_apellidos, ur.correo AS remitente_correo, ur.contraseña AS remitente_contraseña, ur.telefono AS remitente_telefono, sur.id AS remitente_sucursal_id, sur.nombre AS remitente_sucursal_nombre, dr.id AS direccion_remitente_id, dr.calle AS direccion_remitente_calle, dr.numero AS direccion_remitente_numero, dr.codigo_postal AS direccion_remitente_codigo_postal, dr.localidad AS direccion_remitente_localidad, dr.provincia AS direccion_remitente_provincia, ud.id AS destinatario_id, ud.nombre AS destinatario_nombre, ud.apellidos AS destinatario_apellidos, ud.correo AS destinatario_correo, ud.contraseña AS destinatario_contraseña, ud.telefono AS destinatario_telefono, sud.id AS destinatario_sucursal_id, sud.nombre AS destinatario_sucursal_nombre, dd.id AS direccion_destinatario_id, dd.calle AS direccion_destinatario_calle, dd.numero AS direccion_destinatario_numero, dd.codigo_postal AS direccion_destinatario_codigo_postal, dd.localidad AS direccion_destinatario_localidad, dd.provincia AS direccion_destinatario_provincia FROM Paquete p JOIN Usuario ur ON p.remitente = ur.id JOIN Direccion dr ON p.direccion_remitente = dr.id LEFT JOIN Sucursal sur ON ur.sucursal = sur.id JOIN Usuario ud ON p.destinatario = ud.id JOIN Direccion dd ON p.direccion_destinatario = dd.id LEFT JOIN Sucursal sud ON ud.sucursal = sud.id WHERE p.remitente = $1 OR p.destinatario = $1;`;
+        const query = `SELECT p.fecha_entrega, p.fecha_envio, p.id AS paquete_id, p.id_dimension, p.peso, p.precio, ur.id AS remitente_id, ur.nombre AS remitente_nombre, ur.apellidos AS remitente_apellidos, ur.correo AS remitente_correo, ur.contraseña AS remitente_contraseña, ur.telefono AS remitente_telefono, sur.id AS remitente_sucursal_id, sur.nombre AS remitente_sucursal_nombre, dr.id AS direccion_remitente_id, dr.calle AS direccion_remitente_calle, dr.numero AS direccion_remitente_numero, dr.codigo_postal AS direccion_remitente_codigo_postal, dr.localidad AS direccion_remitente_localidad, dr.provincia AS direccion_remitente_provincia, ud.id AS destinatario_id, ud.nombre AS destinatario_nombre, ud.apellidos AS destinatario_apellidos, ud.correo AS destinatario_correo, ud.contraseña AS destinatario_contraseña, ud.telefono AS destinatario_telefono, sud.id AS destinatario_sucursal_id, sud.nombre AS destinatario_sucursal_nombre, dd.id AS direccion_destinatario_id, dd.calle AS direccion_destinatario_calle, dd.numero AS direccion_destinatario_numero, dd.codigo_postal AS direccion_destinatario_codigo_postal, dd.localidad AS direccion_destinatario_localidad, dd.provincia AS direccion_destinatario_provincia FROM Paquete p JOIN Usuario ur ON p.remitente = ur.id JOIN Direccion dr ON p.direccion_remitente = dr.id LEFT JOIN Sucursal sur ON ur.sucursal = sur.id JOIN Usuario ud ON p.destinatario = ud.id JOIN Direccion dd ON p.direccion_destinatario = dd.id LEFT JOIN Sucursal sud ON ud.sucursal = sud.id WHERE p.remitente = $1 OR p.destinatario = $1;`;
 
         try {
             const result: any[] = await executeQuery(query, [id]);
 
             if (result.length === 0) {
-                throw new ErrorPersonalizado('Error al buscar paquete', 400);
+                throw new ErrorPersonalizado('Error al buscar paquete', 200);
             }
 
             const pedidosdb: Paquete[] = result.map((row) => {
@@ -170,7 +179,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                     telefono: row.destinatario_telefono || undefined,
                 };
 
-                return {
+                const paquete: Paquete = {
                     id: row.paquete_id,
                     dimensiones: row.id_dimension,
                     peso: row.peso,
@@ -178,18 +187,40 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                     remitente,
                     direccion_remitente: direccionRemitente,
                     destinatario,
-                    direccion_destinatario: direccionDestinatario
+                    direccion_destinatario: direccionDestinatario,
+                    fecha_entrega: row.fecha_entrega,
                 };
+
+                if (row.fecha_entrega) {
+                    paquete.fecha_entrega = row.fecha_entrega;
+                }
+
+                return paquete;
             });
 
             return pedidosdb;
+
+        } catch(e) {
+            if(e instanceof ErrorPersonalizado) throw e;
+            throw new ErrorPersonalizado('La conexión a la base de datos no ha funcionado', 500);
+        }
+    }
+
+    async terminarPaquete(id: string): Promise<Paquete> {
+        const query = `UPDATE paquete fecha_entrega = NOW() WHERE id = $1 RETURNING *;`;
+        try {
+            const result = await executeQuery(query, [id]);
+
+            if (result.length === 0) {
+                throw new ErrorPersonalizado('Error al actualizar el paquete', 400);
+            }
+
+            return this.getPaquete(id);
 
         } catch {
             throw new ErrorPersonalizado('La conexión a la base de datos no ha funcionado', 500);
         }
     }
-
-
 
     async comporbarID(id: string): Promise<boolean> {
         const query = `SELECT id FROM paquete WHERE id = '${id}'`
@@ -205,7 +236,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
         const tarifaBase = [5.63, 6.05, 7.37, 12.6];
         const tarifa100G = [0.5, 0.4, 0.3, 0.2];
 
-        try {  
+        try {
             // Check if paquete is a Paquete object (not a string)
             if (typeof paquete === "object" && paquete !== null && "dimensiones" in paquete && "peso" in paquete) {
                 const dimensiones = await dimensionesusecases.getDimensiones();
@@ -228,7 +259,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
             }
 
             if (typeof paquete === "string" && peso !== undefined) {
-                
+
                 switch (paquete) {
                     case "Pequeño":
                         return tarifaBase[0] + (peso - 1) * tarifa100G[0];
@@ -242,7 +273,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
                         throw new ErrorPersonalizado('Nombre de dimensión no válido', 400);
                 }
             }
-          
+
             throw new ErrorPersonalizado('Datos de entrada no válidos', 400);
         } catch (error) {
             console.log(error);

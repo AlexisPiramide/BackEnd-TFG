@@ -9,5 +9,7 @@ export default interface direccionesRepository {
     updateDireccion(direccion: Direccion): Promise<Direccion>;
     eliminarDireccion(id: number): Promise<Direccion>;
 
+    alterarDireccionTemporal(id: number, es_temporal: boolean): Promise<Direccion>;
+    comprobarEstaEnUso(id: number): Promise<boolean>;
     getDireccionSucursal(id: string): Promise<Direccion>;
 }

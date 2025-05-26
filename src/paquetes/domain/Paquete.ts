@@ -11,5 +11,6 @@ export default interface Paquete {
     direccion_destinatario: Direccion | number;
     peso: number;
     precio?: number;
-    fecha?: Date;
+    fecha_envio?: Date;
+    fecha_entrega?: Date;
 }

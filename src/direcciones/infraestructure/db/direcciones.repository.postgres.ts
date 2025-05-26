@@ -3,7 +3,8 @@ import Direccion from "../../domain/Direccion";
 import direccionesRepository from "../../domain/direcciones.repository";
 
 export default class DireccionesRepositoryPostgres implements direccionesRepository {
-    
+
+
     async getDireccionesUsuario(id: string): Promise<Direccion[]> {
         const query = `
             SELECT d.id, d.calle, d.numero, d.codigo_postal AS "codigoPostal", 
@@ -12,7 +13,7 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             JOIN direccion d ON ud.direccion = d.id
             WHERE ud.usuario = $1 AND d.es_temporal = false;
         `;
-        
+
         const response = await executeQuery(query, [id]);
         return response.map((direccion: any) => ({
             id: direccion.id,
@@ -24,10 +25,10 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             pais: direccion.pais
         }));
     }
-    
 
-    async nuevaDireccionUsuario(usuario: string, direccion: Direccion, es_temporal:boolean): Promise<Direccion> {
-        const result = await this.nuevaDireccion(direccion,es_temporal);
+
+    async nuevaDireccionUsuario(usuario: string, direccion: Direccion, es_temporal: boolean): Promise<Direccion> {
+        const result = await this.nuevaDireccion(direccion, es_temporal);
         const direccionId = result.id;
 
         const usuarioDireccionQuery = `
@@ -41,6 +42,29 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             ...direccion,
             id: direccionId
         };
+    }
+
+    async comprobarEstaEnUso(id: number): Promise<boolean> {
+        const query = `
+            SELECT
+            d.id,
+            EXISTS (
+                SELECT 1
+                FROM Paquete p
+                WHERE p.direccion_remitente = d.id OR p.direccion_destinatario = d.id
+            ) AS esta_en_paquete
+            FROM Direccion d
+            WHERE d.id = $1;
+        `;
+    
+        const response: any[] = await executeQuery(query, [id]);
+
+        if (response.length === 0) {
+            throw new Error("Direccion no encontrada");
+        }
+
+        return response[0].esta_en_paquete;
+
     }
 
     async getDireccionById(id: number): Promise<Direccion> {
@@ -62,8 +86,8 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             pais: response[0].pais
         };
     }
-    
-    async nuevaDireccion(direccion: Direccion,es_temporal: boolean): Promise<Direccion> {
+
+    async nuevaDireccion(direccion: Direccion, es_temporal: boolean): Promise<Direccion> {
         const query = `
             INSERT INTO Direccion (calle, numero, codigo_postal, localidad, provincia, pais, es_temporal)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -88,7 +112,7 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
         };
 
     }
-    
+
     async updateDireccion(direccion: Direccion): Promise<Direccion> {
         const query = `
             UPDATE Direccion
@@ -111,10 +135,35 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
         return direccion;
     }
 
-    
+
     async eliminarDireccion(id: number): Promise<Direccion> {
         const query = `DELETE FROM Direccion WHERE id = $1 RETURNING *`;
         const response: any = await executeQuery(query, [id]);
+
+        if (response.length === 0) {
+            throw new Error("Direccion no encontrada");
+        }
+
+        return {
+            id: response[0].id,
+            calle: response[0].calle,
+            numero: response[0].numero,
+            codigoPostal: response[0].codigo_postal,
+            localidad: response[0].localidad,
+            provincia: response[0].provincia,
+            pais: response[0].pais
+        };
+    }
+
+    async alterarDireccionTemporal(id: number, es_temporal: boolean): Promise<Direccion> {
+        const query = `
+            UPDATE Direccion
+            SET es_temporal = $1
+            WHERE id = $2
+            RETURNING *
+        `;
+
+        const response: any = await executeQuery(query, [es_temporal, id]);
 
         if (response.length === 0) {
             throw new Error("Direccion no encontrada");
@@ -138,7 +187,7 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             FROM sucursal s
             JOIN direccion d ON s.id_direccion = d.id
             WHERE s.id = $1;`;
-        
+
         const response: any[] = await executeQuery(query, [id]);
 
         if (response.length === 0) {
@@ -155,5 +204,5 @@ export default class DireccionesRepositoryPostgres implements direccionesReposit
             pais: response[0].pais
         };
     }
-    
+
 }

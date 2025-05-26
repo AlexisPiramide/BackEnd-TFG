@@ -16,8 +16,6 @@ export default class DireccionesUseCases {
     }
 
     async nuevaDireccionUsuario(usuario: string, direccion: Direccion,es_temporal:boolean): Promise<Direccion> {
-        console.log(usuario);
-        console.log(direccion);
         return await this.direccionesRepository.nuevaDireccionUsuario(usuario, direccion,es_temporal);
     }
 
@@ -26,7 +24,14 @@ export default class DireccionesUseCases {
     }
 
     async eliminarDireccion(id: number): Promise<Direccion> {
-        return await this.direccionesRepository.eliminarDireccion(id);
+
+        const enUso = this.direccionesRepository.comprobarEstaEnUso(id);
+
+        if (enUso) {
+            return await this.direccionesRepository.alterarDireccionTemporal(id, true);
+        }else{
+            return await this.direccionesRepository.eliminarDireccion(id);
+        } 
     }
 
     async getDireccionSucursal(id: string): Promise<Direccion> {

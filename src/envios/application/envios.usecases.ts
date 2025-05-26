@@ -1,5 +1,8 @@
 
+import DireccionesUseCases from "../../direcciones/application/direcciones.usecases";
 import Direccion from "../../direcciones/domain/Direccion";
+import direccionesRepository from "../../direcciones/domain/direcciones.repository";
+import DireccionesRepositoryPostgres from "../../direcciones/infraestructure/db/direcciones.repository.postgres";
 import PaquetesUsecases from "../../paquetes/application/paquetes.usecases";
 import PaqueteRepository from "../../paquetes/domain/paquetes.repository";
 import PaqueteRepositoryPostgres from "../../paquetes/infraestructure/db/paquetes.repository.postgres";
@@ -13,22 +16,16 @@ import envioRepository from "../domain/envios.repository";
 import enviosrepositoryMongo from "../infraestructure/db/envios.repository.mongo";
 
 
-const usuariorepository : usuariosRepository = new usuariosRepositoryPostgres();
+const usuariorepository: usuariosRepository = new usuariosRepositoryPostgres();
 const usuariousecases = new usuariosUsecases(usuariorepository);
 const enviorepository: envioRepository = new enviosrepositoryMongo();
 const paqueterepository: PaqueteRepository = new PaqueteRepositoryPostgres();
 
-const paqueteusecases = new PaquetesUsecases(paqueterepository,enviorepository);
+const paqueteusecases = new PaquetesUsecases(paqueterepository, enviorepository);
 
+const direccionrepository: direccionesRepository = new DireccionesRepositoryPostgres();
+const direccionesusecases = new DireccionesUseCases(direccionrepository);
 
-/*
-import DireccionesUseCases from "../../direcciones/application/direcciones.usecases";
-import direccionesRepository from "../../direcciones/domain/direcciones.repository";
-import DireccionesRepositoryPostgres from "../../direcciones/infraestructure/db/direcciones.repository.postgres";
-
-const direccionesrepository: direccionesRepository = new DireccionesRepositoryPostgres();
-const direccionesusecases = new DireccionesUseCases(direccionesrepository);
-*/
 export default class EnviosUseCases {
     constructor(private enviosrepository: envioRepository) { }
 
@@ -36,25 +33,30 @@ export default class EnviosUseCases {
 
         const paquete = await paqueteusecases.getPaquete(id);
         const usuariodb: Usuario = await usuariousecases.getUsuario(usuario);
-        const result = await this.enviosrepository.tracking(paquete, usuariodb, tipo,direccion);
-        
-        // Elimina direcciones temporales, seguramente lo elimine
+        const result = await this.enviosrepository.tracking(paquete, usuariodb, tipo, direccion);
 
-        /* 
-        let direccion_destinatario, direccion_remitente;
-        
-        if (result && tipo === 3){
-            typeof paquete.direccion_destinatario === 'object' ? direccion_destinatario = await direccionesusecases.getDireccionById(paquete.direccion_destinatario.id): '';
-            typeof paquete.direccion_remitente === 'object' ? direccion_remitente = await direccionesusecases.getDireccionById(paquete.direccion_remitente.id): '';
+        if (!result) {
+            throw new Error("Error al registrar el envío");
+        }
 
-            const result1 = await direccionesusecases.eliminarDireccion(direccion_destinatario.id);
-            const result2 = await direccionesusecases.eliminarDireccion(direccion_remitente.id);
+        if (tipo === 3 || tipo === 4) {
+            const paqueteTerminado = await paqueteusecases.terminarPaquete(id);
 
-            if(!result1 || !result2) {
-                throw new Error("Error al eliminar la direccion");
+            const direccion1 = paqueteTerminado.direccion_destinatario as number;
+            const direccion2 = paqueteTerminado.direccion_remitente as number;
+
+            if (!paqueteTerminado) {
+                throw new Error("Error al terminar el paquete");
+            }
+
+            try {
+                const elimiarDireccionTemporal = await direccionesusecases.eliminarDireccion(direccion1);
+                const elimiarDireccionTemporal2 = await direccionesusecases.eliminarDireccion(direccion2);
+            } catch (error) {
+                
             }
         }
-        */
+
         return result
     }
 

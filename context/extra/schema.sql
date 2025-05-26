@@ -55,11 +55,13 @@ CREATE TABLE Paquete (
     direccion_destinatario INT,
     peso FLOAT,
     precio FLOAT,
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_entrega TIMESTAMP,
     FOREIGN KEY (remitente) REFERENCES Usuario(id),
     FOREIGN KEY (destinatario) REFERENCES Usuario(id),
     FOREIGN KEY (direccion_remitente) REFERENCES Direccion(id),
     FOREIGN KEY (direccion_destinatario) REFERENCES Direccion(id),
-    CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{15}$')
+    CONSTRAINT formato_id CHECK (id ~* '^[A-Za-z0-9]{15}$'),
     CONSTRAINT formato_id_dimension CHECK (id_dimension ~* '^[A-Za-z0-9]{24}$')
 );
 

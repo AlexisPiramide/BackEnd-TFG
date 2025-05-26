@@ -14,7 +14,7 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN || '';
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  'https://developers.google.com/oauthplayground' // o tu redirect_uri
+  'https://developers.google.com/oauthplayground'
 );
 
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
@@ -48,9 +48,21 @@ async function createTransporter() {
 
 const sendTrackingEmail = async (to: string, trackingCode: string) => {
   const subject = 'Notificación de seguimiento';
-  const text = `Tu código de seguimiento es: ${trackingCode}. Puedes usarlo para verificar el estado de tu envío.
-  Si te esta llegando esto te jodes porque estoy de pruebas 33`;
-
+  const html = 
+  ` <p>Un envío ha sido registrado con éxito a este correo.</p>
+    <p>Su código de seguimiento es: <strong>${trackingCode}</strong>.</p>
+    <p>Puedes usarlo para verificar el estado de tu envío desde 
+      <a href="https://front.alexis.daw.cpifppiramide.com/envios/tracking/${trackingCode}">este enlace</a>.
+    </p>
+    <p>O desde nuestra página web oficial 
+      <a href="https://alexis.daw.cpifppiramide.com/envios/tracking/">https://alexis.daw.cpifppiramide.com/</a>.
+    </p>
+    
+    <p>Gracias por confiar en nosotros.</p>
+   
+    <p>Este correo ha sido enviado automáticamente, por favor no respondas a este mensaje.</p>
+    <p>Si tienes alguna duda, puedes contactar con nosotros a través de nuestro correo de soporte.</p>
+    `;
   try {
     const transporter = await createTransporter();
 
@@ -58,7 +70,7 @@ const sendTrackingEmail = async (to: string, trackingCode: string) => {
       from: GMAIL_USER,
       to,
       subject,
-      text,
+      html,
     });
 
     console.log('Correo enviado: %s', info.messageId);

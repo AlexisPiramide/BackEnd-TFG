@@ -63,7 +63,6 @@ export default class PaquetesUsecases{
         const correo1 = (typeof paqueteCompleto.destinatario !== 'string' ) ? paqueteCompleto.destinatario.correo : "";
         const correo2 = (typeof paqueteCompleto.remitente !== 'string' ) ? paqueteCompleto.remitente.correo : "";
 
-        // Enviar correo de seguimiento a ambos usuarios
         //await sendTrackingEmail(correo1, paqueteCompleto.id);
         //await sendTrackingEmail(correo2, paqueteCompleto.id);
 
@@ -103,6 +102,14 @@ export default class PaquetesUsecases{
             console.log(error);
             throw new ErrorPersonalizado('Error al calcular el precio', 400);
         }
+    }
+
+    async terminarPaquete(id: string): Promise<Paquete> {
+        const paquete = await this.paqueteRepository.terminarPaquete(id);
+        if(!paquete) {
+            throw new ErrorPersonalizado('Error al terminar el paquete', 400);
+        }
+        return paquete;
     }
     
 }
