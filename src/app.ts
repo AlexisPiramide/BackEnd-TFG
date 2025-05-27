@@ -13,7 +13,7 @@ createMongoConnection()
 dotenv.config();
 
 //const allowedOrigins = "https://front.alexis.daw.cpifppiramide.com";
-const allowedOrigins = ["http://localhost:5173","https://front.alexis.daw.cpifppiramide.com"];
+const allowedOrigins = ["http://localhost:5173","https://front.alexis.daw.cpifppiramide.com/"];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
@@ -24,7 +24,7 @@ const swaggerDocument = require('./../swagger-output.json');
 
 const app = express();
 app.use(express.json());
-app.use(cors(options));
+//app.use(cors(options));
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
@@ -39,5 +39,9 @@ app.use(`/usuarios`, UsuariosRest);
 app.use(`/envios`, EnviosRest);	
 app.use(`/direcciones`, DireccionesRest);
 
+
+app.get("/", (req, res) => {
+  res.status(200).send("API is running");
+});
 
 export default app;
