@@ -2,44 +2,48 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import PaquetesRest from "./paquetes/infraestructure/rest/paquetes.rest"
-import DimensionesRest from "./dimensiones/infraestructure/rest/dimensiones.rest"
-import UsuariosRest from "./usuarios/infraestructure/rest/usuarios.rest"
-import DireccionesRest from "./direcciones/infraestructure/rest/direcciones.rest"
-import EnviosRest from "./envios/infraestructure/rest/envios.rest"
+import PaquetesRest from "./paquetes/infraestructure/rest/paquetes.rest";
+import DimensionesRest from "./dimensiones/infraestructure/rest/dimensiones.rest";
+import UsuariosRest from "./usuarios/infraestructure/rest/usuarios.rest";
+import DireccionesRest from "./direcciones/infraestructure/rest/direcciones.rest";
+import EnviosRest from "./envios/infraestructure/rest/envios.rest";
 import createMongoConnection from "../context/mongo.db";  
-createMongoConnection()
 
+// Connect to the database
+createMongoConnection();
+
+// Load environment variables
 dotenv.config();
 
-//const allowedOrigins = "https://front.alexis.daw.cpifppiramide.com";
-const allowedOrigins = ["http://localhost:5173","https://front.alexis.daw.cpifppiramide.com/"];
+// Define allowed origins
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://front.alexis.daw.cpifppiramide.com"
+];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
+  credentials: true, // optional, if you need cookies/auth headers
 };
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./../swagger-output.json');
-
+// Initialize app
 const app = express();
 app.use(express.json());
-//app.use(cors(options));
 
+// ✅ Enable CORS
+app.use(cors(options));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  swaggerOptions: {
-     supportedSubmitMethods: [],
-  }
-}));
+// ✅ Handle preflight requests
+app.options("*", cors(options));
 
+// Your API routes
 app.use(`/api/dimensiones`, DimensionesRest);
 app.use(`/paquetes`, PaquetesRest);
 app.use(`/usuarios`, UsuariosRest);
 app.use(`/envios`, EnviosRest);	
 app.use(`/direcciones`, DireccionesRest);
 
-
+// Base route
 app.get("/", (req, res) => {
   res.status(200).send("API is running");
 });

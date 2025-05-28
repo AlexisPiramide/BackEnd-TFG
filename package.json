@@ -7,7 +7,9 @@
         "dev": "nodemon ./src/index.ts",
         "test": "NODE_ENV=test jest --runInBand",
         "swagger": "node ./swagger.js", 
-        "build": "tsc"
+        "build": "tsc",
+        "postinstall": "npm run build",
+        "start": "node dist/src/index.js"
     },
     "author": "",
     "license": "ISC",

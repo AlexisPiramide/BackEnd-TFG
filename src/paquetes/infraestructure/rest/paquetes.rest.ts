@@ -22,15 +22,21 @@ router.post('/',isWorker, async (req: Request, res: Response) => {
         const paquetebody: Paquete = {
             dimensiones: req.body.dimensiones,
             remitente: typeof req.body.remitente === "object" ? nuevoUsuario(req.body.remitente) : req.body.remitente,
-            direccion_remitente: (req.body.direccion_remitente.id === undefined) ? nuevaDireccion(req.body.direccion_remitente) : req.body.direccion_remitente.id,
+            direccion_remitente: (req.body.direccion_remitente.id === '') ? nuevaDireccion(req.body.direccion_remitente) : req.body.direccion_remitente.id,
             destinatario: typeof req.body.destinatario === "object" ? nuevoUsuario(req.body.destinatario) : req.body.destinatario,
-            direccion_destinatario: (req.body.direccion_destinatario.id === undefined) ? nuevaDireccion(req.body.direccion_destinatario) : req.body.direccion_destinatario.id,
+            direccion_destinatario: (req.body.direccion_destinatario.id === '') ? nuevaDireccion(req.body.direccion_destinatario) : req.body.direccion_destinatario.id,
             peso: req.body.peso
         };
 
         const trabajador : Usuario = req.body.trabajador;
 
         const paquete = await paquetesusecases.postPaquete(paquetebody,trabajador);
+        if (typeof paquete.destinatario === "object" && paquete.destinatario !== null && "contraseña" in paquete.destinatario) {
+            (paquete.destinatario as Usuario).contraseña = undefined;
+        }
+        if (typeof paquete.remitente === "object" && paquete.remitente !== null && "contraseña" in paquete.remitente) {
+            (paquete.remitente as Usuario).contraseña = undefined;
+        }
         res.status(201).json(paquete);
     } catch (error) {
         console.log(error);

@@ -46,11 +46,15 @@ export default class PaquetesUsecases{
         }
 
         if(typeof paquete.direccion_destinatario !== 'number'){
+            console.log("DIRECCION DESTINATARIO",paquete.direccion_destinatario);
             const dd = await direccionesusecases.nuevaDireccionUsuario(paquete.destinatario,paquete.direccion_destinatario,true);
+            console.log("DIRECCION DESTINATARIO",dd);
             paquete.direccion_destinatario = dd.id;
         }
         if(typeof paquete.direccion_remitente !== 'number'){
+            console.log("DIRECCION REMITENTE",paquete.direccion_remitente);
             const dr = await direccionesusecases.nuevaDireccionUsuario(paquete.remitente,paquete.direccion_remitente,true);
+            console.log("DIRECCION REMITENTE",dr);
             paquete.direccion_remitente = dr.id;
         }
     

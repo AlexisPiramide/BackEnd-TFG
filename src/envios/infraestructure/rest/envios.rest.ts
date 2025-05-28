@@ -5,13 +5,14 @@ import  EnviosUsecases  from './../../application/envios.usecases';
 import enviosrepositoryMongo from '../db/envios.repository.mongo';
 import ErrorPersonalizado from '../../../Error/ErrorPersonalizado';
 import Direccion from '../../../direcciones/domain/Direccion';
+import { isWorker } from '../../../../context/security/auth';
 
 const router = express.Router();
 
 const enviosrepository: EnvioRepository = new enviosrepositoryMongo();
 const enviosusecases = new EnviosUsecases(enviosrepository);
 
-router.post('/tracking/:usuario', async (req: Request, res: Response) => {
+router.post('/tracking/:usuario',isWorker, async (req: Request, res: Response) => {
     /* #swagger.tags = ['Envios'] #swagger.description = 'Endpoint para registrar un nuevo envio' #swagger.parameters[0] = { in: 'body', description: 'Datos del envio', required: true, schema: { type: 'object', properties: { id: { type: 'string' }, usuario: { type: 'string' }, tipo: { type: 'string' } } } } #swagger.responses[201] = { description: 'Envio registrado correctamente' } #swagger.responses[400] = { description: 'Datos inválidos' } #swagger.responses[500] = { description: 'Error en el servidor' } */
     try {
         const id = req.body.id;

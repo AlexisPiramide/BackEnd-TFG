@@ -52,10 +52,10 @@ const sendTrackingEmail = async (to: string, trackingCode: string) => {
   ` <p>Un envío ha sido registrado con éxito a este correo.</p>
     <p>Su código de seguimiento es: <strong>${trackingCode}</strong>.</p>
     <p>Puedes usarlo para verificar el estado de tu envío desde 
-      <a href="https://front.alexis.daw.cpifppiramide.com/envios/tracking/${trackingCode}">este enlace</a>.
+      <a href="https://front.alexis.daw.cpifppiramide.com/${trackingCode}">este enlace</a>.
     </p>
     <p>O desde nuestra página web oficial 
-      <a href="https://alexis.daw.cpifppiramide.com/envios/tracking/">https://alexis.daw.cpifppiramide.com/</a>.
+      <a href="https://alexis.daw.cpifppiramide.com/">https://alexis.daw.cpifppiramide.com/</a>.
     </p>
     
     <p>Gracias por confiar en nosotros.</p>

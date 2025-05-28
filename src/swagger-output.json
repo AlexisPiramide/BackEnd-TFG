@@ -11,6 +11,16 @@
     "http"
   ],
   "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/dimensiones/": {
       "get": {
         "tags": [
@@ -270,6 +280,11 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -333,7 +348,7 @@
         ]
       }
     },
-    "/paquetes/precio/{tamaño}/{peso}": {
+    "/paquetes/precio/{tamanio}/{peso}": {
       "get": {
         "tags": [
           "Paquetes"
@@ -344,10 +359,19 @@
             "name": "tamaño",
             "in": "path",
             "required": true,
-            "type": "string"
+            "description": "Tamaño del paquete",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "peso",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tamanio",
             "in": "path",
             "required": true,
             "type": "string"
@@ -551,6 +575,245 @@
                   "type": "object",
                   "properties": {
                     "message": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/actualizar": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "description": "Endpoint para actualizar los datos del usuario",
+        "parameters": [
+          {
+            "name": "0",
+            "in": "body",
+            "description": "Datos del usuario a actualizar",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "nombre": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    },
+                    "apellidos": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    },
+                    "correo": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    },
+                    "telefono": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuario actualizado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "usuario": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "nombre": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "apellidos": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "correo": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "telefono": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado para realizar esta acción (se requiere autenticación de administrador)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Usuario no encontrado o error en la actualización",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
                       "type": "object",
                       "properties": {
                         "type": {
@@ -1710,6 +1973,107 @@
                 "name": "main"
               }
             }
+          }
+        }
+      }
+    },
+    "/envios/tracking/{usuario}": {
+      "post": {
+        "tags": [
+          "Envios"
+        ],
+        "description": "Endpoint para registrar un nuevo envio",
+        "parameters": [
+          {
+            "name": "0",
+            "in": "body",
+            "description": "Datos del envio",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    },
+                    "usuario": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    },
+                    "tipo": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "usuario",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Envio registrado correctamente"
+          },
+          "400": {
+            "description": "Datos inválidos"
+          },
+          "500": {
+            "description": "Error en el servidor"
+          }
+        }
+      }
+    },
+    "/envios/tracking/{id}": {
+      "get": {
+        "tags": [
+          "Envios"
+        ],
+        "description": "Endpoint para obtener el estado de un envio",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Envio encontrado"
+          },
+          "404": {
+            "description": "No encontrado"
+          },
+          "500": {
+            "description": "Error en el servidor"
           }
         }
       }
