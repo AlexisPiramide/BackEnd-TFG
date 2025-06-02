@@ -1,6 +1,6 @@
 {
-    "name": "red-social",
-    "version": "1.0.0",
+    "name": "TFG BackEnd",
+    "version": "1.1.5",
     "description": "",
     "main": "./src/index.ts",
     "scripts": {
