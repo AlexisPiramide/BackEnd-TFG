@@ -210,7 +210,6 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
         const query = `UPDATE paquete fecha_entrega = NOW() WHERE id = $1 RETURNING *;`;
         try {
             const result = await executeQuery(query, [id]);
-
             if (result.length === 0) {
                 throw new ErrorPersonalizado('Error al actualizar el paquete', 400);
             }
@@ -218,6 +217,7 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
             return this.getPaquete(id);
 
         } catch {
+            console.log("Error al terminar el paquete");
             throw new ErrorPersonalizado('La conexión a la base de datos no ha funcionado', 500);
         }
     }

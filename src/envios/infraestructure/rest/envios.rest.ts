@@ -27,6 +27,8 @@ router.post('/tracking/:usuario',isWorker, async (req: Request, res: Response) =
             provincia: req.body.direccion.provincia,
             pais: "España"
         }
+        
+
         const envio = await enviosusecases.tracking(id, usuario, tipo,direccion);
         res.status(201).json(envio);
     } catch (error) {
