@@ -42,7 +42,7 @@ async function createTransporter() {
     });
   } catch (error) {
     console.error('Error getting access token:', error);
-    throw error; // propagate error to handle in sendTrackingEmail
+    throw error; 
   }
 }
 

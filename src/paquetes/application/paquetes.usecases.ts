@@ -91,12 +91,10 @@ export default class PaquetesUsecases{
     async calcularPrecio(paquete: Paquete | string, peso?: number): Promise<number> {
         try {
 
-            // Si 'paquete' es un objeto (Paquete), lo pasamos a la función de repositorio
             if (typeof paquete === "object" && paquete !== null) {
                 return await this.paqueteRepository.calcularPrecio(paquete);
             }
     
-            // Si 'paquete' es un string (tamaño) y 'peso' está definido
             if (typeof paquete === "string" && peso !== undefined) {
                 return await this.paqueteRepository.calcularPrecio(paquete, peso);
             }

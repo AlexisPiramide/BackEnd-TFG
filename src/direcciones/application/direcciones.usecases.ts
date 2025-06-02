@@ -1,5 +1,5 @@
 import DireccionesRepository from "../domain/direcciones.repository";
-import Direccion from "../domain/Direccion"; // Assuming Direccion is defined in this path
+import Direccion from "../domain/Direccion";
 
 export default class DireccionesUseCases {
     constructor(private direccionesRepository: DireccionesRepository) { }

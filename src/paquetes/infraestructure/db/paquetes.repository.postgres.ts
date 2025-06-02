@@ -237,7 +237,6 @@ export default class PaqueteRepositoryPostgres implements PaqueteRepository {
         const tarifa100G = [0.5, 0.4, 0.3, 0.2];
 
         try {
-            // Check if paquete is a Paquete object (not a string)
             if (typeof paquete === "object" && paquete !== null && "dimensiones" in paquete && "peso" in paquete) {
                 const dimensiones = await dimensionesusecases.getDimensiones();
                 const dimension = dimensiones.find((dimension) => dimension.id === paquete.dimensiones);

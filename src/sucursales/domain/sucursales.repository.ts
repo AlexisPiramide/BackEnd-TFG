@@ -10,5 +10,4 @@ export default interface sucuralesRepository {
 
     crearTrabajador(trabajador: Usuario,sucursal: string): Promise<Usuario>
     vincularTrabajador(sucursal: string, trabajador: Usuario): Promise<Usuario>
-    //desvincularTrabajador(sucursal: string, trabajador: Usuario): Promise<Boolean>
 }

@@ -13,7 +13,7 @@ export default class usuariosUsecases {
 
     const usuarioDB = await this.usuariosRepository.login(usuario);
 
-    const result = compare(usuario.contraseña, usuarioDB.contraseña); // <-- corrected here
+    const result = compare(usuario.contraseña, usuarioDB.contraseña);
 
     if (!result) { 
         throw new ErrorPersonalizado("Contraseña incorrecta", 401); 
