@@ -9,12 +9,18 @@ import Usuario from "../../../usuarios/domain/Usuario";
 import { isAuth, isWorker } from "../../../../context/security/auth";
 import envioRepository from "../../../envios/domain/envios.repository";
 import enviosrepositoryMongo from "../../../envios/infraestructure/db/envios.repository.mongo";
+import DimensionesRepository from "../../../dimensiones/domain/dimensiones.repository";
+import DimensionesRepositoryMongo from "../../../dimensiones/infraestructure/db/dimensiones.repository.mongo";
+import DimensionesUsecases from "../../../dimensiones/application/dimensiones.usecases";
 
 const router = express.Router();
 
 const paquetesrepository: PaqueteRepository = new PaqueteRepositoryPostgres();
 const enviosrepository: envioRepository = new enviosrepositoryMongo();
 const paquetesusecases = new PaquetesUsecases(paquetesrepository,enviosrepository);
+
+const dimensionesrepository: DimensionesRepository = new DimensionesRepositoryMongo();
+const dimensionesusecases = new DimensionesUsecases(dimensionesrepository)
 
 router.post('/',isWorker, async (req: Request, res: Response) => {
     // #swagger.tags = ['Paquetes'], #swagger.description = 'Registrar un nuevo paquete', #swagger.parameters[0] = { in: 'body', description: 'Datos del paquete', required: true, schema: { type: 'object', properties: { dimensiones: { type: 'string' }, remitente: { type: 'object' }, direccion_remitente: { type: 'object' }, destinatario: { type: 'object' }, direccion_destinatario: { type: 'object' }, peso: { type: 'number' } } } }, #swagger.responses[201] = { description: 'Paquete registrado correctamente' }, #swagger.responses[400] = { description: 'Datos inválidos' }, #swagger.responses[500] = { description: 'Error en el servidor' }
@@ -37,6 +43,12 @@ router.post('/',isWorker, async (req: Request, res: Response) => {
         if (typeof paquete.remitente === "object" && paquete.remitente !== null && "contraseña" in paquete.remitente) {
             (paquete.remitente as Usuario).contraseña = undefined;
         }
+
+        const dimensiones =  await dimensionesusecases.getDimensiones();
+        
+        const dimensionesPaquete = dimensiones.find(d => d.id === paquetebody.dimensiones);
+        paquete.dimensiones = dimensionesPaquete;
+
         res.status(201).json(paquete);
     } catch (error) {
         console.log(error);
