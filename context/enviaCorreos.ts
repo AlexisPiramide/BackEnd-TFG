@@ -55,7 +55,7 @@ const sendTrackingEmail = async (to: string, trackingCode: string) => {
       <a href="https://front.alexis.daw.cpifppiramide.com/${trackingCode}">este enlace</a>.
     </p>
     <p>O desde nuestra página web oficial 
-      <a href="https://alexis.daw.cpifppiramide.com/">https://alexis.daw.cpifppiramide.com/</a>.
+      <a href="https://front.alexis.daw.cpifppiramide.com/">https://front.alexis.daw.cpifppiramide.com/</a>.
     </p>
     
     <p>Gracias por confiar en nosotros.</p>
