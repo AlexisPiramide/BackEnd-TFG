@@ -15,6 +15,7 @@ const enviosusecases = new EnviosUsecases(enviosrepository);
 router.post('/tracking/:usuario',isWorker, async (req: Request, res: Response) => {
     /* #swagger.tags = ['Envios'] #swagger.description = 'Endpoint para registrar un nuevo envio' #swagger.parameters[0] = { in: 'body', description: 'Datos del envio', required: true, schema: { type: 'object', properties: { id: { type: 'string' }, usuario: { type: 'string' }, tipo: { type: 'string' } } } } #swagger.responses[201] = { description: 'Envio registrado correctamente' } #swagger.responses[400] = { description: 'Datos inválidos' } #swagger.responses[500] = { description: 'Error en el servidor' } */
     try {
+        console.log(req.body)
         const id = req.body.id;
         const usuario = req.params.usuario;
         const tipo = req.body.tipo;
@@ -27,7 +28,7 @@ router.post('/tracking/:usuario',isWorker, async (req: Request, res: Response) =
             provincia: req.body.direccion.provincia,
             pais: "España"
         }
-        
+        console.log(id, usuario, tipo, direccion);
 
         const envio = await enviosusecases.tracking(id, usuario, tipo,direccion);
         res.status(201).json(envio);

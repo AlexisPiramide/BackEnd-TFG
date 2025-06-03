@@ -80,48 +80,65 @@ const isAuth = (req: Request, res: Response, next: NextFunction): void => {
     }
 };
 
+const isWorker = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const authHeader = req.headers["authorization"];
+        const token = authHeader && authHeader.split(" ")[1];
 
-const isWorker = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+        if (!token) {
+            res.status(401).json({ mensaje: "No autorizado" });
+            return;
+        }
 
-    if (!token) {
-        return res.status(401).json({ mensaje: "No autorizado" });
+        const decoded: any = verifyToken(token);
+
+        if (!decoded.sucursal) {
+            res.status(401).json({ mensaje: "No autorizado" });
+            return;
+        }
+
+        req.body.trabajador = {
+            id: decoded.id,
+            nombre: decoded.nombre,
+            apellidos: decoded.apellidos,
+            correo: decoded.correo,
+            sucursal: decoded.sucursal,
+            telefono: decoded.telefono,
+        };
+
+        
+        const autorizacionValida = await checkSucursal(decoded.correo);
+
+        if (!autorizacionValida) {
+            res.status(401).json({ mensaje: "No autorizado" });
+            return;
+        }
+        
+        next();
+    } catch (error) {
+        console.error("Error en isWorker middleware:", error);
+        res.status(500).json({ mensaje: "Error interno en la autenticación" });
     }
+}
 
-    const decoded: any = verifyToken(token);
 
-    if (!decoded.sucursal) {
-        return res.status(401).json({ mensaje: "No autorizado" });
-    }
+async function checkSucursal(correo: string): Promise<boolean> {
+    const query = "SELECT s.* FROM Sucursal s JOIN usuario u ON s.id = u.sucursal WHERE u.correo = $1";
+    const values = [correo];
 
-    req.body.trabajador = {
-        id: decoded.id,
-        nombre: decoded.nombre,
-        apellidos: decoded.apellidos,
-        correo: decoded.correo,
-        sucursal: decoded.sucursal,
-        telefono: decoded.telefono,
-    };
-
-    const query = "SELECT sucursal FROM Usuario WHERE correo = $1";
-    const values = [decoded.correo];
-    
     const result: any = await executeQuery(query, values);
-    if (result.length === 0 || !result[0].sucursal) {
-        return res.status(401).json({ mensaje: "No autorizado" });
-    }
 
-    next();
-});
+    return result.length > 0;
+}
 
 
-const isAdmin = asyncHandler(async (req, res, next) => {
+const isAdmin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
-        return res.status(401).json({ mensaje: "No autorizado" });
+        res.status(401).json({ mensaje: "No autorizado" });
+        return ;
     }
 
     const decoded: any = verifyToken(token);
@@ -136,17 +153,19 @@ const isAdmin = asyncHandler(async (req, res, next) => {
         req.body.sucursal = decoded.sucursal;
     }
 
+    
     const query = "SELECT es_admin FROM Usuario WHERE correo = $1";
     const values = [decoded.correo];
 
     const result: any = await executeQuery(query, values);
 
     if (result.length === 0 || !result[0].es_admin) {
-        return res.status(401).json({ mensaje: "No autorizado" });
+        res.status(401).json({ mensaje: "No autorizado" });
+        return;
     }
-
+    
     next();
-});
+}
 
 
 
