@@ -135,7 +135,7 @@ router.post("/existe", async (req: Request, res: Response) => {
     }
 });
 
-router.get("/y&$1m9x41/registroExterno/:id", async (req: Request, res: Response) => {
+router.get("/yx1241m9x41/registroExterno/:id", async (req: Request, res: Response) => {
     // #swagger.tags = ['Usuarios'], #swagger.description = 'Endpoint para convertir un usuario externo', #swagger.parameters[0] = { in: 'path', description: 'ID del usuario externo', required: true, type: 'string' }, #swagger.parameters[1] = { in: 'body', description: 'Datos del usuario externo', required: true, schema: { type: 'object', properties: { nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } } }, #swagger.responses[201] = { description: 'Usuario registrado correctamente', schema: { type: 'object', properties: { usuario: { type: 'object', properties: { id: { type: 'string' }, nombre: { type: 'string' }, apellidos: { type: 'string' }, correo: { type: 'string' }, telefono: { type: 'string' } } }, token: { type: 'string' } } } }, #swagger.responses[404] = { description: 'Usuario no encontrado o error en el registro', schema: { type: 'object', properties: { mensaje: { type: 'string' } } } }, #swagger.responses[500] = { description: 'Error en el servidor', schema: { type: 'object', properties: { message: { type: 'string' } } } }
     try {
         const id = req.params.id;
