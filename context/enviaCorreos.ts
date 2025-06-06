@@ -12,44 +12,44 @@ const REFRESH_TOKEN = process.env.REFRESH_TOKEN || '';
 
 // Configura OAuth2
 const oAuth2Client = new google.auth.OAuth2(
-  CLIENT_ID,
-  CLIENT_SECRET,
-  'https://developers.google.com/oauthplayground'
+    CLIENT_ID,
+    CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
 );
 
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 async function createTransporter() {
-  try {
-    const accessTokenResponse = await oAuth2Client.getAccessToken();
+    try {
+        const accessTokenResponse = await oAuth2Client.getAccessToken();
 
-    if (!accessTokenResponse || !accessTokenResponse.token) {
-      throw new Error('Failed to obtain access token.');
+        if (!accessTokenResponse || !accessTokenResponse.token) {
+            throw new Error('Failed to obtain access token.');
+        }
+
+        const accessToken = accessTokenResponse.token;
+
+        return nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: GMAIL_USER,
+                clientId: CLIENT_ID,
+                clientSecret: CLIENT_SECRET,
+                refreshToken: REFRESH_TOKEN,
+                accessToken,
+            },
+        });
+    } catch (error) {
+        console.error('Error getting access token:', error);
+        throw error;
     }
-
-    const accessToken = accessTokenResponse.token;
-
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: GMAIL_USER,
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken,
-      },
-    });
-  } catch (error) {
-    console.error('Error getting access token:', error);
-    throw error; 
-  }
 }
 
 const sendTrackingEmail = async (to: string, trackingCode: string) => {
-  const subject = 'Notificación de seguimiento';
-  const html = 
-  ` <p>Un envío ha sido registrado con éxito a este correo.</p>
+    const subject = 'Notificación de seguimiento';
+    const html =
+        ` <p>Un envío ha sido registrado con éxito a este correo.</p>
     <p>Su código de seguimiento es: <strong>${trackingCode}</strong>.</p>
     <p>Puedes usarlo para verificar el estado de tu envío desde 
       <a href="https://front.alexis.daw.cpifppiramide.com/${trackingCode}">este enlace</a>.
@@ -63,23 +63,53 @@ const sendTrackingEmail = async (to: string, trackingCode: string) => {
     <p>Este correo ha sido enviado automáticamente, por favor no respondas a este mensaje.</p>
     <p>Si tienes alguna duda, puedes contactar con nosotros a través de nuestro correo de soporte.</p>
     `;
-  try {
-    const transporter = await createTransporter();
+    try {
+        const transporter = await createTransporter();
 
-    const info = await transporter.sendMail({
-      from: GMAIL_USER,
-      to,
-      subject,
-      html,
-    });
+        const info = await transporter.sendMail({
+            from: GMAIL_USER,
+            to,
+            subject,
+            html,
+        });
 
-    console.log('Correo enviado: %s', info.messageId);
-  } catch (error: any) {
-    if (error?.response?.includes('Invalid Credentials')) {
-      console.error('Your refresh token may be invalid or expired. You need to regenerate it.');
+        console.log('Correo enviado: %s', info.messageId);
+    } catch (error: any) {
+        if (error?.response?.includes('Invalid Credentials')) {
+            console.error('Your refresh token may be invalid or expired. You need to regenerate it.');
+        }
+        console.error('Error enviando el correo: ', error);
     }
-    console.error('Error enviando el correo: ', error);
-  }
+};
+
+
+const sendMailRegistroExterno = async (to: string, id: string) => {
+
+    const subject = 'Notificación de registro externo';
+    const html = `   
+        <p>Un envío ha sido registrado con éxito a este correo. Si desea crear una cuenta para gestionar sus envíos, por favor, visite el siguiente enlace: 
+        <a href="https://front.alexis.daw.cpifppiramide.com/y&$1m9x41/registroExterno/${id}">Registro Externo</a>. </p>
+        <p>En caso de que no desee crear su cuenta puede ignorar este correo, sus datos no se eliminarán con la recepción del envío.</p>
+        `;
+    try {
+        const transporter = await createTransporter();
+
+        const info = await transporter.sendMail({
+            from: GMAIL_USER,
+            to,
+            subject,
+            html,
+        });
+
+        console.log('Correo enviado: %s', info.messageId);
+    } catch (error: any) {
+        if (error?.response?.includes('Invalid Credentials')) {
+            console.error('Your refresh token may be invalid or expired. You need to regenerate it.');
+        }
+        console.error('Error enviando el correo: ', error);
+    }
+
 };
 
 export default sendTrackingEmail;
+export { sendMailRegistroExterno }
